@@ -52,7 +52,7 @@ MATERIAL_ADMIN_SITE = {
     # 'PROFILE_BG':  'path/to/image',  # Admin site profile background (path to static should be specified)
     # 'LOGIN_LOGO':  'path/to/image',  # Admin site logo on login page (path to static should be specified)
     # 'LOGOUT_BG':  'path/to/image',  # Admin site background on login/logout pages (path to static should be specified)
-    # 'SHOW_THEMES':  True,  #  Show default admin themes button
+    'SHOW_THEMES':  True,  #  Show default admin themes button
     # 'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
     # 'NAVBAR_REVERSE': True,  # Hide side navbar by default
     # 'SHOW_COUNTS': True, # Show instances counts for each model
@@ -147,7 +147,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

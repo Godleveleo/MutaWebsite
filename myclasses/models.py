@@ -21,7 +21,7 @@ class Disciplina(models.Model):
 class Planes(models.Model):
     Titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")
     horario =  models.CharField(max_length=30, verbose_name="Inicio de clases")
-    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=False, blank=False, on_delete = models.DO_NOTHING, verbose_name=" Tipo Disciplina")
+    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=False, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
     precio = models.CharField(max_length=8, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
 
