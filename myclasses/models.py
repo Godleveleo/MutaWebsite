@@ -1,5 +1,3 @@
-from email.policy import default
-from pyexpat import model
 from django.db import models
 
 class Disciplina(models.Model):
@@ -12,6 +10,10 @@ class Disciplina(models.Model):
     ]    
     horario = models.CharField(max_length=13,  choices=hora, verbose_name="Horario de clases")
 
+    class Meta:
+        verbose_name = "Disciplina"
+        verbose_name_plural = "Disciplinas"
+
     def __str__(self) :
         txt = "Codigo: {0} Disciplina: {1} Horario: {2}"
         return txt.format(self.codigo, self.tipo, self.horario)
@@ -19,8 +21,13 @@ class Disciplina(models.Model):
 class Planes(models.Model):
     Titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")
     horario =  models.CharField(max_length=30, verbose_name="Inicio de clases")
+    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=False, blank=False, on_delete = models.DO_NOTHING, verbose_name=" Tipo Disciplina")
     precio = models.CharField(max_length=8, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
+
+    class Meta:
+        verbose_name = "Planes"
+        verbose_name_plural = "Planes"
 
     def __str__(self) :
         txt = "Plan: {0} , Precio:$ {1} / {2} clases por semana"
@@ -44,6 +51,8 @@ class Estudiante(models.Model):
     vigencia = models.BooleanField(default=True, verbose_name="Estado del alumno")
     imagenPerfil = models.ImageField(upload_to="Foto_Perfil", null=True, verbose_name="Imagen de Perfil")
 
+    
+
     def nombreCompleto(self):
         txt = "{0} {1}, {2}"
         return txt.format(self.nombres, self.apellidoPaterno, self.apellidoMaterno)
@@ -62,6 +71,10 @@ class Incripciones(models.Model):
     id = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Estudiante, null=False, blank=False, on_delete=models.CASCADE)
     fechaIncripcion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Inscripcion"
+        verbose_name_plural = "Inscripciones"
 
     def __str__(self) :
         txt = "{0} / {1}  "
