@@ -1,3 +1,5 @@
+from ctypes.wintypes import PINT
+from email.policy import default
 from django.db import models
 
 class Disciplina(models.Model):
@@ -21,13 +23,18 @@ class Disciplina(models.Model):
 class Planes(models.Model):
     Titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")
     horario =  models.CharField(max_length=30, verbose_name="Inicio de clases")
-    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=False, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
-    precio = models.CharField(max_length=8, null=False, blank=False, verbose_name="Precio del  plan")
+    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
+    precio = models.PositiveIntegerField(default=0, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
 
     class Meta:
         verbose_name = "Planes"
         verbose_name_plural = "Planes"
+
+    def price_display(self):
+        return "{0:.3f}".format(self.precio / 100)
+        
+
 
     def __str__(self) :
         txt = "Plan: {0} , Precio:$ {1} / {2} clases por semana"
@@ -49,10 +56,9 @@ class Estudiante(models.Model):
     plan = models.ForeignKey(Planes,max_length=20, null=False, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito") 
     correo = models.EmailField(blank=False, verbose_name="Correo electronico")
     vigencia = models.BooleanField(default=True, verbose_name="Estado del alumno")
-    imagenPerfil = models.ImageField(upload_to="Foto_Perfil", null=True, verbose_name="Imagen de Perfil")
+    imagenPerfil = models.ImageField(upload_to="Foto_Perfil",blank=True, null=True, verbose_name="Imagen de Perfil")
 
     
-
     def nombreCompleto(self):
         txt = "{0} {1}, {2}"
         return txt.format(self.nombres, self.apellidoPaterno, self.apellidoMaterno)
