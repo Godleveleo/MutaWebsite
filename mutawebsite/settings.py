@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import json
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +30,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+####datos de configuración
+ruta= os.path.dirname(os.path.abspath(__file__))
+f = open('{}/conf.json'.format(ruta), 'r')
+conf_string = f.read()
+f.close()
+conf = json.loads(conf_string)
+
+RUTA=conf['ruta']
+RUTA2=conf['ruta2']
 
 # Application definition
 
@@ -134,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'es-ch'
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'America/Santiago'
 
@@ -146,14 +157,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
-import os
+STATIC_URL='/assets/'
+STATIC_ROOT = (os.path.join(BASE_DIR, 'myclasses/assets/'),)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'myclasses/media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+
+SESSION_COOKIE_AGE = 600
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True 

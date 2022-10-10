@@ -17,15 +17,16 @@ class PlanesAdmin(admin.ModelAdmin):
 admin.site.register(Planes, PlanesAdmin)
 
 class EstudianteAdmin(admin.ModelAdmin):
-    list_display = ('ced_identidad','nombres','apellidoPaterno', 'apellidoMaterno','tipo', 'plan')
+    list_display = ('nombreCompleto','ced_identidad','tipo', 'plan', foto_perfil)
     search_fields= ('ced_identidad',)
-    icon_name = 'portrait' 
+    icon_name = 'portrait'
+     
 
-admin.site.register(Estudiante, EstudianteAdmin)
+admin.site.register(UsersMetadata, EstudianteAdmin)
 
 class IncripcionAdmin(admin.ModelAdmin):
-    list_display = ('id','alumno','fechaIncripcion')
-    search_fields= ('alumno',)
+    list_display = ('matricula', 'fecha')
+    search_fields= ('matricula',)
     icon_name = 'playlist_add_check' 
 admin.site.register(Incripciones, IncripcionAdmin)
 

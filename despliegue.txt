@@ -1,0 +1,11 @@
+virtualenv -p /usr/bin/python3 entorno
+
+source entorno/bin/activate
+
+ /home/dh_5z2pcf/norepclass.cl/entorno/bin/python3 -m pip install --upgrade pip
+
+ pip install mysqlclient
+ 
+ django-admin startproject (name)
+
+ mkdir tmp
