@@ -3,6 +3,23 @@ from myclasses.models import *
 from utilidades.formularios import *
 
 
+class BoxAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Box, BoxAdmin)
+
+class ClasesAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Clases, ClasesAdmin)
+
+
+class ReservaAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Reserva, ReservaAdmin)
+
+
+
 
 class DisplicinaAdmin(admin.ModelAdmin):
     list_display = ('codigo','tipo','horario')
@@ -29,7 +46,7 @@ class IncripcionAdmin(admin.ModelAdmin):
     list_display = ('matricula', 'fecha')
     search_fields= ('matricula',)
     icon_name = 'playlist_add_check' 
-admin.site.register(Matriculas, IncripcionAdmin)
+admin.site.register(Matricula, IncripcionAdmin)
 
 
 class PerfilAdmin(admin.ModelAdmin):

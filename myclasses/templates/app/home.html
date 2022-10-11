@@ -12,10 +12,224 @@
   <link rel="stylesheet" href='{% static "bootstrap/css/bootstrap.min.css" %}' >
 
 </head>
+<style>
+  .weekDays-selector input {
+  display: none!important;
+}
 
+.weekDays-selector input[type=checkbox] + label {
+  display: inline-block;
+  border-radius: 6px;
+  background: #dddddd;
+  height: 40px;
+  width: 30px;
+  margin-right: 3px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.weekDays-selector input[type=checkbox]:checked + label {
+  background: #2AD705;
+  color: #ffffff;
+}
+.btn span.glyphicon {    			
+	opacity: 0;				
+}
+.btn.active span.glyphicon {				
+	opacity: 1;				
+}
+.funkyradio div {
+  clear: both;
+  overflow: hidden;
+}
+
+.funkyradio label {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4;
+  font-weight: normal;
+}
+
+.funkyradio input[type="radio"]:empty,
+.funkyradio input[type="checkbox"]:empty {
+  display: none;
+}
+
+.funkyradio input[type="radio"]:empty ~ label,
+.funkyradio input[type="checkbox"]:empty ~ label {
+  position: relative;
+  line-height: 2.5em;
+  text-indent: 3.25em;
+  margin-top: 2em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.funkyradio input[type="radio"]:empty ~ label:before,
+.funkyradio input[type="checkbox"]:empty ~ label:before {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  content: '';
+  width: 2.5em;
+  background: #D1D3D4;
+  border-radius: 3px 0 0 3px;
+}
+
+.funkyradio input[type="radio"]:hover:not(:checked) ~ label,
+.funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
+  color: #888;
+}
+
+.funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
+.funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  color: #C2C2C2;
+}
+
+.funkyradio input[type="radio"]:checked ~ label,
+.funkyradio input[type="checkbox"]:checked ~ label {
+  color: #777;
+}
+
+.funkyradio input[type="radio"]:checked ~ label:before,
+.funkyradio input[type="checkbox"]:checked ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  color: #333;
+  background-color: #ccc;
+}
+
+.funkyradio input[type="radio"]:focus ~ label:before,
+.funkyradio input[type="checkbox"]:focus ~ label:before {
+  box-shadow: 0 0 0 3px #999;
+}
+
+.funkyradio-default input[type="radio"]:checked ~ label:before,
+.funkyradio-default input[type="checkbox"]:checked ~ label:before {
+  color: #333;
+  background-color: #ccc;
+}
+
+.funkyradio-primary input[type="radio"]:checked ~ label:before,
+.funkyradio-primary input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #337ab7;
+}
+
+.funkyradio-success input[type="radio"]:checked ~ label:before,
+.funkyradio-success input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5cb85c;
+}
+
+.funkyradio-danger input[type="radio"]:checked ~ label:before,
+.funkyradio-danger input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #d9534f;
+}
+
+.funkyradio-warning input[type="radio"]:checked ~ label:before,
+.funkyradio-warning input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #f0ad4e;
+}
+
+.funkyradio-info input[type="radio"]:checked ~ label:before,
+.funkyradio-info input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5bc0de;
+}
+</style>
 <body>
   <header>
-    <!-- place navbar here -->
+    div class="container">
+	<h1 class="text-center">Checkbox/Radio - CSS Only</h1>
+</div>
+
+<div class="container">
+
+	<div class="well well-sm text-center">
+
+		<h3>Checkbox</h3>
+		
+		<div class="btn-group" data-toggle="buttons">
+			
+			<label class="btn btn-success active">
+				<input type="checkbox" autocomplete="off" checked>
+				<span class="glyphicon glyphicon-ok">Lunes</span>
+			</label>
+
+			<label class="btn btn-primary">
+				<input type="checkbox" autocomplete="off">
+				<span class="glyphicon glyphicon-ok">Martes</span>
+			</label>			
+		
+			<label class="btn btn-info">
+				<input type="checkbox" autocomplete="off">
+				<span class="glyphicon glyphicon-ok">Miercoles</span>
+			</label>			
+		
+			<label class="btn btn-default">
+				<input type="checkbox" autocomplete="off">
+				<span class="glyphicon glyphicon-ok">Jueves</span>
+			</label>			
+
+			<label class="btn btn-warning">
+				<input type="checkbox" autocomplete="off">
+				<span class="glyphicon glyphicon-ok">viernes</span>
+			</label>			
+		
+			<label class="btn btn-danger">
+				<input type="checkbox" autocomplete="off">
+				<span class="glyphicon glyphicon-ok"></span>
+			</label>			
+		
+		</div>
+
+	</div>
+
+</div>
+
+<div class="col-md-6">
+  <h4>Checkbox Buttons</h4>
+
+ <div class="funkyradio">
+     <div class="funkyradio-default">
+         <input type="checkbox" name="checkbox" id="checkbox1" checked/>
+         <label for="checkbox1">First Option default</label>
+     </div>
+     <div class="funkyradio-primary">
+         <input type="checkbox" name="checkbox" id="checkbox2" checked/>
+         <label for="checkbox2">Second Option primary</label>
+     </div>
+     <div class="funkyradio-success">
+         <input type="checkbox" name="checkbox" id="checkbox3" checked/>
+         <label for="checkbox3">Third Option success</label>
+     </div>
+     <div class="funkyradio-danger">
+         <input type="checkbox" name="checkbox" id="checkbox4" checked/>
+         <label for="checkbox4">Fourth Option danger</label>
+     </div>
+     <div class="funkyradio-warning">
+         <input type="checkbox" name="checkbox" id="checkbox5" checked/>
+         <label for="checkbox5">Fifth Option warning</label>
+     </div>
+     <div class="funkyradio-info">
+         <input type="checkbox" name="checkbox" id="checkbox6" checked/>
+         <label for="checkbox6">Sixth Option info</label>
+     </div>
+ </div>
+</div>
+</div>
+
   </header>
   <main>
    <div class="card text-start">
@@ -27,6 +241,30 @@
    </div>
 
    <a href='{% static "img/gato.jpeg" %}' >hola</a>
+
+
+   <form action="/action_page.php">
+    <label for="appt">Select a time:</label>
+    <input type="time" id="appt" name="appt">
+    <input type="submit">
+  </form>
+
+  <div class="weekDays-selector">
+    <input type="checkbox" id="weekday-mon" class="weekday" />
+    <label for="weekday-mon">M</label>
+    <input type="checkbox" id="weekday-tue" class="weekday" />
+    <label for="weekday-tue">T</label>
+    <input type="checkbox" id="weekday-wed" class="weekday" />
+    <label for="weekday-wed">W</label>
+    <input type="checkbox" id="weekday-thu" class="weekday" />
+    <label for="weekday-thu">T</label>
+    <input type="checkbox" id="weekday-fri" class="weekday" />
+    <label for="weekday-fri">F</label>
+    <input type="checkbox" id="weekday-sat" class="weekday" />
+    <label for="weekday-sat">S</label>
+    <input type="checkbox" id="weekday-sun" class="weekday" />
+    <label for="weekday-sun">S</label>
+  </div>
 
    <div class="card">
     <img class="card-img-top" src="holder.js/100x180/?text=Image cap" alt="Card image cap">
