@@ -13,8 +13,12 @@ from django.dispatch import receiver
 
 class Box(models.Model):
     box = models.CharField(max_length=20, null=True,  verbose_name="Gimnasio")
-    Ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
+    ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
     descripcion = models.CharField(max_length=40, null=True, verbose_name="Reseña")
+
+    class Meta:
+        verbose_name = "Gimnasio"
+        verbose_name_plural = "Gimnasios" 
 
 
 
@@ -34,13 +38,16 @@ class UsersMetadata(models.Model):
 
     class Meta:
         verbose_name = "User metadata"
-        verbose_name_plural = "User metadata"
+        verbose_name_plural = "User metadata"    
 
     def nombreCompleto(self):
          txt = "{0}  {1}"
          return txt.format(self.user.first_name, self.user.last_name)
     nombreCompleto.short_description = 'Usuario'
 
+    def __str__(self) :
+         txt = " {0}"
+         return txt.format(self.user.first_name, self.user.last_name)
     
 
 class Disciplina(models.Model):
@@ -57,9 +64,9 @@ class Disciplina(models.Model):
         verbose_name = "Disciplina"
         verbose_name_plural = "Disciplinas"
 
-    # def __str__(self) :
-    #     txt = "Codigo: {0} Disciplina: {1} Horario: {2}"
-    #     return txt.format(self.codigo, self.tipo, self.horario)
+    def __str__(self) :
+         txt = " Disciplina: {0} Horario: {1}"
+         return txt.format( self.tipo, self.horario)
     
 class Planes(models.Model):    
     Titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")    
@@ -86,16 +93,11 @@ class Perfil(models.Model):
     DisciplinaInscrita = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina inscrita")
     plan = models.ForeignKey(Planes,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito")     
     vigencia = models.BooleanField(default=True, verbose_name="Vigente")
-    imagenPerfil = models.ImageField(upload_to="perfil", default= "default.png" , verbose_name="Imagen de Perfil")
+    imagenPerfil = models.ImageField(upload_to="perfil", default= "perfil/sinfoto.png" , verbose_name="Imagen de Perfil")
 
     def __str__(self) :
-        txt = "{0} / {1} / Estado: {2} "
-        if self.vigencia == 1:
-            estadoEstdiante = "VIGENTE"
-        else:
-            estadoEstdiante = "EXPIRADO"
-
-        return txt.format( self.DisciplinaInscrita, self.plan, estadoEstdiante)
+        txt = "{0} {1}  "
+        return txt.format( self.nombre.user.first_name , self.nombre.user.last_name)
 
     def nombrePerfil(self):
         txt = "{0} {1}"
@@ -120,38 +122,59 @@ class Clases(models.Model):
     duracion = models.PositiveIntegerField(default=1, null=False, blank=False, verbose_name="Duracion de Clase")
     cupo = models.PositiveIntegerField(default=1, null=False, blank=False, verbose_name="Nro. de cupos")
     
-     
+    class Meta:
+        verbose_name = "Clases"
+        verbose_name_plural = "Clases"
+
+    def __str__(self) :
+        txt = "Clase: {0} ,  {1} "
+        return txt.format(self.Descripcion, self.modalidad)
+
 # reservas
 
 class Reserva(models.Model):
-    clase =models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")
     usuario =models.ForeignKey(Perfil,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Alumno")
+    clase =models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
     tipoDisciplina = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina")
+
+    class Meta:
+        verbose_name = "Reserva"
+        verbose_name_plural = "Reservas" 
+
+    def __str__(self) :
+        txt = "{0} , {1} "
+        return txt.format(self.usuario, self.clase)
 
 #matriculas
 class Matricula(models.Model):
-    matricula = models.CharField(max_length = 200, null=True)
-    plan = models.CharField(max_length = 200, null=True)
-    disInscrita = models.CharField(max_length = 200, null=True)
-    vigencia = models.BooleanField(default=True, verbose_name="Vigente")
-    
+    matricula = models.CharField(max_length = 200, null=True, verbose_name="Alumno Matriculado")
+    plan = models.CharField(max_length = 200, null=True, verbose_name="Disciplina")
+    disInscrita = models.CharField(max_length = 200, null=True, verbose_name="Disciplina")
+    vigencia = models.BooleanField(default=True, verbose_name="Estado")    
     fecha = models.DateTimeField(auto_now=True)
 
+    
     class Meta:
         verbose_name = "Alumno matriculado"
         verbose_name_plural = "Alumnos matriculados"
 
+    def __str__(self) :
+        txt = "{0} /  Estado: {1} "
+        if self.vigencia == 1:
+            estadoEstdiante = "VIGENTE"
+        else:
+            estadoEstdiante = "EXPIRADO"
 
+        return txt.format( self.matricula, estadoEstdiante)
 
 #signal        
 
 @receiver(post_save, sender=Perfil)
 def estudiando_new(sender, instance, **kwargs):
      if kwargs['created']:        
-         Matricula.objects.create(matricula=f"{instance.nombre.user.first_name} {instance.nombre.user.last_name}" , disInscrita=f"{instance.DisciplinaInscrita.tipo}")
+         Matricula.objects.create(matricula=f"{instance.nombre.user.first_name} {instance.nombre.user.last_name}" , disInscrita=f"{instance.DisciplinaInscrita.tipo}", plan=f"{instance.plan}")
         
-        # #  Matricula.objects.create(plan=f"{instance.}")
-        #  Matricula.objects.create(vigencia=f"{instance.nombre.user.first_name}")
+       
         
 
 

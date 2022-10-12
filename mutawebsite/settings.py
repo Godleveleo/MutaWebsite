@@ -43,8 +43,10 @@ RUTA2=conf['ruta2']
 # Application definition
 
 INSTALLED_APPS = [
-    'material',
-    'material.admin',
+    # 'material',
+    # 'material.admin',
+    'admin_volt.apps.AdminVoltConfig',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -52,29 +54,31 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myclasses.apps.MyclassesConfig',
     
+  
+    
     
 ]
 
-MATERIAL_ADMIN_SITE = {
+# MATERIAL_ADMIN_SITE = {
     
-    'FAVICON':  'path/to/favicon',  # Admin site favicon (path to static should be specified)
-    'MAIN_BG_COLOR':  '#d32f2f',  # Admin site main color, css color should be specified
-    'MAIN_HOVER_COLOR':  '#455a64',  # Admin site main hover color, css color should be specified
-    # 'PROFILE_PICTURE':  'path/to/image',  # Admin site profile picture (path to static should be specified)
-    # 'PROFILE_BG':  'path/to/image',  # Admin site profile background (path to static should be specified)
-    # 'LOGIN_LOGO':  'path/to/image',  # Admin site logo on login page (path to static should be specified)
-    # 'LOGOUT_BG':  'path/to/image',  # Admin site background on login/logout pages (path to static should be specified)
-    'SHOW_THEMES':  True,  #  Show default admin themes button
-    # 'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
-    # 'NAVBAR_REVERSE': True,  # Hide side navbar by default
-    # 'SHOW_COUNTS': True, # Show instances counts for each model
-    # 'APP_ICONS': {  # Set icons for applications(lowercase), including 3rd party apps, {'application_name': 'material_icon_name', ...}
-    #     'sites': 'send',
-    # },
-    # 'MODEL_ICONS': {  # Set icons for models(lowercase), including 3rd party models, {'model_name': 'material_icon_name', ...}
-    #     'site': 'contact_mail',
-    # }
-}
+#     'FAVICON':  'path/to/favicon',  # Admin site favicon (path to static should be specified)
+#     'MAIN_BG_COLOR':  '#d32f2f',  # Admin site main color, css color should be specified
+#     'MAIN_HOVER_COLOR':  '#455a64',  # Admin site main hover color, css color should be specified
+#     # 'PROFILE_PICTURE':  'path/to/image',  # Admin site profile picture (path to static should be specified)
+#     # 'PROFILE_BG':  'path/to/image',  # Admin site profile background (path to static should be specified)
+#     # 'LOGIN_LOGO':  'path/to/image',  # Admin site logo on login page (path to static should be specified)
+#     # 'LOGOUT_BG':  'path/to/image',  # Admin site background on login/logout pages (path to static should be specified)
+#     'SHOW_THEMES':  True,  #  Show default admin themes button
+#     # 'TRAY_REVERSE': True,  # Hide object-tools and additional-submit-line by default
+#     # 'NAVBAR_REVERSE': True,  # Hide side navbar by default
+#     # 'SHOW_COUNTS': True, # Show instances counts for each model
+#     # 'APP_ICONS': {  # Set icons for applications(lowercase), including 3rd party apps, {'application_name': 'material_icon_name', ...}
+#     #     'sites': 'send',
+#     # },
+#     # 'MODEL_ICONS': {  # Set icons for models(lowercase), including 3rd party models, {'model_name': 'material_icon_name', ...}
+#     #     'site': 'contact_mail',
+#     # }
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -174,6 +178,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-SESSION_COOKIE_AGE = 600
+SESSION_COOKIE_AGE = 6000
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True 

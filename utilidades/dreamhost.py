@@ -8,8 +8,7 @@ from datetime import datetime, date, timedelta
 RUTA = settings.RUTA
 RUTA2 = settings.RUTA2
 
-print(RUTA)
-print(RUTA2)
+
 def moverArchivoProducto(file, id):
 	if existeArchivoMedia(file)==True:        
 		fecha = datetime.now()                

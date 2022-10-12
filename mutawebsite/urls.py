@@ -19,9 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-admin.site.site_header = 'ClassBox'
-admin.site.index_title = 'Panel de control de ClassBox'
-admin.site.site_title = 'ClassBox'
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

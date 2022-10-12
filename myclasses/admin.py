@@ -3,18 +3,25 @@ from myclasses.models import *
 from utilidades.formularios import *
 
 
+
+
 class BoxAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('box','ubicacion','descripcion')
+    icon_name = 'fitness_center'
+
 admin.site.register(Box, BoxAdmin)
 
 class ClasesAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo')
+    icon_name = 'fitness_center'
 
 admin.site.register(Clases, ClasesAdmin)
 
 
 class ReservaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('usuario','clase','tipoDisciplina')
+    icon_name = 'fitness_center'
+    
 
 admin.site.register(Reserva, ReservaAdmin)
 
@@ -43,7 +50,7 @@ class EstudianteAdmin(admin.ModelAdmin):
 admin.site.register(UsersMetadata, EstudianteAdmin)
 
 class IncripcionAdmin(admin.ModelAdmin):
-    list_display = ('matricula', 'fecha')
+    list_display = ('matricula', 'fecha', 'vigencia')
     search_fields= ('matricula',)
     icon_name = 'playlist_add_check' 
 admin.site.register(Matricula, IncripcionAdmin)
@@ -61,3 +68,10 @@ class PerfilAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Perfil, PerfilAdmin)
+
+
+
+
+admin.site.site_header = 'ClassBox'
+admin.site.index_title = 'Panel de control de ClassBox'
+admin.site.site_title = 'ClassBox'
