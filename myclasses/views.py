@@ -54,4 +54,4 @@ def register_user(request):
 
 
 def home(request):
-    return render(request, 'app/home.html')
+    return render(request, 'app/home/index.html')
