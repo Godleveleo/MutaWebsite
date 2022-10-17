@@ -12,14 +12,14 @@ class BoxAdmin(admin.ModelAdmin):
 admin.site.register(Box, BoxAdmin)
 
 class ClasesAdmin(admin.ModelAdmin):
-    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo')
+    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo','gym')
     icon_name = 'fitness_center'
 
 admin.site.register(Clases, ClasesAdmin)
 
 
 class ReservaAdmin(admin.ModelAdmin):
-    list_display = ('usuario','clase','tipoDisciplina')
+    list_display = ('usuario','clase','tipoDisciplina','gym')
     icon_name = 'fitness_center'
     
 
@@ -35,7 +35,7 @@ class DisplicinaAdmin(admin.ModelAdmin):
 admin.site.register(Disciplina, DisplicinaAdmin)
 
 class PlanesAdmin(admin.ModelAdmin):
-    list_display = ('Titulo','precio','TipoDisciplina','cantidadClases')
+    list_display = ('Titulo','precio','TipoDisciplina','cantidadClases','gym')
     search_fields= ('Titulo',)
     icon_name = 'format_list_numbered'               
 admin.site.register(Planes, PlanesAdmin)

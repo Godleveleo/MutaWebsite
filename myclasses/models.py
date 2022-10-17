@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from random import choices
 from django.utils.html import format_html
 from django.db import models
@@ -20,6 +21,9 @@ class Box(models.Model):
         verbose_name = "Gimnasio"
         verbose_name_plural = "Gimnasios" 
 
+    def __str__(self) :
+         txt = " {0}"
+         return txt.format(self.box)
 
 
 
@@ -73,6 +77,7 @@ class Planes(models.Model):
     TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
     precio = models.PositiveIntegerField(default=0, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
+    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Gimnasio")
 
     class Meta:
         verbose_name = "Planes"
@@ -111,6 +116,7 @@ class Perfil(models.Model):
 
 #clases
 class Clases(models.Model):
+    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.CASCADE, verbose_name="Gimnasio")
     Descripcion = models.CharField(max_length = 50, null=True)    
     modalidades = [
         ('Online', 'Online'),
@@ -133,6 +139,7 @@ class Clases(models.Model):
 # reservas
 
 class Reserva(models.Model):
+    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.CASCADE, verbose_name="Gimnasio")
     usuario =models.ForeignKey(Perfil,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Alumno")
     clase =models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
     tipoDisciplina = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina")
