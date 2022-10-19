@@ -4,6 +4,23 @@ from django.utils.text import slugify
 from myclasses.models import *
 from django.utils.html import format_html
 from utilidades import dreamhost
+from functools import wraps
+from django.contrib.auth import authenticate, login, logout
+from django.http import Http404, HttpResponseRedirect
+from django.contrib import messages
+
+
+def logueado():
+    def _activo_required(func):
+        @wraps(func)
+        def _decorator(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                messages.add_message(request, messages.WARNING, 'Debes estar logueado para visualizar este contenido.')
+                return HttpResponseRedirect('/acceso/login')
+            else:
+                return func(request, *args, **kwargs)
+        return _decorator
+    return _activo_required
 
 def foto_perfil(obj):
     if dreamhost.existeArchivo('perfil', obj.imagenPerfil) == False:

@@ -14,49 +14,60 @@
           <div class="card-header">
             <h5 class="title">Seccion Gimnasio</h5>
             <p class="category">Agrega tu Gimnasio <a >y su reseña</a></p>
-          </div>
-          <div class="card-body all-icons">
-            <div class="row">
-              
-     
-              <form name="form" method="POST" action="{% url 'gym-add' %}">
-                
-                {% csrf_token %}
-                
-         
-               <div class="mb-3">
-                 <label for="categoria" class="form-label"></label>
-                 {{form.box}}
-               </div>
-               <div class="mb-3">
-                 <label for="nombre" class="form-label"></label>
-                 {{form.ubicacion}}
-               </div>
-               <div class="mb-3">
-                 <label for="precio" class="form-label"></label>
-                 {{form.descripcion}}
-               </div>
-                              
-               <hr />
-               <div class="card-footer text-center">
-                <button type="submit" class="btn btn-fill btn-primary">Agregar</button>
+                                  
+                 </div>        
 
-                <br /><br />
-                
-                
-            </div>
-              </form>
-              
-            </div>
-              
+                    <div class="card-body all-icons">
+                      
+                      <div class="row">         
+
+                        <form name="form" method="POST" action="{% url 'gym-add' %}">
+
+                          
+                          {% csrf_token %}
+                          
+                          
+                  
+                        <div class="mb-3">
+                          <label for="nombre box" class="form-label"></label>
+                          {{form.box}}
+                        </div>
+                        <div class="mb-3">
+                          <label for="ubicacion" class="form-label"></label>
+                          {{form.ubicacion}}
+                        </div>
+                        <div class="mb-3">
+                          <label for="descripcion" class="form-label"></label>
+                          {{form.descripcion}}
+                        </div>                             
+                       
+                        <div class="card-footer text-center">
+                          <button type="submit" class="btn btn-fill btn-primary">Agregar</button>           
+                       </div>
+                        </form>              
+                      </div>
+                      <hr>
+                        <div>
+                          <h5 class="title">Gimnasio registros</h5>
+                          <br>
+
+                          <button type="button" rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="Ver detalle" class="btn btn-success btn-simple btn-icon btn-sm">
+                            <i class="tim-icons icon-single-02"></i>
+                          </button>
+
+                          <div class="d-inline p-4 "><p class="d-inline ">MI GIMNASIO </p></div>                 
+                          
+                          
+                        </div>
+                      
+                                 
+                     </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+     
 
 {% endblock content %}
 

@@ -10380,6 +10380,13 @@ img {
     border-radius: 50%;
     vertical-align: middle;
     overflow: hidden; }
+  .navbar .logueado {
+    display: inline-block;
+    height: 30px;
+    width: 60px;
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden; }
     .navbar .photo img {
       width: 100%; }
   .navbar .navbar-wrapper {
@@ -13011,7 +13018,7 @@ Copyright (c) 2015 Daniel Eden
   .card .card-title {
     margin-bottom: .75rem; }
   .card .card-body {
-    padding: 15px; }
+    padding: 70px; }
     .card .card-body.table-full-width {
       padding-left: 0;
       padding-right: 0; }
@@ -13168,7 +13175,7 @@ Copyright (c) 2015 Daniel Eden
       padding: 7px 0; }
 
 .card-body {
-  padding: 1.25rem; }
+  padding: 2.25rem; }
 
 @media (max-width: 767.98px) {
   .card.card-chart .card-header .btn-group-toggle .tim-icons {

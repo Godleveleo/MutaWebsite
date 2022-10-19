@@ -9,15 +9,14 @@ from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 ##
 
-class User_id(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, models.DO_NOTHING, null= True)
+
 
 #extension de USER
-class UsersMetadata(models.Model):    
+class UsersMetadata(models.Model):
+    id = models.AutoField(primary_key=True)    
     user = models.ForeignKey(User, models.DO_NOTHING, null= True)
-    ced_identidad = models.CharField(max_length=9, primary_key=True, verbose_name="Cedula de identidad")
-    fechaNacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
+    ced_identidad = models.CharField(max_length=9, verbose_name="Cedula de identidad")
+    fechaNacimiento = models.DateField(verbose_name="Fecha de Nacimiento", null=True)
     sexos = [
         ('F', 'Femenino'),
         ('M' ,'Masculino'),
@@ -45,7 +44,7 @@ class Box(models.Model):
     box = models.CharField(max_length=20, null=True,  verbose_name="Gimnasio")
     ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
     descripcion = models.CharField(max_length=40, null=True, verbose_name="Reseña")
-    user =  models.ForeignKey(User_id, models.DO_NOTHING, null= True)
+    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
     class Meta:
         verbose_name = "Gimnasio"
@@ -69,6 +68,7 @@ class Disciplina(models.Model):
         ('AM/PM', 'AM/PM')
     ]       
     horario = models.CharField(max_length=13,  choices=hora, verbose_name="Horario de clases")
+    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
     class Meta:
         verbose_name = "Disciplina"
@@ -83,7 +83,7 @@ class Planes(models.Model):
     TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
     precio = models.PositiveIntegerField(default=0, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
-    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Gimnasio")
+    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
     
     class Meta:
         verbose_name = "Planes"
@@ -100,7 +100,7 @@ class Planes(models.Model):
 
 #clases
 class Clases(models.Model):
-    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.CASCADE, verbose_name="Gimnasio")
+    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
     Descripcion = models.CharField(max_length = 50, null=True)    
     modalidades = [
         ('Online', 'Online'),

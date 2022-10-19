@@ -14,24 +14,17 @@ class BoxAdmin(admin.ModelAdmin):
 
 admin.site.register(Box, BoxAdmin)
 
-class UseridAdmin(admin.ModelAdmin):
-    list_display = ('user',)
-    icon_name = 'fitness_center'   
-            
 
-
-
-admin.site.register(User_id, UseridAdmin)
 
 class ClasesAdmin(admin.ModelAdmin):
-    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo','gym')
+    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo',)
     icon_name = 'fitness_center'
 
 admin.site.register(Clases, ClasesAdmin)
 
 
 class ReservaAdmin(admin.ModelAdmin):
-    list_display = ('usuario','clase','tipoDisciplina','gym')
+    list_display = ('usuario','clase','tipoDisciplina')
     icon_name = 'fitness_center'
     list_filter = (
                 ('usuario', admin.RelatedOnlyFieldListFilter),
@@ -51,7 +44,7 @@ class DisplicinaAdmin(admin.ModelAdmin):
 admin.site.register(Disciplina, DisplicinaAdmin)
 
 class PlanesAdmin(admin.ModelAdmin):
-    list_display = ('Titulo','precio','TipoDisciplina','cantidadClases','gym')
+    list_display = ('Titulo','precio','TipoDisciplina','cantidadClases')
     search_fields= ('Titulo',)
     icon_name = 'format_list_numbered'
 
@@ -62,7 +55,7 @@ admin.site.register(Planes, PlanesAdmin)
     
 
 class EstudianteAdmin(admin.ModelAdmin):
-    list_display = ('nombreCompleto',)
+    list_display = ('id', 'nombreCompleto',)
     search_fields= ('',)
     icon_name = 'portrait'
      
