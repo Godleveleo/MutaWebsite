@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+from myclasses.forms import *
+from django.contrib.auth.models import User
 
 
 def login_view(request):
@@ -56,32 +58,68 @@ def register_user(request):
     return render(request, "app/accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 
-def pages(request):
-    context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
-    try:
+# def pages(request):
+#     context = {}
+#     # All resource paths end in .html.
+#     # Pick out the html file name from the url. And load that template.
+#     try:
 
-        load_template = request.path.split('/')[-1]
+#         load_template = request.path.split('/')[-1]
 
-        if load_template == 'admin':
-            return HttpResponseRedirect(reverse('admin:index'))
-        context['segment'] = load_template
+#         if load_template == 'admin':
+#             return HttpResponseRedirect(reverse('admin:index'))
+#         context['segment'] = load_template
 
-        html_template = loader.get_template('app/home/' + load_template)
-        return HttpResponse(html_template.render(context, request))
+#         html_template = loader.get_template('app/home/' + load_template)
+#         return HttpResponse(html_template.render(context, request))
 
-    except template.TemplateDoesNotExist:
+#     except template.TemplateDoesNotExist:
 
-        html_template = loader.get_template('app/home/page-404.html')
-        return HttpResponse(html_template.render(context, request))
+#         html_template = loader.get_template('app/home/page-404.html')
+#         return HttpResponse(html_template.render(context, request))
 
-    except:
-        html_template = loader.get_template('app/home/page-500.html')
-        return HttpResponse(html_template.render(context, request))
-
-
-
+#     except:
+#         html_template = loader.get_template('app/home/page-500.html')
+#         return HttpResponse(html_template.render(context, request))
 
 def home(request):
     return render(request, 'app/home/index.html')
+
+
+
+def box_add(request):
+    msg = None
+    
+    current_user = request.user
+    print(current_user)
+    if request.method == 'POST':
+        form = Boxform_add(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data                      
+            
+            box = data['box']
+            ubicacion = data['ubicacion']
+            descripcion = data['descripcion']
+            user = Box.user
+            user = request.session
+            
+            save = Box()
+
+            save.box = box
+            save.ubicacion = ubicacion
+            save.descripcion = descripcion 
+            save.user_id =  user          
+            save.save()
+            print("guardado")
+        else:
+            print("no brp")
+
+    else:
+        form = Boxform_add()
+
+  
+    return render(request,'app/home/gym.html',{"form": form, "msg": msg} )
+
+    # candidate.user = request.user
+

@@ -7,9 +7,21 @@ from utilidades.formularios import *
 
 class BoxAdmin(admin.ModelAdmin):
     list_display = ('box','ubicacion','descripcion')
-    icon_name = 'fitness_center'
+    icon_name = 'fitness_center'   
+            
+
+
 
 admin.site.register(Box, BoxAdmin)
+
+class UseridAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    icon_name = 'fitness_center'   
+            
+
+
+
+admin.site.register(User_id, UseridAdmin)
 
 class ClasesAdmin(admin.ModelAdmin):
     list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo','gym')
@@ -21,8 +33,12 @@ admin.site.register(Clases, ClasesAdmin)
 class ReservaAdmin(admin.ModelAdmin):
     list_display = ('usuario','clase','tipoDisciplina','gym')
     icon_name = 'fitness_center'
+    list_filter = (
+                ('usuario', admin.RelatedOnlyFieldListFilter),
+            )
     
-
+    
+        
 admin.site.register(Reserva, ReservaAdmin)
 
 
@@ -37,9 +53,13 @@ admin.site.register(Disciplina, DisplicinaAdmin)
 class PlanesAdmin(admin.ModelAdmin):
     list_display = ('Titulo','precio','TipoDisciplina','cantidadClases','gym')
     search_fields= ('Titulo',)
-    icon_name = 'format_list_numbered'               
+    icon_name = 'format_list_numbered'
+
+    
+
 admin.site.register(Planes, PlanesAdmin)
 
+    
 
 class EstudianteAdmin(admin.ModelAdmin):
     list_display = ('nombreCompleto',)
@@ -75,3 +95,13 @@ admin.site.register(Perfil, PerfilAdmin)
 admin.site.site_header = 'ClassBox'
 admin.site.index_title = 'Panel de control de ClassBox'
 admin.site.site_title = 'ClassBox'
+
+
+
+
+# def queryset(self, request):
+       
+#         qs = super(ThisAdmin, self).queryset(request)
+#         if request.user.is_superuser:
+#             return qs
+#         return qs.filter(owner=request.user)

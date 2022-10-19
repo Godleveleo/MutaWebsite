@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from myclasses.models import *
+
 
 
 class LoginForm(forms.Form):
@@ -54,3 +56,25 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+
+class Boxform_add(forms.Form):
+   
+
+	box = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gymnasio', 'autocomplete':'off'}))
+    
+	ubicacion = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}))
+
+	descripcion = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}))
+
+	
+
+
+
+
+    
+
+    
+
+    
+

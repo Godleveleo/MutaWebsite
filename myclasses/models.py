@@ -9,26 +9,12 @@ from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 ##
 
-
-#sEstablecimiento
-
-class Box(models.Model):
-    box = models.CharField(max_length=20, null=True,  verbose_name="Gimnasio")
-    ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
-    descripcion = models.CharField(max_length=40, null=True, verbose_name="Reseña")
-
-    class Meta:
-        verbose_name = "Gimnasio"
-        verbose_name_plural = "Gimnasios" 
-
-    def __str__(self) :
-         txt = " {0}"
-         return txt.format(self.box)
-
-
+class User_id(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, null= True)
 
 #extension de USER
-class UsersMetadata(models.Model):
+class UsersMetadata(models.Model):    
     user = models.ForeignKey(User, models.DO_NOTHING, null= True)
     ced_identidad = models.CharField(max_length=9, primary_key=True, verbose_name="Cedula de identidad")
     fechaNacimiento = models.DateField(verbose_name="Fecha de Nacimiento")
@@ -52,6 +38,26 @@ class UsersMetadata(models.Model):
     def __str__(self) :
          txt = " {0}"
          return txt.format(self.user.first_name, self.user.last_name)
+
+#Establecimiento
+
+class Box(models.Model):
+    box = models.CharField(max_length=20, null=True,  verbose_name="Gimnasio")
+    ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
+    descripcion = models.CharField(max_length=40, null=True, verbose_name="Reseña")
+    user =  models.ForeignKey(User_id, models.DO_NOTHING, null= True)
+
+    class Meta:
+        verbose_name = "Gimnasio"
+        verbose_name_plural = "Gimnasios" 
+
+    def __str__(self) :
+         txt = " {0}"
+         return txt.format(self.box)
+
+
+
+
     
 
 class Disciplina(models.Model):
@@ -78,7 +84,7 @@ class Planes(models.Model):
     precio = models.PositiveIntegerField(default=0, null=False, blank=False, verbose_name="Precio del  plan")
     cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
     gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Gimnasio")
-
+    
     class Meta:
         verbose_name = "Planes"
         verbose_name_plural = "Planes"
@@ -91,28 +97,6 @@ class Planes(models.Model):
     def __str__(self) :
         txt = "Plan: {0} , Precio:$ {1} / {2} clases por semana"
         return txt.format(self.Titulo, self.precio, self.cantidadClases )
-
-
-class Perfil(models.Model):
-    nombre =models.ForeignKey(UsersMetadata,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Nombre")   
-    DisciplinaInscrita = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina inscrita")
-    plan = models.ForeignKey(Planes,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito")     
-    vigencia = models.BooleanField(default=True, verbose_name="Vigente")
-    imagenPerfil = models.ImageField(upload_to="perfil", default= "perfil/sinfoto.png" , verbose_name="Imagen de Perfil")
-
-    def __str__(self) :
-        txt = "{0} {1}  "
-        return txt.format( self.nombre.user.first_name , self.nombre.user.last_name)
-
-    def nombrePerfil(self):
-        txt = "{0} {1}"
-        return txt.format(self.nombre.user.first_name, self.nombre.user.last_name)
-    nombrePerfil.short_description = 'Nombre Completo'
-
-    class Meta:
-        verbose_name = "Perfiles"
-        verbose_name_plural = "Perfiles"
-
 
 #clases
 class Clases(models.Model):
@@ -135,6 +119,29 @@ class Clases(models.Model):
     def __str__(self) :
         txt = "Clase: {0} ,  {1} "
         return txt.format(self.Descripcion, self.modalidad)
+
+ ##perfiles       
+class Perfil(models.Model):
+    nombre =models.ForeignKey(UsersMetadata,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Nombre")   
+    DisciplinaInscrita = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina inscrita")
+    plan = models.ForeignKey(Planes,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito")     
+    vigencia = models.BooleanField(default=True, verbose_name="Vigente")
+    imagenPerfil = models.ImageField(upload_to="perfil", default= "perfil/sinfoto.png" , verbose_name="Imagen de Perfil")
+
+    def __str__(self) :
+        txt = "{0} {1}  "
+        return txt.format( self.nombre.user.first_name , self.nombre.user.last_name)
+
+    def nombrePerfil(self):
+        txt = "{0} {1}"
+        return txt.format(self.nombre.user.first_name, self.nombre.user.last_name)
+    nombrePerfil.short_description = 'Nombre Completo'
+
+    class Meta:
+        verbose_name = "Perfiles"
+        verbose_name_plural = "Perfiles"
+
+
 
 # reservas
 
