@@ -12,6 +12,7 @@ urlpatterns = [
     
     # re_path(r'^.*\.*', views.pages, name='pages'),
     path("gym/", views.box_add, name="gym-add"),
+    # path("mygym/", views.box_view, name="gym-view"),
     
     
 ]

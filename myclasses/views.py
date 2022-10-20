@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
+from multiprocessing import context
 from urllib import request
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
 from django import template
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.urls import reverse
 from myclasses.forms import *
@@ -95,47 +96,39 @@ def home(request):
 
 @login_required
 def box_add(request):
-    msg = None
-    if request.method == 'POST':
-        form = Boxform_add(request.POST) 
-        
-        if form.is_valid():
-            data = form.cleaned_data                      
-            
-            box = data['box']
-            ubicacion = data['ubicacion']
-            descripcion = data['descripcion']         
-            id_u = request.user.id            
-            save = Box()
-            save.box = box
-            save.ubicacion = ubicacion
-            save.descripcion = descripcion
-            save.user_creador = id_u                  
-            save.save()           
-            return HttpResponseRedirect("/gym/")
+    context= {}
+    datos = None
+    msg = None    
+    userid = request.user.id
+    limit = Box.objects.filter(user_creador__exact = userid).count()
+    if request.method == 'POST':        
+        form = Boxform_add(request.POST)
+        max = 1
+        if limit < max:
+            if form.is_valid():
+                data = form.cleaned_data           
+                box = data['box']
+                ubicacion = data['ubicacion']
+                descripcion = data['descripcion']         
+                id_u = request.user.id            
+                save = Box()
+                save.box = box
+                save.ubicacion = ubicacion
+                save.descripcion = descripcion
+                save.user_creador = id_u                  
+                save.save()
+                messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosanmente")           
+                return HttpResponseRedirect("/gym/")
         else:
-            msg = 'Nooo, algo salio mal'
+            messages.add_message(request, messages.WARNING, f"Lo siento, Solo puedes registrar un Gimnasio")
+            return HttpResponseRedirect("/gym/")                      
+              
 
     else:
-        form = Boxform_add() 
-    return render(request,'app/home/gym.html',{"form": form, "msg": msg, } )
+        form = Boxform_add()
+          
+    datos = Box.objects.filter(user_creador__exact = userid)   
+
+    return render(request,'app/home/gym.html',{"form": form, "msg": msg, 'datos':datos } )
 
     
-
-def box_view(request, id=None):
-
-    if request.method == "GET":
-           
-        datos=Box.objects.filter(pk=id).first()
-
-        if id:
-            usr = request.user.id
-            if not usr.is_superuser:
-                if datos.user_creador != usr:
-
-                    
-
-
-
-        
-   return render(request, 'app/home/gym.html', {'datos':datos})
