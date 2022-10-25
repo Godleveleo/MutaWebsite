@@ -9,10 +9,12 @@ urlpatterns = [
     path('login/', views.login_view, name="login"),
     path('register/', views.register_user, name="register"),
     path("logout/", LogoutView.as_view(), name="logout"),
-    
-    # re_path(r'^.*\.*', views.pages, name='pages'),
+    path("homegym/", views.home_gym, name="home-gym"),
+    path('deletegym/<id>/', views.delete_gym, name='deletegym'), 
+    path('editgym/<id>/', views.edit_gym, name='editgym'), 
     path("gym/", views.box_add, name="gym-add"),
     # path("mygym/", views.box_view, name="gym-view"),
+    # re_path(r'^.*\.*', views.pages, name='pages'),
     
     
 ]

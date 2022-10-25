@@ -4,15 +4,17 @@
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="javascript:void(0)" class="simple-text logo-mini">
-                    NRC
+                    <i class="tim-icons icon-single-02"></i>
                 </a>
                 <a href="javascript:void(0)" class="simple-text logo-normal">
-                    Administrador
+                    <div>
+                        <span>{{ user.username}}</span>
+                    </div>
                 </a>
             </div>
             <ul class="nav">
                 <li class="{% if 'index' in segment %} active {% endif %} ">
-                    <a href="{% url 'gym-add' %}">
+                    <a href="{% url 'home-gym' %}">
                         <i class="tim-icons icon-app"></i>
                         <p>Mi Gimnasio</p>
                     </a>
@@ -43,5 +45,6 @@
                     </a>
                 </li>
             </ul>
+            
         </div>
     </div>

@@ -43,8 +43,9 @@ class UsersMetadata(models.Model):
 class Box(models.Model):
     box = models.CharField(max_length=20, null=True,  verbose_name="Gimnasio")
     ubicacion = models.CharField(max_length=20, null=True, verbose_name="Ubicación")
-    descripcion = models.CharField(max_length=40, null=True, verbose_name="Reseña")
+    descripcion = models.CharField(max_length=400, null=True, verbose_name="Reseña")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
+    logo = models.ImageField(upload_to="logo", default= "logo/sinfoto.png" , verbose_name="logo")
 
     class Meta:
         verbose_name = "Gimnasio"

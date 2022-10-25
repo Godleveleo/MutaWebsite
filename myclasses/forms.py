@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from pyexpat import model
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -58,16 +59,19 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
-class Boxform_add(forms.Form):
-   
 
-	box = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gymnasio', 'autocomplete':'off'}))
-    
-	ubicacion = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}))
 
-	descripcion = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}))
+class Boxform_add(forms.ModelForm):
 
-	
+    class Meta:
+        model = Box
+        fields = ('box', 'ubicacion', 'descripcion','logo')
+        widgets = {
+            'box' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gymnasio', 'autocomplete':'off'}),
+            'ubicacion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}),
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}),
+            'logo': forms.TextInput(attrs={ 'type': 'file', 'id':'formFile', 'class': 'form-control'}),
+        }
 
 
 

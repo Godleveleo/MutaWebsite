@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
-from multiprocessing import context
-from urllib import request
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
 from django import template
@@ -28,13 +26,13 @@ def login_view(request):
             if user is not None:                
                 login(request, user)
                 usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
-                request.session['users_metadata_id'] =  usersMetadata.id            
-                
+                request.session['users_metadata_id'] =  usersMetadata.id              
                 return redirect("/")
+
             else:
-                msg = 'Invalid credentials'
+                msg = 'Credenciales invalidas'
         else:
-            msg = 'Error validating the form'
+            msg = 'Error en el formulario'
 
     return render(request, "app/accounts/login.html", {"form": form, "msg": msg})
 
@@ -54,9 +52,11 @@ def register_user(request):
             msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
             success = True
             return redirect("/login/")
+        
 
-        else:
+        else:            
             msg = 'Lo siento, los datos ingresados no son validos'
+            
     else:
         form = SignUpForm()
 
@@ -93,6 +93,19 @@ def register_user(request):
 def home(request):
     return render(request, 'app/home/index.html')
 
+@login_required
+def home_gym(request):
+    estado = True
+    datos = None
+    userid = request.user.id
+    validador = Box.objects.filter(user_creador__exact = userid).count()    
+    if validador == 0:
+        estado = False
+        messages.add_message(request, messages.WARNING, f"No tienes nada creado aun, Vamos Animate")
+    else:
+        datos = Box.objects.filter(user_creador__exact = userid)    
+    return render(request,'app/home/home_gym.html',{'datos':datos, 'estado':estado} )
+
 
 @login_required
 def box_add(request):
@@ -102,33 +115,54 @@ def box_add(request):
     userid = request.user.id
     limit = Box.objects.filter(user_creador__exact = userid).count()
     if request.method == 'POST':        
-        form = Boxform_add(request.POST)
-        max = 1
-        if limit < max:
-            if form.is_valid():
-                data = form.cleaned_data           
-                box = data['box']
-                ubicacion = data['ubicacion']
-                descripcion = data['descripcion']         
-                id_u = request.user.id            
-                save = Box()
-                save.box = box
-                save.ubicacion = ubicacion
-                save.descripcion = descripcion
-                save.user_creador = id_u                  
-                save.save()
-                messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosanmente")           
-                return HttpResponseRedirect("/gym/")
+        form = Boxform_add(request.POST, request.FILES)
+        if request.POST['foto']=='vacio':
+            foto = "default.png"        
         else:
-            messages.add_message(request, messages.WARNING, f"Lo siento, Solo puedes registrar un Gimnasio")
-            return HttpResponseRedirect("/gym/")                      
+            myfile = request.FILES['logo']
+            max = 1
+            if limit < max:
+                if form.is_valid():
+                    data = form.cleaned_data           
+                    box = data['box']
+                    ubicacion = data['ubicacion']
+                    descripcion = data['descripcion']         
+                    id_u = request.user.id            
+                    save = Box()
+                    save.box = box
+                    save.ubicacion = ubicacion
+                    save.logo = myfile
+                    save.descripcion = descripcion
+                    save.user_creador = id_u                  
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
+                    return HttpResponseRedirect("/gym/")
+            else:
+                messages.add_message(request, messages.WARNING, f"Lo siento, Solo puedes registrar un Gimnasio")
+                return HttpResponseRedirect("/gym/")               
               
 
     else:
-        form = Boxform_add()
-          
+        form = Boxform_add()          
     datos = Box.objects.filter(user_creador__exact = userid)   
-
     return render(request,'app/home/gym.html',{"form": form, "msg": msg, 'datos':datos } )
 
-    
+@login_required    
+def delete_gym(request,id):
+    dato = get_object_or_404(Box, id=id)
+    dato.delete()
+    messages.success(request, "Eliminado exitosamente")
+    return redirect(to='/gym/')
+
+@login_required
+def edit_gym(request,id):    
+    gym = Box.objects.get(pk=id)
+    form = Boxform_add(request.POST or None, instance=gym) 
+    if form.is_valid():
+        form.save()       
+        messages.add_message(request, messages.SUCCESS, f"Se realizo la modificacion con exito")           
+        return HttpResponseRedirect("/gym/")       
+        
+    return render(request,'app/home/gymedit.html',{'gym':gym, 'form':form})
+
+

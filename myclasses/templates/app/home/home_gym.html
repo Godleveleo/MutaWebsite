@@ -1,0 +1,82 @@
+{% extends "app/layouts/base.html" %}{% load static %}
+
+{% block title %} Mi box {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+        
+
+       
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Home</h5>
+
+            {% if estado == 1 %}
+                    {% for r in datos %}
+                    <p><a href="{% url 'gym-add' %}"  class="btn btn-info btn-sm" >Modifar</a></p>
+                      
+                 </div>        
+
+                    <div class="card-body ">
+                      
+                      <div class="row">                     
+
+                            <div class="card mb-3">
+                                <div class="text-center">
+                                    <img style="max-width: 45%;" src='{% static "img/sinfoto.png" %}'  alt="...">
+                                  </div>
+                                
+                                <div class="card-body text-center">
+                                  <h2 class="card-title">{{ r.box }}</h2>
+                                  <hr>
+                                  <br>
+                                  <p class="card-text">{{ r.descripcion }}</p>
+                                  <br><br>
+                                  <p class="card-text"><small >Estamos ubicados en {{ r.ubicacion }}</small></p>
+                                </div>
+                              </div>                    
+
+                        </div>
+                        
+                     </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %} 
+            {% else %}
+                
+
+                <div class="card text-center">
+                    <div class="card-header">
+                      <!--set flash-->
+                    {% include 'app/includes/flash.html' %}
+                    <!--/set flash-->
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">Bienvenido a NOREPCLASS WEBSITE</h5>
+                      <div class="text-center">
+                        <img style="max-width: 45%;" src='{% static "img/comunidad.png" %}'  alt="...">
+                      </div>
+                      <a href="{% url 'gym-add' %}"  class="btn btn-success" >Crear mi Gimnasio</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                      Crea Comunidad con nuestro Sitio web
+                    </div>
+                  </div>   
+            
+
+        {% endif %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+
+{% block javascripts %}{% endblock javascripts %}

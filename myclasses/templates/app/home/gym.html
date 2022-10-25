@@ -7,13 +7,14 @@
 
 {% block content %}
 
+
   <div class="content">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <h5 class="title">Seccion Gimnasio</h5>
-            <p class="category">Agrega tu Gimnasio <a >y su reseña</a></p>
+            <p class="category">Agrega tu Gimnasio y cuentamos de el <a ></a></p>
                                   
                  </div>        
 
@@ -25,12 +26,12 @@
                           {% include 'app/includes/flash.html' %}
                           <!--/set flash-->
 
-                        <form name="form" method="POST" action="{% url 'gym-add' %}">
+                        <form name="form" method="POST" action="{% url 'gym-add' %}" enctype="multipart/form-data">
 
                           
                           {% csrf_token %}
                           
-
+                          <input type="hidden" name="foto" id="foto" />
                   
                                   <div class="mb-3">
                                     <label for="nombre box" class="form-label"></label>
@@ -44,9 +45,13 @@
                                     <label for="descripcion" class="form-label"></label>
                                     {{form.descripcion}}
                                   </div>                             
+                                  <div class="mb-3" requerid="False" >
+                                    <label for="logo" class="form-label"></label>
+                                    {{form.logo}}
+                                  </div>                             
                                 
                                   <div class="card-footer text-center">
-                                    <button type="submit" class="btn btn-fill btn-primary">Agregar</button>           
+                                    <button type="submit" class="btn btn-fill btn-primary">Guardar</button>           
                                 </div>
                                   </form>              
                                 </div>
@@ -71,22 +76,33 @@
                                                               <td>{{ r.box }}</td>
                                                               
                                                               <td class="td-actions text-right">
-                                                                  <button type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                                                      <i class="tim-icons icon-single-02"></i>
-                                                                  </button>
-                                                                  <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                                                      <i class="tim-icons icon-settings-gear-63"></i>
-                                                                  </button>
-                                                                  <button type="button" rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+
+                                                                <a href="{% url 'home-gym' %}">
+                                                                  <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                                                                    <i class="tim-icons icon-single-02"></i>
+                                                                </button>
+                                                                </a>
+
+                                                                  
+
+                                                                 <a href="{% url 'editgym' r.id %}" title="EDITAR"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                                                  <i class="tim-icons icon-settings-gear-63"></i>
+                                                              </button></a>
+
+                                                                  <a href="javascript:void(0);" title="Eliminar" onclick="delete_dato({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
                                                                       <i class="tim-icons icon-simple-remove"></i>
                                                                   </button>
+                                                                  </a>
+                                                                 
+                                                                    
+
                                                               </td>
                                                           </tr>
                                                       {% endfor %}                 
                                                         </div>              
                                                     </tbody>
                                               </table>                                       
-                                         
+                                              
                                  
                      </div>
                 </div>
@@ -99,4 +115,5 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
+
 {% block javascripts %}{% endblock javascripts %}
