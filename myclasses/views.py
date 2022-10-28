@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
@@ -111,27 +112,49 @@ def home_gym(request):
 def box_add(request):
     context= {}
     datos = None
+    logo = None
     msg = None    
     userid = request.user.id
     limit = Box.objects.filter(user_creador__exact = userid).count()
     if request.method == 'POST':        
         form = Boxform_add(request.POST, request.FILES)
         if request.POST['foto']=='vacio':
-            foto = "default.png"        
-        else:
-            myfile = request.FILES['logo']
+            logo = "logo/sinfoto.png"
             max = 1
             if limit < max:
-                if form.is_valid():
-                    data = form.cleaned_data           
+                if form.is_valid() :
+                    data = form.cleaned_data       
                     box = data['box']
                     ubicacion = data['ubicacion']
-                    descripcion = data['descripcion']         
+                    descripcion = data['descripcion']        
                     id_u = request.user.id            
                     save = Box()
                     save.box = box
                     save.ubicacion = ubicacion
-                    save.logo = myfile
+                    save.logo = logo
+                    save.descripcion = descripcion
+                    save.user_creador = id_u                  
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
+                    return HttpResponseRedirect("/gym/")
+            else:
+                messages.add_message(request, messages.WARNING, f"Lo siento, Solo puedes registrar un Gimnasio")
+                return HttpResponseRedirect("/gym/")
+                    
+        else:
+            logo = request.FILES['logo']
+            max = 1
+            if limit < max:
+                if form.is_valid() :
+                    data = form.cleaned_data       
+                    box = data['box']
+                    ubicacion = data['ubicacion']
+                    descripcion = data['descripcion']        
+                    id_u = request.user.id            
+                    save = Box()
+                    save.box = box
+                    save.ubicacion = ubicacion
+                    save.logo = logo
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
@@ -155,14 +178,41 @@ def delete_gym(request,id):
     return redirect(to='/gym/')
 
 @login_required
-def edit_gym(request,id):    
+def edit_gym(request,id=None):        
     gym = Box.objects.get(pk=id)
-    form = Boxform_add(request.POST or None, instance=gym) 
-    if form.is_valid():
-        form.save()       
-        messages.add_message(request, messages.SUCCESS, f"Se realizo la modificacion con exito")           
-        return HttpResponseRedirect("/gym/")       
+    user = request.user
+    userid = request.user.id
+    idbox = gym.user_creador   
+    if request.method == "GET":
+         if id:  
+            print(user,userid,idbox)         
+            if not user.is_superuser:
+                if idbox == userid:
+                    print(gym.user_creador)
+                    print(userid)
+                    messages.add_message(request, messages.SUCCESS, f"Pa donde vaaaay oe")
+                    
+
+
+
+    form = Boxform_add(request.POST  or None, instance=gym)              
+    if request.method == "POST":
+        validar = request.POST['foto']
+        if validar == 'vacio':
+            logo = gym.logo
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, f"Se realizo la modificacion con exito")           
+                return HttpResponseRedirect("/gym/")        
+        else:                       
+            logo = request.FILES['logo']                       
+            if form.is_valid():
+                gym.logo
+                gym.logo = logo
+                gym.save()                
+                form.save()           
+                messages.add_message(request, messages.SUCCESS, f"Se realizo la modificacion con exito")           
+                return HttpResponseRedirect("/gym/")  
         
     return render(request,'app/home/gymedit.html',{'gym':gym, 'form':form})
-
 

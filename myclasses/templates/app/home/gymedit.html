@@ -27,10 +27,12 @@
                           {% include 'app/includes/flash.html' %}
                           <!--/set flash-->
 
-                        <form name="form" method="POST" action="">
+                        <form name="form" method="POST" action="" enctype="multipart/form-data">
 
                           
                           {% csrf_token %}
+
+                          <input type="hidden" name="foto" id="foto"  />
 
                           <div class="mb-3">
                             <label for="nombre box" class="form-label"></label>
@@ -43,11 +45,19 @@
                           <div class="mb-3">
                             <label for="descripcion" class="form-label"></label>
                             {{form.descripcion}}
+                          </div>  
+                          <br>                           
+                          <div class="mb-3">                            
+                            <label for="formFileLg" class="form-label"></label>
+                            {{form.logo}}
+                            
                           </div>                             
-
-                          <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-fill btn-primary">Actualizar</button>           
-                        </div>  
+                          <hr>
+                          <div class="card-footer text-center">                                    
+                            <a href="javascript:void(0);">
+                              <button type="submit" class="btn btn-fill btn-primary" onclick="editar_gym();">Actualizar</button>
+                            </a>                                              
+                        </div>
                         </form>                                                                                                 
                      </div>
                 </div>

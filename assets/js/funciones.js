@@ -16,3 +16,22 @@ function delete_dato(id){
       }
     })
   }
+
+  function crear_gym()
+  {
+     var form=document.form;
+     if(form.logo.value==0)
+     {
+         form.foto.value='vacio';
+     }
+     form.submit();
+    }
+  function editar_gym()
+  {
+     var form=document.form;
+     if(form.logo.value==0)
+     {
+         form.foto.value='vacio';
+     }
+     form.submit();
+    }

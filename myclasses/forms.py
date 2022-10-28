@@ -65,15 +65,15 @@ class Boxform_add(forms.ModelForm):
 
     class Meta:
         model = Box
-        fields = ('box', 'ubicacion', 'descripcion','logo')
+        fields = ('box', 'ubicacion', 'descripcion', 'logo')
         widgets = {
             'box' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gymnasio', 'autocomplete':'off'}),
             'ubicacion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}),
             'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}),
-            'logo': forms.TextInput(attrs={ 'type': 'file', 'id':'formFile', 'class': 'form-control'}),
+            
         }
 
-
+        logo = forms.CharField(required=False, widget=forms.TextInput(attrs={ 'type': 'file', 'id':'formFile', 'class': 'form-control'}))
 
 
     
