@@ -13,8 +13,15 @@ urlpatterns = [
     path('deletegym/<id>/', views.delete_gym, name='delete-gym'), 
     path('editgym/<id>/', views.edit_gym, name='edit-gym'), 
     path("gym/", views.box_add, name="gym-add"),
-    # path("mygym/", views.box_view, name="gym-view"),
-    # re_path(r'^.*\.*', views.pages, name='pages'),
+    #### planes ##
+    path("homeplan/", views.home_plan, name="home-plan"),
+    path("planadd/", views.planes_add, name="plan-add"),
+
+    
     
     
 ]
+
+
+# path("mygym/", views.box_view, name="gym-view"),
+# re_path(r'^.*\.*', views.pages, name='pages'),

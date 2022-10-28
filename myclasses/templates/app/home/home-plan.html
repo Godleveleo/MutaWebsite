@@ -1,0 +1,108 @@
+{% extends "app/layouts/base.html" %}{% load static %}
+
+{% block title %} Planes {% endblock %} 
+
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}         
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Inicio Planes</h5>
+            </div>   
+            {% if estado == 1 %}                      
+                 
+                    <div class="card-body ">                     
+                      <div class="row">        
+
+                        <div>
+                            <h5 class="title">Gimnasio registros</h5>
+                            <br>                              
+                                    
+                                    <table class="table" style="width: 80%;">
+                                          <thead>
+                                              <tr>
+                                                  <th class="text-center">#</th>
+                                                  <th>Registrado</th>                                      
+                                                  <th class="text-right">Acciones</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody> 
+                                                    {% for r in datos %}                                                  
+                                                    <tr>
+                                                      <td class="text-center "><i class="tim-icons icon-tag"></i></td>
+                                                      <td>{{ r.box }}</td>
+                                                      
+                                                      <td class="td-actions text-right">
+
+                                                        <a href="{% url 'home-gym' %}">
+                                                          <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                                                            <i class="tim-icons icon-single-02"></i>
+                                                        </button>
+                                                        </a>
+
+                                                          
+
+                                                         <a href="{% url 'edit-gym' r.id %}" title="EDITAR"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                                          <i class="tim-icons icon-settings-gear-63"></i>
+                                                       </button></a>
+
+                                                          <a href="javascript:void(0);" title="Eliminar" onclick="delete_dato({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                                              <i class="tim-icons icon-simple-remove"></i>
+                                                          </button>
+                                                          </a>
+                                                         
+                                                            
+
+                                                        </td>
+                                                        </tr>
+                                                        {% endfor %}                 
+                                                        </div>
+
+                                                     </div>
+                                                    <div class="card-header">
+                                                     <p class="card-text">Opciones</p>
+                                                    <hr>
+                                                    <p><a href="{% url 'gym-add' %}"  class="btn btn-info btn-sm" >Modificar</a></p>
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        
+       
+        
+                                {% else %}
+                            
+
+                            <div class="card text-center">
+                                <div class="card-header">
+                                <!--set flash-->
+                                {% include 'app/includes/flash.html' %}
+                                <!--/set flash-->
+                                </div>
+                                <div class="card-body">
+                                <h5 class="card-title">Crea tus planes en esta seccion</h5>
+                                <div class="text-center">
+                                    <img style="max-width: 45%;" src='{% static "img/plan.jpg" %}'  alt="...">
+                                </div>
+                                <br>
+                                <a href="{% url 'plan-add' %}"  class="btn btn-success" >Agregar Planes </a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                 Crea Comunidad con nuestro Sitio web
+                                </div>
+                            </div>   
+                        
+
+                                {% endif %}
+
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}

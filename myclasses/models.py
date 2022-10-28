@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from random import choices
+from tabnanny import verbose
 from django.utils.html import format_html
 from django.db import models
 # from autoslug import AutoSlugField
@@ -80,10 +81,16 @@ class Disciplina(models.Model):
          return txt.format( self.tipo, self.horario)
     
 class Planes(models.Model):    
-    Titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")    
-    TipoDisciplina = models.ForeignKey(Disciplina,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Asociado")
-    precio = models.PositiveIntegerField(default=0, null=False, blank=False, verbose_name="Precio del  plan")
-    cantidadClases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
+    titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")
+    disciplina = models.CharField(max_length=40, verbose_name="Displinina")
+    hora = [
+        ('AM', 'Mañana'),
+        ('PM' ,'Tarde'),
+        ('AM/PM', 'AM/PM')
+    ]       
+    horario = models.CharField(max_length=13,  choices=hora, verbose_name="Horario del plan")  
+    precio = models.PositiveIntegerField( null=False, blank=False, verbose_name="Precio del  plan")
+    cantidad_clases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
     
     class Meta:

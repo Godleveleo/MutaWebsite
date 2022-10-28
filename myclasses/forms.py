@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from pyexpat import model
+from turtle import home
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -77,6 +78,27 @@ class Boxform_add(forms.ModelForm):
         }
 
         logo = forms.CharField(required=False, widget=forms.TextInput(attrs={ 'type': 'file', 'id':'formFile', 'class': 'form-control'}))
+
+####fin##
+
+#### planes ###
+
+class Planform_add(forms.ModelForm):
+
+    class Meta:
+        model = Planes
+        fields = ('titulo', 'disciplina', 'horario','precio', 'cantidad_clases')
+        widgets = {
+            'titulo' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titulo', 'autocomplete':'off'}),            
+            'disciplina' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Disciplina', 'autocomplete':'off'}),            
+            'precio' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Precio', 'onkeypress': 'return soloNumeros(event)', 'autocomplete':'off'}),
+            'cantidad_clases': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de clases', 'type': 'number', 'autocomplete':'off'}),
+                   
+            
+        }
+       
+        
+        
 
 
     

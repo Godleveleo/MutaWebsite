@@ -41,7 +41,7 @@ class DisplicinaAdmin(admin.ModelAdmin):
 admin.site.register(Disciplina, DisplicinaAdmin)
 
 class PlanesAdmin(admin.ModelAdmin):
-    list_display = ('Titulo','precio','TipoDisciplina','cantidadClases')
+    list_display = ('titulo','precio','cantidad_clases')
     search_fields= ('Titulo',)
     icon_name = 'format_list_numbered'
 

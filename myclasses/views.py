@@ -93,7 +93,7 @@ def register_user(request):
 def home(request):
     return render(request, 'app/home/index.html')
 
-
+##### seccion gimnasio (agregar/listar/editar/eliminar/validaciones)######
 
 @login_required
 def home_gym(request):
@@ -214,4 +214,54 @@ def edit_gym(request,id=None):
                 return HttpResponseRedirect("/gym/")  
         
     return render(request,'app/home/gymedit.html',{'gym':gym, 'form':form})
+
+##### fin gimnasio ####
+
+
+##### planes de gimnasio creado #########
+
+@login_required
+def home_plan(request):
+    estado = True
+    datos = None
+    userid = request.user.id
+    validador = Box.objects.filter(user_creador__exact = userid).count()    
+    if validador == 0:
+        estado = False
+        messages.add_message(request, messages.WARNING, f"No tienes planes creados para tu comunidad..")
+    else:
+        datos = Planes.objects.filter(user_creador__exact = userid)    
+    return render(request,'app/home/home-plan.html',{'datos':datos, 'estado':estado} )
+    
+
+@login_required
+def planes_add(request):       
+    if request.method == 'POST':        
+        form = Planform_add(request.POST or None)
+        if form.is_valid() :
+                    data = form.cleaned_data       
+                    titulo = data['titulo']
+                    disciplina = data['disciplina']
+                    horario = data['horario']        
+                    precio = data['precio']        
+                    cantidad_clases = data['cantidad_clases']        
+                    id_u = request.user.id                                
+                    save = Planes()
+                    save.titulo = titulo
+                    save.disciplina = disciplina
+                    save.horario = horario
+                    save.precio = precio
+                    save.cantidad_clases = cantidad_clases
+                    save.user_creador = id_u                  
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
+                    return HttpResponseRedirect("/gym/")                
+              
+
+    else:
+        form = Planform_add()       
+       
+    return render(request,'app/home/planes.html',{"form": form, } )
+    
+
 
