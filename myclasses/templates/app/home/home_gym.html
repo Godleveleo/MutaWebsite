@@ -33,6 +33,8 @@
                                   <h2 class="card-title">{{ r.box }}</h2>
                                   <hr>
                                   <br>
+                                  <h5 class="card-title">Quienes somos.</h5>
+                                  <br><br>
                                   <p class="card-text">{{ r.descripcion }}</p>
                                   <br><br>
                                   <p class="card-text"><small >Estamos ubicados en {{ r.ubicacion }}</small></p>
@@ -41,6 +43,8 @@
 
                         </div>
                         <div class="card-header">
+                          <p class="card-text">Opciones</p>
+                          <hr>
                             <p><a href="{% url 'gym-add' %}"  class="btn btn-info btn-sm" >Modificar</a></p>
                         </div>
                         

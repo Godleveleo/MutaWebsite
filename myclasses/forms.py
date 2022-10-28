@@ -7,6 +7,9 @@ from myclasses.models import *
 
 
 
+
+### logueo
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
@@ -23,6 +26,7 @@ class LoginForm(forms.Form):
             }
         ))
 
+#### Registro
 
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
@@ -42,14 +46,14 @@ class SignUpForm(UserCreationForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": "Password",
+                "placeholder": "Contraseña",
                 "class": "form-control"
             }
         ))
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": "Password check",
+                "placeholder": "Confirmar contraseña",
                 "class": "form-control"
             }
         ))
@@ -58,8 +62,7 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
-
-
+###### form agregar local 
 
 class Boxform_add(forms.ModelForm):
 
@@ -67,7 +70,7 @@ class Boxform_add(forms.ModelForm):
         model = Box
         fields = ('box', 'ubicacion', 'descripcion', 'logo')
         widgets = {
-            'box' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gymnasio', 'autocomplete':'off'}),
+            'box' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gimnasio', 'autocomplete':'off'}),
             'ubicacion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}),
             'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}),
             

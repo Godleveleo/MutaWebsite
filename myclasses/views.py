@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
@@ -94,6 +93,8 @@ def register_user(request):
 def home(request):
     return render(request, 'app/home/index.html')
 
+
+
 @login_required
 def home_gym(request):
     estado = True
@@ -102,7 +103,7 @@ def home_gym(request):
     validador = Box.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
-        messages.add_message(request, messages.WARNING, f"No tienes nada creado aun, Vamos Animate")
+        messages.add_message(request, messages.WARNING, f"No tienes nada creado aun.. ! Vamos Animate !")
     else:
         datos = Box.objects.filter(user_creador__exact = userid)    
     return render(request,'app/home/home_gym.html',{'datos':datos, 'estado':estado} )
@@ -178,20 +179,18 @@ def delete_gym(request,id):
     return redirect(to='/gym/')
 
 @login_required
-def edit_gym(request,id=None):        
+def edit_gym(request,id=None):
+    context= {}        
     gym = Box.objects.get(pk=id)
     user = request.user
-    userid = request.user.id
-    idbox = gym.user_creador   
+    userid = int(request.user.id)
+    idbox = int(gym.user_creador)   
     if request.method == "GET":
-         if id:  
-            print(user,userid,idbox)         
+         if id:                
             if not user.is_superuser:
-                if idbox == userid:
-                    print(gym.user_creador)
-                    print(userid)
-                    messages.add_message(request, messages.SUCCESS, f"Pa donde vaaaay oe")
-                    
+                if idbox != userid:
+                    html_template = loader.get_template('app/home/page-404.html')
+                    return HttpResponse(html_template.render(context, request))
 
 
 

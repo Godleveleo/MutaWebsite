@@ -10,10 +10,7 @@ class BoxAdmin(admin.ModelAdmin):
     icon_name = 'fitness_center'   
             
 
-
-
 admin.site.register(Box, BoxAdmin)
-
 
 
 class ClasesAdmin(admin.ModelAdmin):
