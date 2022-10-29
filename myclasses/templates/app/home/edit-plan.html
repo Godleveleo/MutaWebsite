@@ -1,6 +1,6 @@
 {% extends "app/layouts/base.html" %}
 
-{% block title %} Agrega Plan {% endblock %} 
+{% block title %} edit-Plan {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -13,7 +13,7 @@
       <div class="card">
         <div class="card-header">
           <h5 class="title">Seccion Planes </h5>
-          <p class="category">Agrega los planes que ofrece tu comunidad deportiva <a ></a></p>
+          <p class="category">Aqui puede modificar tus planes registrados <a ></a></p>
                                 
                </div>        
 
@@ -25,7 +25,7 @@
                         {% include 'app/includes/flash.html' %}
                         <!--/set flash-->
 
-                      <form name="form"  method="POST" action="{% url 'plan-add' %}" enctype="multipart/form-data">
+                      <form name="form"  method="POST" >
 
                         
                         {% csrf_token %}
@@ -58,10 +58,15 @@
                                   {{form.cantidad_clases}}
                                 </div>                             
                               <hr>
-                                <div class="card-footer text-center">                                    
+                                <div class="card-footer text-center">
+                                  <a href="{% url 'home-plan' %}">
+                                    <button type="button" class="btn btn-fill btn-primary" value="cancelar">Cancelar</button>
+                                  </a>
+
                                   <a href="javascript:void(0);">
-                                    <button type="submit" class="btn btn-fill btn-primary" onclick="crear_gym();">Guardar</button>
-                                  </a>                                              
+                                    <button type="submit" class="btn btn-fill btn-primary" onclick="crear_gym();">Actualizar</button>
+                                  </a>
+                                                                                
                               </div>
 
                                 </form>              

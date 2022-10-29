@@ -16,6 +16,8 @@ urlpatterns = [
     #### planes ##
     path("homeplan/", views.home_plan, name="home-plan"),
     path("planadd/", views.planes_add, name="plan-add"),
+    path('editplan/<id>/', views.edit_plan, name='edit-plan'),
+    path('deleteplan/<id>/', views.delete_plan, name='delete-plan'),
 
     
     

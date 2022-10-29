@@ -225,7 +225,7 @@ def home_plan(request):
     estado = True
     datos = None
     userid = request.user.id
-    validador = Box.objects.filter(user_creador__exact = userid).count()    
+    validador = Planes.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes planes creados para tu comunidad..")
@@ -254,14 +254,40 @@ def planes_add(request):
                     save.cantidad_clases = cantidad_clases
                     save.user_creador = id_u                  
                     save.save()
-                    messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
-                    return HttpResponseRedirect("/gym/")                
-              
-
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego su PLAN existosamente")           
+                    return HttpResponseRedirect("/homeplan/")
     else:
         form = Planform_add()       
        
     return render(request,'app/home/planes.html',{"form": form, } )
     
+@login_required
+def edit_plan(request,id=None):
+    context= {}        
+    plan = Planes.objects.get(pk=id)
+    user = request.user
+    userid = int(request.user.id)
+    idplan = int(plan.user_creador)   
+    if request.method == "GET":
+         if id:                
+            if not user.is_superuser:
+                if idplan != userid:
+                    html_template = loader.get_template('app/home/page-404.html')
+                    return HttpResponse(html_template.render(context, request))
 
+    form = Planform_add(request.POST  or None, instance=plan)
+    if form.is_valid() :
+        form.save()
+        messages.add_message(request, messages.SUCCESS, f"Se modifico su PLAN existosamente")           
+        return HttpResponseRedirect("/homeplan/")
+        
+                    
 
+    return render(request,'app/home/edit-plan.html',{'plan':plan, 'form':form})
+
+@login_required    
+def delete_plan(request,id):
+    dato = get_object_or_404(Planes, id=id)
+    dato.delete()
+    messages.success(request, "Eliminado exitosamente")
+    return redirect(to='/homeplan/')
