@@ -14,14 +14,14 @@ admin.site.register(Box, BoxAdmin)
 
 
 class ClasesAdmin(admin.ModelAdmin):
-    list_display = ('Descripcion','modalidad','inicioClase', 'TerminoClase', 'duracion', 'cupo',)
+    list_display = ('descripcion','modalidad','inicioClase', 'terminoClase', 'duracion', 'cupo',)
     icon_name = 'fitness_center'
 
 admin.site.register(Clases, ClasesAdmin)
 
 
 class ReservaAdmin(admin.ModelAdmin):
-    list_display = ('usuario','clase','tipoDisciplina')
+    list_display = ('usuario','clase')
     icon_name = 'fitness_center'
     list_filter = (
                 ('usuario', admin.RelatedOnlyFieldListFilter),
@@ -34,11 +34,7 @@ admin.site.register(Reserva, ReservaAdmin)
 
 
 
-class DisplicinaAdmin(admin.ModelAdmin):
-    list_display = ('codigo','tipo','horario')
-    icon_name = 'fitness_center'
 
-admin.site.register(Disciplina, DisplicinaAdmin)
 
 class PlanesAdmin(admin.ModelAdmin):
     list_display = ('titulo','precio','cantidad_clases')

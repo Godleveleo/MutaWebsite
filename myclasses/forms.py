@@ -96,6 +96,26 @@ class Planform_add(forms.ModelForm):
                    
             
         }
+
+####fin##
+
+### clases ####
+
+
+class Clasesform_add(forms.ModelForm):
+
+    class Meta:
+        model = Clases
+        fields = ('descripcion','inicioClase','terminoClase', 'duracion','modalidad', 'cupo')
+        widgets = {
+            'descripcion' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Descripcion', 'autocomplete':'off'}),            
+            'inicioClase' : forms.TimeInput(format='%h:%M', attrs={'class': 'form-control', 'placeholder': 'Inicio de clases','type': 'time', 'autocomplete':'off'}),
+            'terminoClase' : forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Termino de clases','type': 'time', 'autocomplete':'off'}),            
+            'duracion' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Duracion de la clase','type': 'number',  'autocomplete':'off'}),            
+            'cupo' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'maximo de cupos', 'type': 'number', 'onkeypress': 'return soloNumeros(event)', 'autocomplete':'off'}),            
+                   
+            
+        }
        
         
         

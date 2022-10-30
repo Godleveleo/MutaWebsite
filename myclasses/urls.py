@@ -18,6 +18,10 @@ urlpatterns = [
     path("planadd/", views.planes_add, name="plan-add"),
     path('editplan/<id>/', views.edit_plan, name='edit-plan'),
     path('deleteplan/<id>/', views.delete_plan, name='delete-plan'),
+    #####clases ###
+    path("homeclases/", views.home_clases, name="home-clases"),
+    path("clasesadd/", views.clases_add, name="clases-add"),
+    path("clasesedit/", views.edit_clases, name="edit-clases"),
 
     
     

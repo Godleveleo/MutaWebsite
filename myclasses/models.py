@@ -54,23 +54,9 @@ class Box(models.Model):
 
     def __str__(self) :
          txt = " {0}"
-         return txt.format(self.box)
+         return txt.format(self.box) 
 
 
-
-
-    
-
-class Disciplina(models.Model):
-    codigo = models.CharField(max_length=3, primary_key=True)
-    tipo = models.CharField(max_length=50, verbose_name="Disciplina")
-    hora = [
-        ('AM', 'Mañana'),
-        ('PM' ,'Tarde'),
-        ('AM/PM', 'AM/PM')
-    ]       
-    horario = models.CharField(max_length=13,  choices=hora, verbose_name="Horario de clases")
-    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
     class Meta:
         verbose_name = "Disciplina"
@@ -109,14 +95,10 @@ class Planes(models.Model):
 #clases
 class Clases(models.Model):
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
-    Descripcion = models.CharField(max_length = 50, null=True)    
-    modalidades = [
-        ('Online', 'Online'),
-        ('Presencial' ,'Presencial')        
-    ]
-    modalidad = models.CharField(max_length=30, choices=modalidades, null=True, verbose_name="Modalidad de clase")
-    inicioClase = models.CharField(max_length = 50, null=True, verbose_name="Inicio de clase")  
-    TerminoClase = models.CharField(max_length = 50, null=True, verbose_name="Termino de clase")  
+    descripcion = models.CharField(max_length = 50, null=True)    
+    modalidad = models.CharField(max_length=30,  null=True, verbose_name="Modalidad de clase")
+    inicioClase = models.CharField( max_length=6, verbose_name="Inicio de clase")  
+    terminoClase = models.CharField(max_length=6, verbose_name="Termino de clase")  
     duracion = models.PositiveIntegerField(default=1, null=False, blank=False, verbose_name="Duracion de Clase")
     cupo = models.PositiveIntegerField(default=1, null=False, blank=False, verbose_name="Nro. de cupos")
     
@@ -131,7 +113,7 @@ class Clases(models.Model):
  ##perfiles       
 class Perfil(models.Model):
     nombre =models.ForeignKey(UsersMetadata,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Nombre")   
-    DisciplinaInscrita = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina inscrita")
+    # DisciplinaInscrita = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina inscrita")
     plan = models.ForeignKey(Planes,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito")     
     vigencia = models.BooleanField(default=True, verbose_name="Vigente")
     imagenPerfil = models.ImageField(upload_to="perfil", default= "perfil/sinfoto.png" , verbose_name="Imagen de Perfil")
@@ -157,7 +139,7 @@ class Reserva(models.Model):
     gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.CASCADE, verbose_name="Gimnasio")
     usuario =models.ForeignKey(Perfil,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Alumno")
     clase =models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
-    tipoDisciplina = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina")
+    # tipoDisciplina = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina")
 
     class Meta:
         verbose_name = "Reserva"

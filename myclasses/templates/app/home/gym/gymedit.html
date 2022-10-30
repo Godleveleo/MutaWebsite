@@ -1,0 +1,78 @@
+
+{% extends "app/layouts/base.html" %}
+
+{% block title %} Edit {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Editar Gimnasio</h5>
+            <p class="category">Aqui puedes modificar los datos de tu establecimiento</p>
+            
+                                  
+                 </div>        
+
+                    <div class="card-body all-icons">
+                      
+                      <div class="row">
+                        
+                          <!--set flash-->
+                          {% include 'app/includes/flash.html' %}
+                          <!--/set flash-->
+
+                        <form name="form" method="POST" action="" enctype="multipart/form-data">
+
+                          
+                          {% csrf_token %}
+
+                          <input type="hidden" name="foto" id="foto"  />
+
+                          <div class="mb-3">
+                            <label for="nombre box" class="form-label"></label>
+                            {{form.box}}
+                          </div>
+                          <div class="mb-3">
+                            <label for="ubicacion" class="form-label"></label>
+                            {{form.ubicacion}}
+                          </div>
+                          <div class="mb-3">
+                            <label for="descripcion" class="form-label"></label>
+                            {{form.descripcion}}
+                          </div>  
+                          <br>                           
+                          <div class="mb-3">                            
+                            <label for="formFileLg" class="form-label"></label>
+                            {{form.logo}}
+                            
+                          </div>                             
+                          <hr>
+                          <div class="card-footer text-center">
+                            <a href="{% url 'home-gym' %}">
+                              <button type="button" class="btn btn-fill btn-primary" value="cancelar">Cancelar</button>
+                            </a>                                    
+                            <a href="javascript:void(0);">
+                              <button type="submit" class="btn btn-fill btn-primary" onclick="editar_gym();">Actualizar</button>
+                            </a>                                              
+                                                                         
+                        </div>
+                        </form>                                                                                                 
+                     </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+
+{% block javascripts %}{% endblock javascripts %}

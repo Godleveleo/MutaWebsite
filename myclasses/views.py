@@ -11,6 +11,7 @@ from myclasses.forms import *
 from django.contrib.auth.models import User
 from utilidades.formularios import logueado
 from django.contrib import messages
+from datetime import datetime
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -25,9 +26,13 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:                
                 login(request, user)
-                usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
-                request.session['users_metadata_id'] =  usersMetadata.id              
-                return redirect("/")
+                if not user.is_superuser:
+                    usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
+                    request.session['users_metadata_id'] =  usersMetadata.id              
+                    return redirect("/")
+                else:
+                    return redirect("/")
+
 
             else:
                 msg = 'Credenciales invalidas'
@@ -106,7 +111,7 @@ def home_gym(request):
         messages.add_message(request, messages.WARNING, f"No tienes nada creado aun.. ! Vamos Animate !")
     else:
         datos = Box.objects.filter(user_creador__exact = userid)    
-    return render(request,'app/home/home_gym.html',{'datos':datos, 'estado':estado} )
+    return render(request,'app/home/gym/home_gym.html',{'datos':datos, 'estado':estado} )
 
 
 @login_required
@@ -169,7 +174,7 @@ def box_add(request):
     else:
         form = Boxform_add()          
     datos = Box.objects.filter(user_creador__exact = userid)   
-    return render(request,'app/home/gym.html',{"form": form, "msg": msg, 'datos':datos } )
+    return render(request,'app/home/gym/gym.html',{"form": form, "msg": msg, 'datos':datos } )
 
 @login_required    
 def delete_gym(request,id):
@@ -213,7 +218,7 @@ def edit_gym(request,id=None):
                 messages.add_message(request, messages.SUCCESS, f"Se realizo la modificacion con exito")           
                 return HttpResponseRedirect("/gym/")  
         
-    return render(request,'app/home/gymedit.html',{'gym':gym, 'form':form})
+    return render(request,'app/home/gym/gymedit.html',{'gym':gym, 'form':form})
 
 ##### fin gimnasio ####
 
@@ -231,7 +236,7 @@ def home_plan(request):
         messages.add_message(request, messages.WARNING, f"No tienes planes creados para tu comunidad..")
     else:
         datos = Planes.objects.filter(user_creador__exact = userid)    
-    return render(request,'app/home/home-plan.html',{'datos':datos, 'estado':estado} )
+    return render(request,'app/home/planes/home-plan.html',{'datos':datos, 'estado':estado} )
     
 
 @login_required
@@ -259,7 +264,7 @@ def planes_add(request):
     else:
         form = Planform_add()       
        
-    return render(request,'app/home/planes.html',{"form": form, } )
+    return render(request,'app/home/planes/planes.html',{"form": form, })
     
 @login_required
 def edit_plan(request,id=None):
@@ -283,7 +288,7 @@ def edit_plan(request,id=None):
         
                     
 
-    return render(request,'app/home/edit-plan.html',{'plan':plan, 'form':form})
+    return render(request,'app/home/planes/edit-plan.html',{'plan':plan, 'form':form})
 
 @login_required    
 def delete_plan(request,id):
@@ -291,3 +296,72 @@ def delete_plan(request,id):
     dato.delete()
     messages.success(request, "Eliminado exitosamente")
     return redirect(to='/homeplan/')
+
+
+########## clases #######
+@login_required
+def home_clases(request):
+    estado = True
+    datos = None
+    userid = request.user.id
+    validador = Clases.objects.filter(user_creador__exact = userid).count()    
+    if validador == 0:
+        estado = False
+        messages.add_message(request, messages.WARNING, f"No tienes CLASES creadas para tu comunidad..")
+    else:
+        datos = Clases.objects.filter(user_creador__exact = userid)    
+    return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado} )
+
+@login_required
+def clases_add(request):       
+    if request.method == 'POST':        
+        form = Clasesform_add(request.POST or None)
+        if form.is_valid() :            
+                    data = form.cleaned_data       
+                    descripcion = data['descripcion']
+                    inicio = data['inicioClase']
+                    termino = data['terminoClase']        
+                    duracion = data['duracion']        
+                    modalidad = data['modalidad']        
+                    cupo = data['cupo']        
+                    id_u = request.user.id                                                   
+                    save = Clases()                    
+                    save.descripcion = descripcion
+                    save.inicioClase = inicio
+                    save.terminoClase = termino
+                    save.duracion = duracion
+                    save.modalidad = modalidad
+                    save.cupo = cupo
+                    save.user_creador = id_u                  
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego la CLASE existosamente")           
+                    return HttpResponseRedirect("/homeclases/")
+    else:
+        form = Clasesform_add()       
+       
+    return render(request,'app/home/clases/clases.html',{"form": form, })
+
+
+@login_required
+def edit_clases(request,id=None):
+    context= {}        
+    plan = Clases.objects.get(pk=id)
+    user = request.user
+    userid = int(request.user.id)
+    idplan = int(plan.user_creador)   
+    if request.method == "GET":
+         if id:                
+            if not user.is_superuser:
+                if idplan != userid:
+                    html_template = loader.get_template('app/home/page-404.html')
+                    return HttpResponse(html_template.render(context, request))
+
+    form = Clasesform_add(request.POST  or None, instance=plan)
+    if form.is_valid() :
+        form.save()
+        messages.add_message(request, messages.SUCCESS, f"Se modifico su PLAN existosamente")           
+        return HttpResponseRedirect("/homeplan/")
+        
+                    
+
+    return render(request,'app/home/clases/clases.html',{'plan':plan, 'form':form})

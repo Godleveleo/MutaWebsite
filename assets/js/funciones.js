@@ -35,6 +35,24 @@ function delete_plan(id){
       }
     })
   }
+function delete_clases(id){
+    Swal.fire({
+      "title": "¿Estas seguro?",
+    //   "text": "{{message}}",
+      "icon": "question",
+      "showCancelButton":true,
+      "cancelButtonText":"No, Cancelar",
+      "confirmButtonText":"Si, eliminar",
+      "reverseButtons":true,
+      "confirmButtonColor":"#bb2d3b"            
+
+    })
+    .then(function(result){
+      if(result.isConfirmed){
+        window.location.href = "/deleteclase/"+id+"/"
+      }
+    })
+  }
 
   function crear_gym()
   {
@@ -62,3 +80,5 @@ function delete_plan(id){
       /* digitos,del, sup,tab,arrows*/
       return ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 9 || key == 0);
   }
+
+

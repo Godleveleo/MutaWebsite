@@ -1,0 +1,81 @@
+{% extends "app/layouts/base.html" %}
+
+{% block title %} Agrega Plan {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Seccion clases </h5>
+          <p class="category">Agrega las clases que ofrece tu comunidad deportiva <a ></a></p>
+                                
+               </div>        
+
+                  <div class="card-body ">
+                    
+                    <div class="container mt-3">
+                      
+                        <!--set flash-->
+                        {% include 'app/includes/flash.html' %}
+                        <!--/set flash-->
+
+                      <form name="form"  method="POST" action="{% url 'clases-add' %}" >
+
+                        
+                        {% csrf_token %}
+                        
+                        
+                
+                                <div class="mb-3 ">
+                                  <label for="titulo" class="form-label">Descripcion de la clase</label>
+                                  {{form.descripcion}}
+                                </div>
+                                
+                                <div class="mb-3">
+                                  <label for="inicioClases" class="form-label">Inicio de clase</label>
+                                  {{form.inicioClase}}
+                                </div>
+                                <div class="mb-3">
+                                  <label for="TerminoClases" class="form-label">Termino de clase</label>
+                                  {{form.terminoClase}}
+                                </div>
+                                <div class="mb-3" >
+                                  <label for="duracion"  class="form-label">Duracion (horas)</label>
+                                  {{form.duracion}}
+                                </div>
+
+                                <div class="form-group mb-3">
+                                  <label for="modalidad">Modalidad</label>
+                                  <select name="modalidad" class="form-control" id="modalidad">
+                                    <option value="Presencial" >Presencial</option>
+                                    <option value="Online" >Online</option>
+                                                                                                            
+                                  </select>                                 
+                                </div>                                                            
+                                                            
+                                <div class="mb-3"  >
+                                  <label for="cantidad clases"  class="form-label">cupo</label>
+                                  {{form.cupo}}
+                                </div>                             
+                                                          
+                              <hr>
+                                <div class="card-footer text-center">                                    
+                                  <a href="javascript:void(0);">
+                                    <button type="submit" class="btn btn-fill btn-primary" onclick="crear_gym();">Guardar</button>
+                                  </a>                                              
+                              </div>                            
+
+                                </form>              
+
+                              
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}
