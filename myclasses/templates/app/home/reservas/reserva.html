@@ -24,7 +24,7 @@
                         <!--set flash-->
                         {% include 'app/includes/flash.html' %}
                         <!--/set flash-->
-
+                        
                       <form name="form"  method="POST" action="{% url 'reserva-add' %}" >
 
                         
@@ -33,15 +33,16 @@
                         
                 
                                 <div class="mb-3 ">
-                                  <label for="titulo" class="form-label">clase</label>
+                                  <label for="Clase" class="form-label">Seleccione una clase</label>
                                   {{form.clase}}
                                 </div>
                                 
                                 <div class="mb-3">
-                                  <label for="disciplina" class="form-label">estado</label>
+                                  <h5>Habilita la clase</h5>                                 
                                   {{form.estado}}
-                                </div>
-                                                                             
+                                  <label for="disciplina" class="form-label">Activar</label>
+                                </div>         
+                                
                                                              
                               <hr>
                                 <div class="card-footer text-center">                                    

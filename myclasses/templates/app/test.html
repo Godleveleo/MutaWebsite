@@ -1,61 +1,123 @@
-<!DOCTYPE html>
-<html>
- 
-<head>
-    <title>DateTimepicker</title>
- 
-    <!-- Include Bootstrap CDN -->
-    <link href=
-"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-        rel="stylesheet">
-    <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js">
-    </script>
-    <script src=
-"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
-    </script>
- 
-    <!-- Include Moment.js CDN -->
-    <script type="text/javascript" src=
-"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js">
-    </script>
- 
-    <!-- Include Bootstrap DateTimePicker CDN -->
-    <link
-        href=
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet">
- 
-    <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-        </script>
-</head>
- 
-<body>
- 
-    <!-- Include datetime input to display
-        datetimepicker in container with
-        relative position -->
-    <div class="container" style="margin:100px">
-        <div style="position: relative">
- 
-            <!-- Include input field with id so
-                that we can use it in JavaScript
-                to set attributes.-->
-            <input class="form-control"
-                type="text" id="datetime" />
+{% extends "app/layouts/base.html" %}{% load static %}
+
+{% block title %} Reserva {% endblock %} 
+
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}         
+
+      
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Seccion reserva</h5>
+          <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>          
+          </div>   
+          {% if estado == 1 %}
+                            
+               
+                  <div class="card-body ">
+                     <!--set flash-->
+                     {% include 'app/includes/flash.html' %}
+                     <!--/set flash-->
+                                        
+                    <div >
+                      <h5 class="title">Detalle de reservas </h5>                     
+                    </div>                    
+                      <br>
+                    <div class="row">                    
+                      
+                      <table class="table" style="width: 90%;">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Clase</th>                                      
+                                <th>CupoS</th>                                      
+                                <th>Estado</th>                                      
+                                                                      
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                          {% for r in datos %}
+                            
+                          
+                                <tr>
+                                    <td class="text-center "><i class="tim-icons icon-link-72"></i></td>
+                                    <td>  {{ r.clase.descripcion }}</td>                                    
+                                    <td>
+                                      <span class="badge  badge-info">{{ r.cupo  }}</span></td>                                    
+                                    <td>                                   
+                                      
+                                     {% if  r.estado  == True %}
+                                     <span style="background-color:rgb(35, 166, 23);" class="badge rounded-pill ">ACTIVA</span>
+                                          
+                                          {% else %}
+                                     <span style="background-color:rgb(212, 11, 11);" class="badge rounded-pill ">DESACTIVADA</span>                                     
+                                     {% endif %}
+                                    </td>                                    
+                                    <td>{{ r.duracion }}</td>                                    
+                                                                        
+                                    <td class="td-actions text-right">
+                                     
+                                    </td>
+                                </tr>
+                                           
+                          </div>
+                          {% endfor %}              
+                      </tbody>                      
+                  </table>                                                      
+                </div>
+                <hr>
+                <label for="boton">Activar clase para reserva </label>
+                <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
+                 
+              </div>
+              
+              ###
+              <div class="card">
+                <h5 class="card-header">Featured</h5>
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+              ##
+            </div>
+          </div>
         </div>
-    </div>
- 
-    <script>
- 
-        // Below code sets format to the
-        // datetimepicker having id as
-        // datetime
-        $('#datetime').datetimepicker({
-            format: 'hh:mm:ss a'
-        });
-    </script>
-</body>
- 
-</html>
+                                
+         
+        {% else %}                
+
+                            <div class="card text-center">
+                                <div class="card-header">
+                                <!--set flash-->
+                                {% include 'app/includes/flash.html' %}
+                                <!--/set flash-->
+                                </div>
+                                <div class="card-body">
+                                <h5 class="card-title">Gestiona las reservar a tus clases</h5>
+                                <div class="text-center">
+                                    <img style="max-width: 45%;" src='{% static "img/clases.jpeg" %}'  alt="...">
+                                </div>
+                                <br>
+                                <p>Activa tus clases </p>
+                                <a   href="{% url 'reserva-add' %}" class="btn btn-success" >ir</a>
+                                
+                                </div>
+                                <div class="card-footer text-muted">
+                                 Crea Comunidad con nuestro Sitio web
+                                </div>
+                            </div>                         
+
+                      {% endif %}
+
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}

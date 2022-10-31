@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from tkinter.ttk import Progressbar
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
@@ -12,6 +13,7 @@ from django.contrib.auth.models import User
 from utilidades.formularios import logueado
 from django.contrib import messages
 from datetime import datetime
+from utilidades import formularios
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -302,19 +304,25 @@ def delete_plan(request,id):
 @login_required
 def home_clases(request):
     estado = True
+    disable = None
     datos = None
+    active = 0
     userid = request.user.id
+    if request.method == "GET":
+        reserva_activa = Reserva_estado.objects.all().count()        
+        if reserva_activa == active:
+            disable = False            
     validador = Clases.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes CLASES creadas para tu comunidad..")
     else:
         datos = Clases.objects.filter(user_creador__exact = userid)    
-    return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado} )
+    return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado, 'disable':disable} )
 
 @login_required
 def clases_add(request):       
-    if request.method == 'POST':        
+    if request.method == 'POST':                
         form = Clasesform_add(request.POST or None)
         if form.is_valid() :            
                     data = form.cleaned_data       
@@ -344,12 +352,11 @@ def clases_add(request):
 
 @login_required
 def edit_clases(request,id=None):
-    context= {}        
-    clas = Clases.objects.get(pk=id)
+    context= {}
+    clas = Clases.objects.get(pk=id)     
     user = request.user
     userid = int(request.user.id)
-    idclas =  int(clas.user_creador)
-     
+    idclas =  int(clas.user_creador)     
     if request.method == "GET":
          if id:                
             if not user.is_superuser:
@@ -392,24 +399,30 @@ def home_reserva(request):
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
 
 @login_required
-def reserva_add(request):       
-    if request.method == 'POST':        
+def reserva_add(request):
+    barra = None       
+    if request.method == 'POST':                        
         form = Reservaform_add(request.POST or None)
         if form.is_valid() :            
                     data = form.cleaned_data       
                     clase = data['clase']        
                     estado = data['estado']
-                    cupo = 1   
-                    id_u = request.user.id          
-                                                   
+                    id_u = request.user.id
+                    cupototal = formularios.get_clases_cuportotal(clase)
+                    cupoReservado = 8
+                    barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
                     save = Reserva_estado()
                     save.clase_id = clase
                     save.estado = estado 
-                    save.cupo = cupo
+                    save.cupo = cupototal[0]
+                    save.cupo_reservado = cupoReservado
+                    save.barra_cupo = barra
                     save.user_creador = id_u                                     
                     save.save()
                     messages.add_message(request, messages.SUCCESS, f"Se agrego la reserva existosamente")           
                     return HttpResponseRedirect("/homereservas/")
+        
+        
     else:
         form = Reservaform_add()       
        

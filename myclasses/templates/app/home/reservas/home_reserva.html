@@ -13,7 +13,8 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="title">Seccion reserva</h5>          
+          <h5 class="title">Seccion reserva</h5>
+          <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>          
           </div>   
           {% if estado == 1 %}
                             
@@ -24,61 +25,42 @@
                      <!--/set flash-->
                                         
                     <div >
-                      <h5 class="title">Registros actuales</h5>                     
+                      <label for="boton">Activar clase para reserva </label>
+                     <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
+                     <hr>
+                      <h5 class="title">Detalle de reservas </h5>                     
                     </div>                    
                       <br>
-                    <div class="row">                    
+                    <div class="row">           
                       
-                      <table class="table" style="width: 90%;">
-                        <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Clase</th>                                      
-                                <th>Cupo</th>                                      
-                                <th>Estado</th>                                      
-                                                                      
-                                <th class="text-right">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody> 
-                          {% for r in datos %}                                                  
-                                <tr>
-                                    <td class="text-center "><i class="tim-icons icon-tag"></i></td>
-                                    <td>{{ r.clase.descripcion }}</td>                                    
-                                    <td>{{ r.cupo  }}</td>                                    
-                                    <td>{{ r.estado }}</td>                                    
-                                    <td>{{ r.duracion }}</td>                                    
-                                                                        
-                                    <td class="td-actions text-right">
-                                      <a href="{% url 'home-gym' %}">
-                                        <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                          <i class="tim-icons icon-single-02"></i>
-                                      </button>
-                                      </a>
+                          
+                          {% for r in datos %}
 
-                                       <a href="{% url 'edit-clases' r.id %}" title="Editar"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                        <i class="tim-icons icon-settings-gear-63"></i>
-                                      </button>
-
-                                       </a>
-                                        <a href="javascript:void(0);" title="Eliminar" onclick="delete_clase({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                            <i class="tim-icons icon-simple-remove"></i>
-                                        </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                           
-                          </div>
-                          {% endfor %}              
-                      </tbody>                      
-                  </table>                                                      
+                          <div class="card border border-white  ">
+                            <h4 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h4>
+                            <div class="card-body">                                                    
+                                <p> Estado de la clase</p>   
+                                {% if  r.estado  == True %}
+                                <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
+                                     
+                                     {% else %}
+                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>                                     
+                                {% endif %}
+                                <hr>
+                                <h5 class="card-title">Cupos :</h5>
+                                <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>
+                                <div class="progress" style="height: 5;">
+                                  <div class="progress-bar" role="progressbar" style="width: {{ r.barra_cupo }}%; background-color:#607d8b;" ></div>
+                                </div>
+                            </div>
+                          </div>                       
+                          {% endfor %}                                           
+                          </div>                                                                    
+                        </div>  
+                      </div>             
+                    </div>
+                  </div>
                 </div>
-                <hr>
-                <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >Activar reserva </a> 
-              </div>
-            </div>
-          </div>
-        </div>
                                 
          
         {% else %}                
@@ -96,7 +78,7 @@
                                 </div>
                                 <br>
                                 <p>Activa tus clases </p>
-                                <a   class="btn btn-success" >ir</a>
+                                <a   href="{% url 'reserva-add' %}" class="btn btn-success" >ir</a>
                                 
                                 </div>
                                 <div class="card-footer text-muted">

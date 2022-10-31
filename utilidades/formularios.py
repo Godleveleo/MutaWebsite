@@ -61,5 +61,17 @@ def unique_slug_generator(instance, new_slug=None):
 
 def get_clases_choices():
 	return [
-	(value.pk, value.descripcion) for value in Clases.objects.all()
+	(value.pk, value.descripcion,) for value in Clases.objects.all()
+	]
+
+def porcentaje(cupototal, cupoReservado):
+
+    resultado = int(cupoReservado / cupototal * 100)
+
+    return resultado
+
+def get_clases_cuportotal(clase):
+    
+	return [
+	(value.cupo) for value in Clases.objects.filter(id__exact = clase)
 	]

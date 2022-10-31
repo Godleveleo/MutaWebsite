@@ -53,21 +53,24 @@
                                     <td>{{ r.modalidad }}</td>                                    
                                     <td>{{ r.cupo }}</td>                                    
                                     <td class="td-actions text-right">
-                                      <a href="{% url 'home-gym' %}">
-                                        <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                          <i class="tim-icons icon-single-02"></i>
-                                      </button>
-                                      </a>
+                                     
 
                                        <a href="{% url 'edit-clases' r.id %}" title="Editar"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                         <i class="tim-icons icon-settings-gear-63"></i>
                                       </button>
-
+                                        {% if disable == 0 %}                                       
                                        </a>
                                         <a href="javascript:void(0);" title="Eliminar" onclick="delete_clase({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
                                             <i class="tim-icons icon-simple-remove"></i>
                                         </button>
                                         </a>
+                                        {% else %}
+                                      </a>
+                                      <a title="No se puede eliminar con reserva activa" ><button disabled type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                          <i class="tim-icons icon-simple-remove"></i>
+                                      </button>
+                                      </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                            

@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from email.policy import default
 from random import choices
 from tabnanny import verbose
 from django.utils.html import format_html
@@ -137,13 +138,15 @@ class Perfil(models.Model):
 
 class Reserva_estado(models.Model):
     id = models.AutoField(primary_key=True)
-    clase = models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")
-    cupo = models.PositiveIntegerField( null=False, blank=False, verbose_name="Cupos disponibles")
+    clase = models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
+    cupo = models.PositiveIntegerField( null=False, blank=False, verbose_name="Cupos Total")
+    cupo_reservado = models.PositiveIntegerField( null=True, blank=False, verbose_name="Cupos Total")
     estado = models.BooleanField(default=True, verbose_name="Estado")
-    persona_reserva = models.CharField(max_length = 50, null=True) 
+    persona_reserva = models.CharField(max_length = 50, null=True)
+    barra_cupo = models.PositiveIntegerField( null=True, blank=False, verbose_name="Cupos Total")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
-    
+   
     
 
 #matriculas
