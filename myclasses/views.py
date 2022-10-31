@@ -378,6 +378,20 @@ def delete_clases(request,id):
 #### reservas ###
 
 @login_required
+def home_reserva(request):
+    estado = True
+    datos = None
+    datos = Reserva_estado.objects.all()
+    userid = request.user.id
+    validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
+    if validador == 0:
+        estado = False
+        messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
+    else:
+        datos = Reserva_estado.objects.all()   
+    return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
+
+@login_required
 def reserva_add(request):       
     if request.method == 'POST':        
         form = Reservaform_add(request.POST or None)
@@ -385,15 +399,17 @@ def reserva_add(request):
                     data = form.cleaned_data       
                     clase = data['clase']        
                     estado = data['estado']
-                    cupo = 1               
-                    print(clase)                               
+                    cupo = 1   
+                    id_u = request.user.id          
+                                                   
                     save = Reserva_estado()
                     save.clase_id = clase
                     save.estado = estado 
-                    save.cupo = cupo                                     
+                    save.cupo = cupo
+                    save.user_creador = id_u                                     
                     save.save()
                     messages.add_message(request, messages.SUCCESS, f"Se agrego la reserva existosamente")           
-                    return HttpResponseRedirect("/homereserva/")
+                    return HttpResponseRedirect("/homereservas/")
     else:
         form = Reservaform_add()       
        

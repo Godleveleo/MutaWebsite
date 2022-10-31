@@ -141,7 +141,7 @@ class Reserva_estado(models.Model):
     cupo = models.PositiveIntegerField( null=False, blank=False, verbose_name="Cupos disponibles")
     estado = models.BooleanField(default=True, verbose_name="Estado")
     persona_reserva = models.CharField(max_length = 50, null=True) 
-
+    user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
     
     

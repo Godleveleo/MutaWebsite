@@ -24,6 +24,7 @@ urlpatterns = [
     path("clasesedit/<id>/", views.edit_clases, name="edit-clases"),
     path('deleteclase/<id>/', views.delete_clases, name='delete-clases'),
     ###reserva###
+    path("homereservas/", views.home_reserva, name="home-reservas"),
     path("reservaadd/", views.reserva_add, name="reserva-add"),
 
 
