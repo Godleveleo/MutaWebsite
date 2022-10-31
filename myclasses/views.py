@@ -345,23 +345,56 @@ def clases_add(request):
 @login_required
 def edit_clases(request,id=None):
     context= {}        
-    plan = Clases.objects.get(pk=id)
+    clas = Clases.objects.get(pk=id)
     user = request.user
     userid = int(request.user.id)
-    idplan = int(plan.user_creador)   
+    idclas =  int(clas.user_creador)
+     
     if request.method == "GET":
          if id:                
             if not user.is_superuser:
-                if idplan != userid:
+                if idclas != userid:
                     html_template = loader.get_template('app/home/page-404.html')
                     return HttpResponse(html_template.render(context, request))
 
-    form = Clasesform_add(request.POST  or None, instance=plan)
+    form = Clasesform_add(request.POST  or None, instance=clas)
     if form.is_valid() :
         form.save()
-        messages.add_message(request, messages.SUCCESS, f"Se modifico su PLAN existosamente")           
-        return HttpResponseRedirect("/homeplan/")
+        messages.add_message(request, messages.SUCCESS, f"Se modifico su CLASES existosamente")           
+        return HttpResponseRedirect("/homeclases/")
         
                     
 
-    return render(request,'app/home/clases/clases.html',{'plan':plan, 'form':form})
+    return render(request,'app/home/clases/clasesedit.html',{'clas':clas, 'form':form})
+
+@login_required    
+def delete_clases(request,id):
+    dato = get_object_or_404(Clases, id=id)
+    dato.delete()
+    messages.success(request, "Eliminado exitosamente")
+    return redirect(to='/homeclases/')
+
+
+#### reservas ###
+
+@login_required
+def reserva_add(request):       
+    if request.method == 'POST':        
+        form = Reservaform_add(request.POST or None)
+        if form.is_valid() :            
+                    data = form.cleaned_data       
+                    clase = data['clase']        
+                    estado = data['estado']
+                    cupo = 1               
+                    print(clase)                               
+                    save = Reserva_estado()
+                    save.clase_id = clase
+                    save.estado = estado 
+                    save.cupo = cupo                                     
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego la reserva existosamente")           
+                    return HttpResponseRedirect("/homereserva/")
+    else:
+        form = Reservaform_add()       
+       
+    return render(request,'app/home/reservas/reserva.html',{"form": form, })

@@ -21,7 +21,11 @@ urlpatterns = [
     #####clases ###
     path("homeclases/", views.home_clases, name="home-clases"),
     path("clasesadd/", views.clases_add, name="clases-add"),
-    path("clasesedit/", views.edit_clases, name="edit-clases"),
+    path("clasesedit/<id>/", views.edit_clases, name="edit-clases"),
+    path('deleteclase/<id>/', views.delete_clases, name='delete-clases'),
+    ###reserva###
+    path("reservaadd/", views.reserva_add, name="reserva-add"),
+
 
     
     

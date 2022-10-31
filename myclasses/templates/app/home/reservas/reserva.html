@@ -1,0 +1,58 @@
+{% extends "app/layouts/base.html" %}
+
+{% block title %} Agrega Plan {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Seccion reservas </h5>
+          <p class="category">Active sus clases para las reservas <a ></a></p>
+                                
+               </div>        
+
+                  <div class="card-body ">
+                    
+                    <div class="container mt-3">
+                      
+                        <!--set flash-->
+                        {% include 'app/includes/flash.html' %}
+                        <!--/set flash-->
+
+                      <form name="form"  method="POST" action="{% url 'reserva-add' %}" >
+
+                        
+                        {% csrf_token %}
+                        
+                        
+                
+                                <div class="mb-3 ">
+                                  <label for="titulo" class="form-label">clase</label>
+                                  {{form.clase}}
+                                </div>
+                                
+                                <div class="mb-3">
+                                  <label for="disciplina" class="form-label">estado</label>
+                                  {{form.estado}}
+                                </div>
+                                                                             
+                                                             
+                              <hr>
+                                <div class="card-footer text-center">                                    
+                                  <a href="javascript:void(0);">
+                                    <button type="submit" class="btn btn-fill btn-primary" onclick="crear_gym();">Guardar</button>
+                                  </a>                                              
+                              </div>
+
+                                </form>              
+             
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

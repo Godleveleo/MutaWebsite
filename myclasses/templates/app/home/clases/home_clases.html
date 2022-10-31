@@ -1,6 +1,6 @@
 {% extends "app/layouts/base.html" %}{% load static %}
 
-{% block title %} Planes {% endblock %} 
+{% block title %} Clases {% endblock %} 
 
 
 {% block stylesheets %}{% endblock stylesheets %}
@@ -59,7 +59,7 @@
                                       </button>
                                       </a>
 
-                                       <a  title="EDITAR"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                       <a href="{% url 'edit-clases' r.id %}" title="Editar"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                         <i class="tim-icons icon-settings-gear-63"></i>
                                       </button>
 
@@ -77,7 +77,7 @@
                   </table>                                                      
                 </div>
                 <hr>
-                <a  href="{% url 'clases-add' %}"  class="btn btn-success btn-sm" >Agregar nueva clase </a> 
+                <a  href="{% url 'clases-add' %}"  class="btn btn-sm btn-success btn-simple" >Agregar nueva clase </a> 
               </div>
             </div>
           </div>

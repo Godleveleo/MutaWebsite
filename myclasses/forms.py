@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from myclasses.models import *
-
+from utilidades import formularios
 
 
 
@@ -118,8 +118,13 @@ class Clasesform_add(forms.ModelForm):
         }
        
         
-        
-
+    ####fin ##3
+class Reservaform_add(forms.Form):
+    clase = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control '}), choices=formularios.get_clases_choices)    
+    estado = forms.BooleanField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'estado', 'autocomplete':'off'}))
+    
+ 
+	
 
     
 

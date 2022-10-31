@@ -35,7 +35,7 @@ function delete_plan(id){
       }
     })
   }
-function delete_clases(id){
+function delete_clase(id){
     Swal.fire({
       "title": "¿Estas seguro?",
     //   "text": "{{message}}",

@@ -57,3 +57,9 @@ def unique_slug_generator(instance, new_slug=None):
         )
         return unique_slug_generator(instance, new_slug=new_slug)
     return slug
+
+
+def get_clases_choices():
+	return [
+	(value.pk, value.descripcion) for value in Clases.objects.all()
+	]

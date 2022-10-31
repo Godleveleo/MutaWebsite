@@ -1,78 +1,85 @@
-
 {% extends "app/layouts/base.html" %}
 
-{% block title %} Edit {% endblock %} 
+{% block title %} Agrega Plan {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
 
-  <div class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="title">Editar Gimnasio</h5>
-            <p class="category">Aqui puedes modificar los datos de tu establecimiento</p>
-            
-                                  
-                 </div>        
 
-                    <div class="card-body all-icons">
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Seccion clases </h5>
+          <p class="category">Editor <a ></a></p>
+                                
+               </div>        
+
+                  <div class="card-body ">
+                    
+                    <div class="container mt-3">
                       
-                      <div class="row">
+                        <!--set flash-->
+                        {% include 'app/includes/flash.html' %}
+                        <!--/set flash-->
+
+                      <form name="form"  method="POST" action="{% url 'clases-add' %}" >
+
                         
-                          <!--set flash-->
-                          {% include 'app/includes/flash.html' %}
-                          <!--/set flash-->
+                        {% csrf_token %}
+                        
+                        
+                
+                                <div class="mb-3 ">
+                                  <label for="titulo" class="form-label">Descripcion de la clase</label>
+                                  {{form.descripcion}}
+                                </div>
+                                
+                                <div class="mb-3">
+                                  <label for="inicioClases" class="form-label">Inicio de clase</label>
+                                  {{form.inicioClase}}
+                                </div>
+                                <div class="mb-3">
+                                  <label for="TerminoClases" class="form-label">Termino de clase</label>
+                                  {{form.terminoClase}}
+                                </div>
+                                <div class="mb-3" >
+                                  <label for="duracion"  class="form-label">Duracion (horas)</label>
+                                  {{form.duracion}}
+                                </div>
 
-                        <form name="form" method="POST" action="" enctype="multipart/form-data">
+                                <div class="form-group mb-3">
+                                  <label for="modalidad">Modalidad</label>
+                                  <select name="modalidad" class="form-control" id="modalidad">
+                                    <option value="Presencial" >Presencial</option>
+                                    <option value="Online" >Online</option>
+                                                                                                            
+                                  </select>                                 
+                                </div>                                                            
+                                                            
+                                <div class="mb-3"  >
+                                  <label for="cantidad clases"  class="form-label">cupo</label>
+                                  {{form.cupo}}
+                                </div>                             
+                                                          
+                              <hr>
+                                <div class="card-footer text-center">
+                                  <a href="{% url 'home-clases' %}">
+                                    <button type="button" class="btn btn-fill btn-primary" value="cancelar">Cancelar</button>
+                                  </a> 
+                                  
+                                  <a href="javascript:void(0);">
+                                    <button type="submit" class="btn btn-fill btn-primary" onclick="crear_gym();">Guardar</button>
+                                  </a>                                              
+                              </div>                            
 
-                          
-                          {% csrf_token %}
+                                </form>              
 
-                          <input type="hidden" name="foto" id="foto"  />
-
-                          <div class="mb-3">
-                            <label for="nombre box" class="form-label"></label>
-                            {{form.box}}
-                          </div>
-                          <div class="mb-3">
-                            <label for="ubicacion" class="form-label"></label>
-                            {{form.ubicacion}}
-                          </div>
-                          <div class="mb-3">
-                            <label for="descripcion" class="form-label"></label>
-                            {{form.descripcion}}
-                          </div>  
-                          <br>                           
-                          <div class="mb-3">                            
-                            <label for="formFileLg" class="form-label"></label>
-                            {{form.logo}}
-                            
-                          </div>                             
-                          <hr>
-                          <div class="card-footer text-center">
-                            <a href="{% url 'home-gym' %}">
-                              <button type="button" class="btn btn-fill btn-primary" value="cancelar">Cancelar</button>
-                            </a>                                    
-                            <a href="javascript:void(0);">
-                              <button type="submit" class="btn btn-fill btn-primary" onclick="editar_gym();">Actualizar</button>
-                            </a>                                              
-                                                                         
-                        </div>
-                        </form>                                                                                                 
-                     </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-     
-
+                              
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
 
 {% block javascripts %}{% endblock javascripts %}

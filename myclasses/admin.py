@@ -20,20 +20,6 @@ class ClasesAdmin(admin.ModelAdmin):
 admin.site.register(Clases, ClasesAdmin)
 
 
-class ReservaAdmin(admin.ModelAdmin):
-    list_display = ('usuario','clase')
-    icon_name = 'fitness_center'
-    list_filter = (
-                ('usuario', admin.RelatedOnlyFieldListFilter),
-            )
-    
-    
-        
-admin.site.register(Reserva, ReservaAdmin)
-
-
-
-
 
 
 class PlanesAdmin(admin.ModelAdmin):

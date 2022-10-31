@@ -135,19 +135,16 @@ class Perfil(models.Model):
 
 # reservas
 
-class Reserva(models.Model):
-    gym = models.ForeignKey(Box,max_length=20, null=True, blank=False, on_delete = models.CASCADE, verbose_name="Gimnasio")
-    usuario =models.ForeignKey(Perfil,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Alumno")
-    clase =models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
-    # tipoDisciplina = models.ForeignKey(Disciplina, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Disciplina")
+class Reserva_estado(models.Model):
+    id = models.AutoField(primary_key=True)
+    clase = models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")
+    cupo = models.PositiveIntegerField( null=False, blank=False, verbose_name="Cupos disponibles")
+    estado = models.BooleanField(default=True, verbose_name="Estado")
+    persona_reserva = models.CharField(max_length = 50, null=True) 
 
-    class Meta:
-        verbose_name = "Reserva"
-        verbose_name_plural = "Reservas" 
 
-    def __str__(self) :
-        txt = "{0} , {1} "
-        return txt.format(self.usuario, self.clase)
+    
+    
 
 #matriculas
 class Matricula(models.Model):
