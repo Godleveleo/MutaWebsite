@@ -1,0 +1,80 @@
+{% extends "app/layouts/base-fullscreen.html" %}
+
+{% block title %} noRepClass  {% endblock %} 
+
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="content">
+        <div class="container">
+            <div class="row pt-5">
+                <div  class="col-md-6 mt-5 offset-md-3 pt-5 mt-5">
+                    <div style="background-color: rgb(139, 136, 136) ;" class="card">
+                        
+                        <div class="card-header text-center py-4">
+                            <h4 class="title">
+                                Acceso alumnos
+                            </h4>
+
+                            <h6 class="card-category">
+                                {% if msg %}
+                                  <span class="text-danger">{{ msg | safe }}</span>
+                                {% else %}
+                                <span class="title">
+                                  Ingrese sus Credenciales
+                                </span>
+                                {% endif %}  
+                            </h6>
+                        </div>
+
+                        <form role="form" method="post" action="">
+                                
+                            {% csrf_token %}  
+
+                            <div class="card-body px-5 py-3"> 
+
+                                <div class="row">
+                                    <div class="col-md-12 px-md-1">
+                                        <div class="form-group">
+                                            <label>Usuario</label>
+                                            {{ form.username }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 px-md-1">
+                                        <div class="form-group">
+                                            <label>Contraseña</label>
+                                            {{ form.password }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            
+                            <div class="card-footer text-center">
+                                <button type="submit" name="login" class="btn btn-fill btn-primary">Iniciar Sesion</button>
+                                
+                                <br /><br />
+
+                                <p>
+                                    No tienes una cuenta? <a href="{% url 'registro-usuario' %}" class="text-info">Registrate</a>                            
+                                </p>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}

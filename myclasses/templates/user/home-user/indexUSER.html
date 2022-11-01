@@ -1,0 +1,111 @@
+{% extends "user/layouts/base.html" %}{% load static %}
+
+{% block title %} Inicio {% endblock %} 
+
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}         
+
+      
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Seccion planes</h5>          
+          </div>   
+          {% if estado == 1 %}
+                            
+               
+                  <div class="card-body ">
+                     <!--set flash-->
+                     {% include 'app/includes/flash.html' %}
+                     <!--/set flash-->
+                                        
+                    <div >
+                      <h5 class="title">Registros actuales</h5>                     
+                    </div>                    
+                      <br>
+                    <div class="row">                    
+                      
+                      <table class="table" style="width: 80%;">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Plan</th>                                      
+                                <th>Disciplina</th>                                      
+                                <th>Horario</th>                                      
+                                <th>Precio</th>                                      
+                                <th>Cant. Clases</th>                                      
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                          {% for r in datos %}                                                  
+                                <tr>
+                                    <td class="text-center "><i class="tim-icons icon-tag"></i></td>
+                                    <td>{{ r.titulo }}</td>                                    
+                                    <td>{{ r.disciplina }}</td>                                    
+                                    <td>{{ r.horario }}</td>                                    
+                                    <td>{{ r.precio }}</td>                                    
+                                    <td>{{ r.cantidad_clases }}</td>                                    
+                                    <td class="td-actions text-right">
+                                      <a href="{% url 'home-gym' %}">
+                                        <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
+                                          <i class="tim-icons icon-single-02"></i>
+                                      </button>
+                                      </a>
+
+                                       <a href="{% url 'edit-plan' r.id %}" title="EDITAR"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                        <i class="tim-icons icon-settings-gear-63"></i>
+                                      </button>
+
+                                       </a>
+                                        <a href="javascript:void(0);" title="Eliminar" onclick="delete_plan({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                            <i class="tim-icons icon-simple-remove"></i>
+                                        </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                                           
+                          </div>
+                          {% endfor %}              
+                      </tbody>                      
+                  </table>                                                      
+                </div>
+                <hr>
+                <a  href="{% url 'plan-add' %}"  class="btn btn-sm btn-success btn-simple" >Agregar nuevo Plan </a> 
+              </div>
+            </div>
+          </div>
+        </div>
+                                
+         
+        {% else %}                
+
+                            <div class="card text-center">
+                                <div class="card-header">
+                                <!--set flash-->
+                                {% include 'app/includes/flash.html' %}
+                                <!--/set flash-->
+                                </div>
+                                <div class="card-body">
+                                <h5 class="card-title">Crea tus planes en esta seccion</h5>
+                                <div class="text-center">
+                                    <img style="max-width: 45%;" src='{% static "img/plan.jpg" %}'  alt="...">
+                                </div>
+                                <br>
+                                <a href="{% url 'plan-add' %}"  class="btn btn-success" >Agregar Plan </a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                 Crea Comunidad con nuestro Sitio web
+                                </div>
+                            </div>                         
+
+                      {% endif %}
+
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}

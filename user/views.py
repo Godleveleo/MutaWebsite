@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 # from .forms import LoginForm, SignUpForm
 from django import template
 from django.contrib.auth.decorators import login_required
@@ -13,15 +13,16 @@ from utilidades.formularios import logueado
 from django.contrib import messages
 from datetime import datetime
 from utilidades import formularios
+from django.contrib.auth.models import Group
 
-def home():
-    pass
+def home_user(request):
+    return render(request, 'user/home-user/indexUSER.html')
 
-def CerrarSesion(request):
+def CerrarSesion_user(request):
     logout(request)
-    return redirect("login")
+    return redirect("login-usuario")
 
-def login_view(request):
+def Login_user(request):
     form = LoginForm(request.POST or None)
 
     msg = None
@@ -36,14 +37,12 @@ def login_view(request):
                 if not user.is_superuser:
                     usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
                     request.session['users_metadata_id'] =  usersMetadata.id
-                    # if user.groups.filter(name='manager').exists():
+                    
                                                        
-                    return redirect("/")
-                    # else:
-                    #     msg = 'Credenciales invalidas'
-
+                    return redirect("inicio-alumno")
+                    
                 else:
-                    return redirect("/")
+                    return redirect("inicio-alumno")
 
 
             else:
@@ -51,7 +50,7 @@ def login_view(request):
         else:
             msg = 'Error en el formulario'
 
-    return render(request, "app/accounts/login.html", {"form": form, "msg": msg})
+    return render(request, "user/acceso-usuario/login.html", {"form": form, "msg": msg})
 
 
 
@@ -67,11 +66,11 @@ def register_user(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             UsersMetadata.objects.create(user_id = user.id)
-            my_group = Group.objects.get(name='manager') 
+            my_group = Group.objects.get(name='alumnos') 
             my_group.user_set.add(user.id)
-            msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
+            msg = 'Te registraste existosamente ¡BIENVENID@!'
             success = True
-            return redirect("/login/")
+            return redirect("login-usuario")
         
 
         else:            
@@ -80,4 +79,4 @@ def register_user(request):
     else:
         form = SignUpForm()
 
-    return render(request, "app/accounts/register.html", {"form": form, "msg": msg, "success": success})
+    return render(request, "user/acceso-usuario/register.html", {"form": form, "msg": msg, "success": success})

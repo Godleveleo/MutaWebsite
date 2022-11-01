@@ -5,7 +5,10 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, re_path
 
 urlpatterns = [
-    path('', views.home, name="home"),
+    path('', views.home_user, name="inicio-alumno"),
+    path('login/user', views.Login_user, name="login-usuario"),
+    path('logout', views.CerrarSesion_user, name= 'logout-user'),
+    path('registro/user', views.register_user, name="registro-usuario"),
     
 
 

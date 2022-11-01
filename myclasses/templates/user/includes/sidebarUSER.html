@@ -1,7 +1,7 @@
 
-    <div class="sidebar">
-       
-        <div class="sidebar-wrapper">
+    <div class="sidebar" >
+        
+        <div class="sidebar-wrapper" style="background-color: #31b0ae" >
             <div class="logo">
                 <a href="javascript:void(0)" class="simple-text logo-mini">
                     <i class="tim-icons icon-single-02"></i>
@@ -14,9 +14,9 @@
             </div>
             <ul class="nav">
                 <li class="{% if 'gym' in segment %} active {% endif %} ">
-                    <a href="{% url 'home-gym' %}">
+                    <a href="{% url 'home-clases' %}">
                         <i class="tim-icons icon-app"></i>
-                        <p>Mi Gimnasio</p>
+                        <p>Clases</p>
                     </a>
                 </li>
                 <li class="{% if 'Planes' in segment %} active {% endif %}">
@@ -39,7 +39,7 @@
                 </li>            
                 
                 <li>
-                    <a href="{% url 'logout' %}">
+                    <a href="{% url 'logout-user' %}">
                         <i class="tim-icons icon-button-power"></i>
                         <p>Cerrar sesion</p>
                     </a>

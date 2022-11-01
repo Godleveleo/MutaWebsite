@@ -5,46 +5,51 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <link rel="apple-touch-icon" sizes="76x76" href='{% static "/img/apple-icon.png" %}'>
+    <link rel="icon" type="image/png" href='{% static "/img/favicon.png" %}'>
 
     <title>
-       {% block title %}{% endblock %}| NoRepClass
+       {% block title %}{% endblock %} | Norepclass
     </title>
-
-    <!--     Fonts and icons     -->
+    
+  
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <!-- Nucleo Icons -->
+     <link rel="stylesheet" href='{% static "bootstrap/css/bootstrap.min.css" %}' >
     <link href='{% static "/css/nucleo-icons.css" %}' rel="stylesheet"/>
     <!-- CSS Files -->
-    <link href='{% static "/css/black-dashboard.css " %}' rel="stylesheet"/>
-    <link href='{% static "/css/theme-switcher.css " %}' rel="stylesheet"/>
+    <link href='{% static "/css/black-dashboard.css" %}' rel="stylesheet"/>
+    <link href='{% static "css/theme-switcher.css" %}' rel="stylesheet"/>
     
+
+  <link rel="stylesheet" href='{% static "/css/nucleo-icons.css" %}' >
+
     {% block stylesheets %}{% endblock stylesheets %}
-        
+
 </head>
 <body class="">
 
     <div class="wrapper">
 
-        {% include 'app/includes/sidebar.html' %}
+        {% include 'app/includes/navigation-fullscreen.html' %}
 
-        <div class="main-panel">
-
-            {% include 'app/includes/navigation.html' %}
+        <div class="container-fluid">
 
             {% block content %}{% endblock content %}
 
-            {% include 'app/includes/footer.html' %}
+            {% include 'app/includes/footer-fullscreen.html' %}
 
         </div>
+
     </div>
 
     {% include 'app/includes/fixed-plugin.html' %}
 
     {% include 'app/includes/scripts.html' %}
 
-    <!-- Specific Page JS goes HERE  -->
+
+    
     {% block javascripts %}{% endblock javascripts %}
 
 </body>
