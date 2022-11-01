@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
-from tkinter.ttk import Progressbar
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignUpForm
 from django import template
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.urls import reverse
@@ -14,6 +13,12 @@ from utilidades.formularios import logueado
 from django.contrib import messages
 from datetime import datetime
 from utilidades import formularios
+from django.contrib.auth.models import Group
+
+
+def CerrarSesion(request):
+    logout(request)
+    return redirect("login")
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -21,7 +26,6 @@ def login_view(request):
     msg = None
 
     if request.method == "POST":
-
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
@@ -30,8 +34,13 @@ def login_view(request):
                 login(request, user)
                 if not user.is_superuser:
                     usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
-                    request.session['users_metadata_id'] =  usersMetadata.id              
+                    request.session['users_metadata_id'] =  usersMetadata.id
+                    # if user.groups.filter(name='manager').exists():
+                                                       
                     return redirect("/")
+                    # else:
+                    #     msg = 'Credenciales invalidas'
+
                 else:
                     return redirect("/")
 
@@ -42,6 +51,7 @@ def login_view(request):
             msg = 'Error en el formulario'
 
     return render(request, "app/accounts/login.html", {"form": form, "msg": msg})
+
 
 
 def register_user(request):
@@ -56,6 +66,8 @@ def register_user(request):
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
             UsersMetadata.objects.create(user_id = user.id)
+            my_group = Group.objects.get(name='manager') 
+            my_group.user_set.add(user.id)
             msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
             success = True
             return redirect("/login/")
@@ -97,12 +109,14 @@ def register_user(request):
 
 
 @login_required
+@user_passes_test(formularios.is_member)
 def home(request):
     return render(request, 'app/home/index.html')
 
 ##### seccion gimnasio (agregar/listar/editar/eliminar/validaciones)######
 
 @login_required
+@user_passes_test(formularios.is_member)
 def home_gym(request):
     estado = True
     datos = None
@@ -117,6 +131,7 @@ def home_gym(request):
 
 
 @login_required
+@user_passes_test(formularios.is_member)
 def box_add(request):
     context= {}
     datos = None
@@ -178,7 +193,8 @@ def box_add(request):
     datos = Box.objects.filter(user_creador__exact = userid)   
     return render(request,'app/home/gym/gym.html',{"form": form, "msg": msg, 'datos':datos } )
 
-@login_required    
+@login_required 
+@user_passes_test(formularios.is_member)   
 def delete_gym(request,id):
     dato = get_object_or_404(Box, id=id)
     dato.delete()
@@ -186,6 +202,7 @@ def delete_gym(request,id):
     return redirect(to='/gym/')
 
 @login_required
+@user_passes_test(formularios.is_member)
 def edit_gym(request,id=None):
     context= {}        
     gym = Box.objects.get(pk=id)
@@ -228,6 +245,7 @@ def edit_gym(request,id=None):
 ##### planes de gimnasio creado #########
 
 @login_required
+@user_passes_test(formularios.is_member)
 def home_plan(request):
     estado = True
     datos = None
@@ -242,6 +260,7 @@ def home_plan(request):
     
 
 @login_required
+@user_passes_test(formularios.is_member)
 def planes_add(request):       
     if request.method == 'POST':        
         form = Planform_add(request.POST or None)
@@ -269,6 +288,7 @@ def planes_add(request):
     return render(request,'app/home/planes/planes.html',{"form": form, })
     
 @login_required
+@user_passes_test(formularios.is_member)
 def edit_plan(request,id=None):
     context= {}        
     plan = Planes.objects.get(pk=id)
@@ -292,7 +312,8 @@ def edit_plan(request,id=None):
 
     return render(request,'app/home/planes/edit-plan.html',{'plan':plan, 'form':form})
 
-@login_required    
+@login_required
+@user_passes_test(formularios.is_member)    
 def delete_plan(request,id):
     dato = get_object_or_404(Planes, id=id)
     dato.delete()
@@ -302,6 +323,7 @@ def delete_plan(request,id):
 
 ########## clases #######
 @login_required
+@user_passes_test(formularios.is_member)
 def home_clases(request):
     estado = True
     disable = None
@@ -321,6 +343,7 @@ def home_clases(request):
     return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado, 'disable':disable} )
 
 @login_required
+@user_passes_test(formularios.is_member)
 def clases_add(request):       
     if request.method == 'POST':                
         form = Clasesform_add(request.POST or None)
@@ -351,6 +374,7 @@ def clases_add(request):
 
 
 @login_required
+@user_passes_test(formularios.is_member)
 def edit_clases(request,id=None):
     context= {}
     clas = Clases.objects.get(pk=id)     
@@ -374,7 +398,8 @@ def edit_clases(request,id=None):
 
     return render(request,'app/home/clases/clasesedit.html',{'clas':clas, 'form':form})
 
-@login_required    
+@login_required
+@user_passes_test(formularios.is_member)    
 def delete_clases(request,id):
     dato = get_object_or_404(Clases, id=id)
     dato.delete()
@@ -385,6 +410,7 @@ def delete_clases(request,id):
 #### reservas ###
 
 @login_required
+@user_passes_test(formularios.is_member)
 def home_reserva(request):
     estado = True
     datos = None
@@ -399,6 +425,7 @@ def home_reserva(request):
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
 
 @login_required
+@user_passes_test(formularios.is_member)
 def reserva_add(request):
     barra = None       
     if request.method == 'POST':                        
@@ -408,18 +435,17 @@ def reserva_add(request):
                     clase = data['clase']        
                     estado = data['estado']
                     id_u = request.user.id
-                    cupototal = formularios.get_clases_cuportotal(clase)
-                    cupoReservado = 8
+                    cupoReservado= 5
+                    cupototal = formularios.get_clases_cuportotal(clase)                   
                     barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
                     save = Reserva_estado()
                     save.clase_id = clase
                     save.estado = estado 
-                    save.cupo = cupototal[0]
-                    save.cupo_reservado = cupoReservado
+                    save.cupo = cupototal[0]                    
                     save.barra_cupo = barra
                     save.user_creador = id_u                                     
                     save.save()
-                    messages.add_message(request, messages.SUCCESS, f"Se agrego la reserva existosamente")           
+                    messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
                     return HttpResponseRedirect("/homereservas/")
         
         

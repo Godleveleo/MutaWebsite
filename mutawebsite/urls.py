@@ -9,6 +9,7 @@ from django.urls import path, re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myclasses.urls')),
+    path('alumno/', include('user.urls')),
 
     
     
