@@ -14,10 +14,17 @@ class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Usuario",
-                "class": "form-control"
+                "placeholder": "Email",
+                "class": "form-control",
+                'autocomplete':'off'
             }
-        ))
+        ),
+        validators=[
+                validators.MinLengthValidator(4, message="El E-Mail es demasiado corto"),
+				validators.RegexValidator('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', message="El E-Mail ingresado no es válido")
+        ],
+                error_messages={'required':'El campo E-Mail está vacío' }
+        )
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -32,17 +39,19 @@ class SignUpForm(UserCreationForm):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Usuario",
-                "class": "form-control"
-            }
-        ))
-    email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
                 "placeholder": "Email",
-                "class": "form-control"
+                "class": "form-control",
+                'autocomplete':'off'
             }
-        ))
+        ),
+        validators=[
+                validators.MinLengthValidator(4, message="El E-Mail es demasiado corto"),
+				validators.RegexValidator('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', message="El E-Mail ingresado no es válido")
+        ],
+                error_messages={'required':'El campo E-Mail está vacío' }
+        )
+    
+       
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
