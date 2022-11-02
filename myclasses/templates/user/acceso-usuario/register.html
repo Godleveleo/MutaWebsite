@@ -1,4 +1,4 @@
-{% extends "app/layouts/base-fullscreen.html" %}
+{% extends "user/layouts/base-fullscreen.html" %}
 
 {% block title %} Registrate {% endblock %} 
 
@@ -11,10 +11,10 @@
         <div class="container">
             <div class="row pt-5">
                 <div class="col-md-6 mt-5 offset-md-3 pt-5 mt-5">
-                    <div class="card">
+                    <div class="card" >
                         <div class="card-header text-center py-4">
                             <h4 class="title">
-                              Registrate en tu Comunidad 
+                              Inscribete en tu Comunidad 
                             </h4>
 
                             <h6 class="card-category">
@@ -22,7 +22,7 @@
                                     <span class="text-danger">{{ msg | safe }}</span>
                                 {% else %}
                                     <span>
-                                        Considera contraseñas seguras
+                                      Reserva tus clases con NoRepClass
                                     </span>
                                 {% endif %}  
                             </h6>     
@@ -42,21 +42,35 @@
             
                                 {% csrf_token %}
 
-                                <div class="card-body px-5 py-3">
+                                <div class="card-body px-5 py-3" >
 
                                     <div class="row">
                                                                                   
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
-                                                <label>Email</label>
-                                                {{ form.email }}
+                                                <label class="text-info">Email</label>
+                                                {{ form.username }}
                                             </div>
-                                            <span class="text-danger">{{ form.email.errors }}</span>
+                                            <span class="text-danger">{{ form.username.errors }}</span>
+                                        </div>
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label class="text-info">Nombre</label>
+                                                {{ form.first_name }}
+                                            </div>
+                                            <span class="text-danger">{{ form.first_name.errors }}</span>
+                                        </div>
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label class="text-info">Apellidos</label>
+                                                {{ form.last_name }}
+                                            </div>
+                                            <span class="text-danger">{{ form.last_name.errors }}</span>
                                         </div>
 
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
-                                                <label>Contraseña</label>
+                                                <label class="text-info">Contraseña</label>
                                                 {{ form.password1 }}
                                             </div>
                                             <span class="text-danger">{{ form.password1.errors }}</span>
@@ -64,7 +78,7 @@
 
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
-                                                <label>Confirmar contraseña</label>
+                                                <label class="text-info">Confirmar contraseña</label>
                                                 {{ form.password2 }}
                                             </div>
                                             <span class="text-danger">{{ form.password2.errors }}</span>
@@ -80,7 +94,7 @@
                                     <br /><br />
                                     
                                     <p>
-                                        Tienes una cuenta? <a href="{% url 'login-usuario' %}" class="text-primary">acceder</a>
+                                        Tienes una cuenta? <a href="{% url 'login-usuario' %}" class="text-info">acceder</a>
                                     </p> 
                                 </div>
                             
@@ -98,5 +112,5 @@
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
+
 {% block javascripts %}{% endblock javascripts %}

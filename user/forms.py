@@ -6,24 +6,51 @@ from utilidades import formularios
 from django.forms import PasswordInput
 from django.core import validators
 
-class Formulario_Login(forms.Form):
-    correo = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'E-Mail', 'autocomplete':'off'}))
-    password = forms.CharField(required=True, widget=PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Contraseña', 'autocomplete':'off'}))
-
-class formulario_registro(UserCreationForm):
-    email = forms.EmailField(
+class LoginForm(forms.Form):
+    username = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Email",
                 "class": "form-control",
-                
+                'autocomplete':'off'
             }
-        ), validators=[
+        ),
+        validators=[
                 validators.MinLengthValidator(4, message="El E-Mail es demasiado corto"),
 				validators.RegexValidator('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', message="El E-Mail ingresado no es válido")
         ],
                 error_messages={'required':'El campo E-Mail está vacío' }
         )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Contraseña",
+                "class": "form-control"
+            }
+        ))
+
+#### Registro
+
+class registroForm(UserCreationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control",
+                'autocomplete':'off'
+            }
+        ),
+        validators=[
+                validators.MinLengthValidator(4, message="El E-Mail es demasiado corto"),
+				validators.RegexValidator('^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$', message="El E-Mail ingresado no es válido")
+        ],
+                error_messages={'required':'El campo E-Mail está vacío' }
+        )
+    
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre' }))
+    
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellidos'}))
+
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -41,4 +68,7 @@ class formulario_registro(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('username','first_name','last_name', 'email', 'password1', 'password2')
+
+
+

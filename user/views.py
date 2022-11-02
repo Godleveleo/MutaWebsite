@@ -22,37 +22,26 @@ def CerrarSesion_user(request):
     logout(request)
     return redirect("login-usuario")
     
-# def formularios_login(request):
-# 	form = Formulario_Login(request.POST or None)
-# 	if request.method=='POST':
-# 		if form.is_valid:
-# 			#data = form.cleaned_data
-# 			user =authenticate(request, username=request.POST['correo'], password=request.POST['password'])
-# 			if user is not None:
-# 				login(request, user)                
-# 				usersMetadata=UsersMetadata.objects.filter(user_id=request.user.id).get()
-# 				request.session['users_metadata_id']=usersMetadata.id
-# 				return HttpResponseRedirect('/formularios/logueado')
-# 			else:
-# 				messages.add_message(request, messages.WARNING, f'Los datos ingresados no son correctos, por favor vuelva a intentar.')
-# 				return HttpResponseRedirect('/formularios/login')
-# 	return render(request, "user/acceso-usuario/login.html", {'form': form})
+def login_user(request):
+    form = LoginForm(request.POST or None)
 
-def Login_user(request):
-    form = Formulario_Login(request.POST or None)
     msg = None
+
     if request.method == "POST":
-        if form.is_valid():            
-            username = form.cleaned_data.get("correo")
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             if user is not None:                
                 login(request, user)
                 if not user.is_superuser:
                     usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
-                    request.session['users_metadata_id'] =  usersMetadata.id             
-                    return redirect("inicio-alumno")
-                    
+                    request.session['users_metadata_id'] =  usersMetadata.id
+                    if user.groups.filter(name='alumnos').exists():
+                                            return redirect("inicio-alumno")
+                    else:
+                         msg = 'Credenciales invalidas'
+
                 else:
                     return redirect("inicio-alumno")
 
@@ -71,16 +60,16 @@ def register_user(request):
     success = False
 
     if request.method == "POST":
-        form = formulario_registro(request.POST)
+        form = registroForm(request.POST)
         if form.is_valid():
-            formulario_registro.password.save()
-            
-
-            user =authenticate(request, username=request.POST['email'], password=request.POST['password1'])
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=raw_password)
             UsersMetadata.objects.create(user_id = user.id)
             my_group = Group.objects.get(name='alumnos') 
             my_group.user_set.add(user.id)
-            msg = 'Te registraste existosamente ¡BIENVENID@!'
+            msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
             success = True
             return redirect("login-usuario")
         
@@ -89,6 +78,55 @@ def register_user(request):
             msg = 'Lo siento, los datos ingresados no son validos'
             
     else:
-        form = formulario_registro()
+        form = registroForm()
 
     return render(request, "user/acceso-usuario/register.html", {"form": form, "msg": msg, "success": success})
+
+
+
+#### reservas ###
+
+@login_required
+
+def home_reserva(request):
+    estado = True
+    datos = None
+    datos = Reserva_estado.objects.all()
+    userid = request.user.id
+    validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
+    if validador == 0:
+        estado = False
+        messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
+    else:
+        datos = Reserva_estado.objects.all()   
+    return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
+
+@login_required
+
+def reserva_add(request):
+    barra = None       
+    if request.method == 'POST':                        
+        form = Reservaform_add(request.POST or None)
+        if form.is_valid() :            
+                    data = form.cleaned_data       
+                    clase = data['clase']        
+                    estado = data['estado']
+                    id_u = request.user.id
+                    cupoReservado= 5
+                    cupototal = formularios.get_clases_cuportotal(clase)                   
+                    barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
+                    save = Reserva_estado()
+                    save.clase_id = clase
+                    save.estado = estado 
+                    save.cupo = cupototal[0]                    
+                    save.barra_cupo = barra
+                    save.user_creador = id_u                                     
+                    save.save()
+                    messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
+                    return HttpResponseRedirect("/homereservas/")
+        
+        
+    else:
+        form = Reservaform_add()       
+       
+    return render(request,'app/home/reservas/reserva.html',{"form": form, })

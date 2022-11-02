@@ -35,11 +35,11 @@ def login_view(request):
                 if not user.is_superuser:
                     usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
                     request.session['users_metadata_id'] =  usersMetadata.id
-                    # if user.groups.filter(name='manager').exists():
+                    if user.groups.filter(name='manager').exists():
                                                        
-                    return redirect("/")
-                    # else:
-                    #     msg = 'Credenciales invalidas'
+                                            return redirect("/")
+                    else:
+                         msg = 'Credenciales invalidas'
 
                 else:
                     return redirect("/")

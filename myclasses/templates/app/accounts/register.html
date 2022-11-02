@@ -14,7 +14,7 @@
                     <div class="card">
                         <div class="card-header text-center py-4">
                             <h4 class="title">
-                                Registrate
+                                NoRepClass Administracion
                             </h4>
 
                             <h6 class="card-category">
@@ -22,7 +22,7 @@
                                     <span class="text-danger">{{ msg | safe }}</span>
                                 {% else %}
                                     <span>
-                                        Agrega tus credenciales
+                                        Registrate en nuestro sitio web
                                     </span>
                                 {% endif %}  
                             </h6>     
@@ -52,7 +52,20 @@
                                             </div>
                                             <span class="text-danger">{{ form.username.errors }}</span>
                                         </div>                                        
-
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label >Nombre</label>
+                                                {{ form.first_name }}
+                                            </div>
+                                            <span class="text-danger">{{ form.first_name.errors }}</span>
+                                        </div>
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label >Apellidos</label>
+                                                {{ form.last_name }}
+                                            </div>
+                                            <span class="text-danger">{{ form.last_name.errors }}</span>
+                                        </div>
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
                                                 <label>Contraseña</label>
@@ -79,7 +92,7 @@
                                     <br /><br />
                                     
                                     <p>
-                                        Tienes una cuenta? <a href="{% url 'login' %}" class="text-primary">acceder</a>
+                                        Tienes una cuenta? <a href="{% url 'login' %}" class="text-info">acceder</a>
                                     </p> 
                                 </div>
                             

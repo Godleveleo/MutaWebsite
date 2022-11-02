@@ -8,7 +8,7 @@
                 </a>
                 <a href="javascript:void(0)" class="simple-text logo-normal">
                     <div>
-                        <span>{{ user.username}}</span>
+                        <span>{{ user.first_name}}</span>
                     </div>
                 </a>
             </div>
@@ -37,7 +37,6 @@
                         <p>Reservas</p>
                     </a>
                 </li>            
-                
                 <li>
                     <a href="{% url 'logout-user' %}">
                         <i class="tim-icons icon-button-power"></i>
