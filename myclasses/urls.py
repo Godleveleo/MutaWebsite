@@ -7,7 +7,7 @@ from django.urls import path, re_path
 urlpatterns = [
     path('', views.home, name="home"),
     path('login/', views.login_view, name="login"),
-    path('register/', views.register_user, name="register"),
+    path('register/', views.register, name="register"),
     path('logout', views.CerrarSesion, name= 'logout'),
     path("homegym/", views.home_gym, name="home-gym"),
     path('deletegym/<id>/', views.delete_gym, name='delete-gym'), 

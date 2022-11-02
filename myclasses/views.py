@@ -54,7 +54,7 @@ def login_view(request):
 
 
 
-def register_user(request):
+def register(request):
     msg = None
     success = False
 

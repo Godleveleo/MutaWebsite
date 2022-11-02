@@ -13,6 +13,8 @@ from django.dispatch import receiver
 
 
 
+
+
 #extension de USER
 class UsersMetadata(models.Model):
     id = models.AutoField(primary_key=True)    

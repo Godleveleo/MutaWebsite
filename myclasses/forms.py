@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from myclasses.models import *
 from utilidades import formularios
-
+from django.forms import PasswordInput
+from django.core import validators
 
 
 ### logueo
