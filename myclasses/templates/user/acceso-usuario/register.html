@@ -67,7 +67,12 @@
                                             </div>
                                             <span class="text-danger">{{ form.last_name.errors }}</span>
                                         </div>
-
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label class="text-info">Seleccione su Comunidad</label>
+                                                {{ form.comunidad }}
+                                            </div>                                            
+                                        </div>
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
                                                 <label class="text-info">Contraseña</label>
@@ -85,7 +90,6 @@
                                         </div>                                        
 
                                     </div>
-
                                     
                                 </div>
                                 <div class="card-footer text-center">
@@ -109,7 +113,7 @@
         </div>
 
     </div>
-
+    <br /><br />
 {% endblock content %}
 
 

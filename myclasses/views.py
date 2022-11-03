@@ -16,6 +16,7 @@ from utilidades import formularios
 from django.contrib.auth.models import Group
 
 
+
 def CerrarSesion(request):
     logout(request)
     return redirect("login")
@@ -108,15 +109,15 @@ def register(request):
 
 
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def home(request):
     return render(request, 'app/home/index.html')
 
 ##### seccion gimnasio (agregar/listar/editar/eliminar/validaciones)######
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def home_gym(request):
     estado = True
     datos = None
@@ -130,8 +131,8 @@ def home_gym(request):
     return render(request,'app/home/gym/home_gym.html',{'datos':datos, 'estado':estado} )
 
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def box_add(request):
     context= {}
     datos = None
@@ -193,8 +194,8 @@ def box_add(request):
     datos = Box.objects.filter(user_creador__exact = userid)   
     return render(request,'app/home/gym/gym.html',{"form": form, "msg": msg, 'datos':datos } )
 
-@login_required 
-@user_passes_test(formularios.is_member)   
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')   
 def delete_gym(request,id):
     dato = get_object_or_404(Box, id=id)
     dato.delete()
@@ -202,7 +203,7 @@ def delete_gym(request,id):
     return redirect(to='/gym/')
 
 @login_required
-@user_passes_test(formularios.is_member)
+@user_passes_test(formularios.is_member, login_url='login')
 def edit_gym(request,id=None):
     context= {}        
     gym = Box.objects.get(pk=id)
@@ -244,8 +245,8 @@ def edit_gym(request,id=None):
 
 ##### planes de gimnasio creado #########
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def home_plan(request):
     estado = True
     datos = None
@@ -259,8 +260,8 @@ def home_plan(request):
     return render(request,'app/home/planes/home-plan.html',{'datos':datos, 'estado':estado} )
     
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def planes_add(request):       
     if request.method == 'POST':        
         form = Planform_add(request.POST or None)
@@ -287,8 +288,8 @@ def planes_add(request):
        
     return render(request,'app/home/planes/planes.html',{"form": form, })
     
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def edit_plan(request,id=None):
     context= {}        
     plan = Planes.objects.get(pk=id)
@@ -312,8 +313,8 @@ def edit_plan(request,id=None):
 
     return render(request,'app/home/planes/edit-plan.html',{'plan':plan, 'form':form})
 
-@login_required
-@user_passes_test(formularios.is_member)    
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')    
 def delete_plan(request,id):
     dato = get_object_or_404(Planes, id=id)
     dato.delete()
@@ -322,8 +323,8 @@ def delete_plan(request,id):
 
 
 ########## clases #######
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def home_clases(request):
     estado = True
     disable = None
@@ -342,8 +343,8 @@ def home_clases(request):
         datos = Clases.objects.filter(user_creador__exact = userid)    
     return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado, 'disable':disable} )
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def clases_add(request):       
     if request.method == 'POST':                
         form = Clasesform_add(request.POST or None)
@@ -373,8 +374,8 @@ def clases_add(request):
     return render(request,'app/home/clases/clases.html',{"form": form, })
 
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def edit_clases(request,id=None):
     context= {}
     clas = Clases.objects.get(pk=id)     
@@ -398,8 +399,8 @@ def edit_clases(request,id=None):
 
     return render(request,'app/home/clases/clasesedit.html',{'clas':clas, 'form':form})
 
-@login_required
-@user_passes_test(formularios.is_member)    
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')   
 def delete_clases(request,id):
     dato = get_object_or_404(Clases, id=id)
     dato.delete()
@@ -409,40 +410,42 @@ def delete_clases(request,id):
 
 #### reservas ###
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def home_reserva(request):
     estado = True
-    datos = None
-    datos = Reserva_estado.objects.all()
+    datos = None    
     userid = request.user.id
+  
     validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
     else:
-        datos = Reserva_estado.objects.all()   
+        datos = Reserva_estado.objects.filter(user_creador__exact = userid)   
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
 
-@login_required
-@user_passes_test(formularios.is_member)
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
 def reserva_add(request):
-    barra = None       
+    barra = None
+    userid = request.user.id
+    comunidad = Box.objects.filter(user_creador = userid ).first()       
+    clases = Clases.objects.filter(user_creador = userid )      
     if request.method == 'POST':                        
-        form = Reservaform_add(request.POST or None)
+        form = Reservaform_add(request.POST or None)        
         if form.is_valid() :            
                     data = form.cleaned_data       
-                    clase = data['clase']        
+                    clase = data['clase']                
                     estado = data['estado']
-                    id_u = request.user.id
-                    cupoReservado= 5
+                    id_u = request.user.id                    
                     cupototal = formularios.get_clases_cuportotal(clase)                   
-                    barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
+                    # barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
                     save = Reserva_estado()
                     save.clase_id = clase
+                    save.comunidad_id = comunidad.id
                     save.estado = estado 
                     save.cupo = cupototal[0]                    
-                    save.barra_cupo = barra
                     save.user_creador = id_u                                     
                     save.save()
                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
@@ -452,4 +455,9 @@ def reserva_add(request):
     else:
         form = Reservaform_add()       
        
-    return render(request,'app/home/reservas/reserva.html',{"form": form, })
+    return render(request,'app/home/reservas/reserva.html',{"form": form, "comunidad":comunidad, "clase":clases})
+
+
+
+
+

@@ -30,19 +30,26 @@
                         
                         {% csrf_token %}
                         
-                        
-                
+
+                                <div class="mb-3 ">
+                                  <h5> Mi Comunidad :  {{ comunidad.box | upper }}</h5>
+                                </div>
+                                <hr>
                                 <div class="mb-3 ">
                                   <label for="Clase" class="form-label">Seleccione una clase</label>
-                                  {{form.clase}}
+                                  <select required name="clase" class="form-control" aria-label="Clases">
+                                    <option disabled selected>Clases</option>
+                                    {% for c in clase %}
+                                    <option value="{{ c.id }}"><p>{{ c.descripcion }}</p></option>
+                                    {% endfor %}                 
+                                  </select>
                                 </div>
-                                
+                                                                  
                                 <div class="mb-3">
                                   <h5>Habilita la clase</h5>                                 
                                   {{form.estado}}
                                   <label for="disciplina" class="form-label">Activar</label>
-                                </div>         
-                                
+                                </div>                 
                                                              
                               <hr>
                                 <div class="card-footer text-center">                                    
@@ -55,5 +62,5 @@
              
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
+
 {% block javascripts %}{% endblock javascripts %}

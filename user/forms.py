@@ -51,6 +51,8 @@ class registroForm(UserCreationForm):
     
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellidos'}))
 
+    comunidad = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control '}), choices=formularios.get_box_choices)
+    
     password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
@@ -72,3 +74,8 @@ class registroForm(UserCreationForm):
 
 
 
+### reserva ##
+
+class Reservaform_user(forms.Form):
+    clase = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control '}), choices=formularios.get_clases_choices)    
+    estado = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={' class': 'f  ss', }))

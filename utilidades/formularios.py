@@ -63,6 +63,10 @@ def get_clases_choices():
 	return [
 	(value.pk, value.descripcion,) for value in Clases.objects.all()
 	]
+def get_box_choices():
+	return [
+	(value.pk, value.box,) for value in Box.objects.all()
+	]
 
 def porcentaje(cupototal, cupoReservado):
 
@@ -81,3 +85,4 @@ def is_member(user):
 
 def is_member_alumno(user):
     return user.groups.filter(name='alumnos').exists()
+

@@ -2,9 +2,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from user.forms import *
-from myclasses.models import UsersMetadata
+from myclasses.models import UsersMetadata, Reserva_estado
 from django import template
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.urls import reverse
@@ -15,6 +15,8 @@ from datetime import datetime
 from utilidades import formularios
 from django.contrib.auth.models import Group
 
+@login_required(login_url='login-usuario')
+@user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
 def home_user(request):
     return render(request, 'user/home-user/indexUSER.html')
 
@@ -65,8 +67,9 @@ def register_user(request):
             form.save()
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get("password1")
+            comunidad = form.cleaned_data.get("comunidad")
             user = authenticate(username=username, password=raw_password)
-            UsersMetadata.objects.create(user_id = user.id)
+            UsersMetadata.objects.create(user_id = user.id, comunidad_id = comunidad)
             my_group = Group.objects.get(name='alumnos') 
             my_group.user_set.add(user.id)
             msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
@@ -86,47 +89,49 @@ def register_user(request):
 
 #### reservas ###
 
-@login_required
-
-def home_reserva(request):
+@login_required(login_url='login-usuario')
+@user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
+def home_reserva_user(request):
     estado = True
-    datos = None
-    datos = Reserva_estado.objects.all()
+    datos = None    
     userid = request.user.id
-    validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
+    datosUsuario = UsersMetadata.objects.filter(user_id__exact = userid).first()   
+    validador = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
     else:
-        datos = Reserva_estado.objects.all()   
-    return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
+        datos = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad)
+        if request.method == 'POST':
+            pass  
+    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado} )
 
-@login_required
 
-def reserva_add(request):
-    barra = None       
-    if request.method == 'POST':                        
-        form = Reservaform_add(request.POST or None)
-        if form.is_valid() :            
-                    data = form.cleaned_data       
-                    clase = data['clase']        
-                    estado = data['estado']
-                    id_u = request.user.id
-                    cupoReservado= 5
-                    cupototal = formularios.get_clases_cuportotal(clase)                   
-                    barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
-                    save = Reserva_estado()
-                    save.clase_id = clase
-                    save.estado = estado 
-                    save.cupo = cupototal[0]                    
-                    save.barra_cupo = barra
-                    save.user_creador = id_u                                     
-                    save.save()
-                    messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
-                    return HttpResponseRedirect("/homereservas/")
+
+# def reserva_add_user(request):
+#     barra = None       
+#     if request.method == 'POST':                        
+#         form = Reservaform_user(request.POST or None)
+#         if form.is_valid() :            
+#                     data = form.cleaned_data       
+#                     clase = data['clase']        
+#                     estado = data['estado']
+#                     id_u = request.user.id
+#                     cupoReservado= 5
+#                     cupototal = formularios.get_clases_cuportotal(clase)                   
+#                     barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
+#                     save = Reserva_estado()
+#                     save.clase_id = clase
+#                     save.estado = estado 
+#                     save.cupo = cupototal[0]                    
+#                     save.barra_cupo = barra
+#                     save.user_creador = id_u                                     
+#                     save.save()
+#                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
+#                     return HttpResponseRedirect("/homereservas/")
         
         
-    else:
-        form = Reservaform_add()       
+#     else:
+#         form = Reservaform_user()       
        
-    return render(request,'app/home/reservas/reserva.html',{"form": form, })
+#     return render(request,'app/home/reservas/reserva.html',{"form": form, })

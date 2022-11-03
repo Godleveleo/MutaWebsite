@@ -1,7 +1,4 @@
 # -*- encoding: utf-8 -*-
-from email.policy import default
-from random import choices
-from tabnanny import verbose
 from django.utils.html import format_html
 from django.db import models
 # from autoslug import AutoSlugField
@@ -11,36 +8,6 @@ from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 ##
 
-
-
-
-
-#extension de USER
-class UsersMetadata(models.Model):
-    id = models.AutoField(primary_key=True)    
-    user = models.ForeignKey(User, models.DO_NOTHING, null= True)
-    ced_identidad = models.CharField(max_length=9, verbose_name="Cedula de identidad")
-    fechaNacimiento = models.DateField(verbose_name="Fecha de Nacimiento", null=True)
-    sexos = [
-        ('F', 'Femenino'),
-        ('M' ,'Masculino'),
-        ('N.N', 'Prefiero no Decirlo')
-    ]
-    sexo = models.CharField(max_length=30, choices=sexos, default='Prefiero no Decirlo')   
-    
-
-    class Meta:
-        verbose_name = "User metadata"
-        verbose_name_plural = "User metadata"    
-
-    def nombreCompleto(self):
-         txt = "{0}  {1}"
-         return txt.format(self.user.first_name, self.user.last_name)
-    nombreCompleto.short_description = 'Usuario'
-
-    def __str__(self) :
-         txt = " {0}"
-         return txt.format(self.user.first_name, self.user.last_name)
 
 #Establecimiento
 
@@ -68,6 +35,37 @@ class Box(models.Model):
     def __str__(self) :
          txt = " Disciplina: {0} Horario: {1}"
          return txt.format( self.tipo, self.horario)
+
+
+#extension de USER
+class UsersMetadata(models.Model):
+    id = models.AutoField(primary_key=True)    
+    user = models.ForeignKey(User, models.DO_NOTHING, null= True)
+    ced_identidad = models.CharField(max_length=9, verbose_name="Cedula de identidad")
+    comunidad = models.ForeignKey(Box,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Comunidad")
+    fechaNacimiento = models.DateField(verbose_name="Fecha de Nacimiento", null=True)
+    sexos = [
+        ('F', 'Femenino'),
+        ('M' ,'Masculino'),
+        ('N.N', 'Prefiero no Decirlo')
+    ]
+    sexo = models.CharField(max_length=30, choices=sexos, default='Prefiero no Decirlo')   
+    
+
+    class Meta:
+        verbose_name = "User metadata"
+        verbose_name_plural = "User metadata"    
+
+    def nombreCompleto(self):
+         txt = "{0}  {1}"
+         return txt.format(self.user.first_name, self.user.last_name)
+    nombreCompleto.short_description = 'Usuario'
+
+    def __str__(self) :
+         txt = " {0}"
+         return txt.format(self.user.first_name, self.user.last_name)
+
+
     
 class Planes(models.Model):    
     titulo = models.CharField(max_length=30, verbose_name="Nombre del plan")
@@ -141,11 +139,11 @@ class Perfil(models.Model):
 class Reserva_estado(models.Model):
     id = models.AutoField(primary_key=True)
     clase = models.ForeignKey(Clases,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Clase reservada")    
+    comunidad = models.ForeignKey(Box,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Comunidad")    
     cupo = models.PositiveIntegerField( null=False, blank=False, verbose_name="Cupos Total")
-    cupo_reservado = models.PositiveIntegerField( null=True, blank=False, verbose_name="Cupos Total")
+    cupo_reservado = models.PositiveIntegerField(default=0, null=True, blank=False, verbose_name="Cupos Total")
     estado = models.BooleanField(default=True, verbose_name="Estado")
-    persona_reserva = models.CharField(max_length = 50, null=True)
-    barra_cupo = models.PositiveIntegerField( null=True, blank=False, verbose_name="Cupos Total")
+    barra_cupo = models.PositiveIntegerField(default=0,  blank=False, verbose_name="Cupos Total")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
 
    
