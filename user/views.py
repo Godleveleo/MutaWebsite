@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from user.forms import *
-from myclasses.models import UsersMetadata, Reserva_estado
+from myclasses.models import UsersMetadata, Reserva_estado, Reserva_activa
 from django import template
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -11,9 +11,12 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from utilidades.formularios import logueado
 from django.contrib import messages
-from datetime import datetime
+import datetime
 from utilidades import formularios
 from django.contrib.auth.models import Group
+from django.utils.timezone import utc
+
+
 
 @login_required(login_url='login-usuario')
 @user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
@@ -93,7 +96,9 @@ def register_user(request):
 @user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
 def home_reserva_user(request):
     estado = True
-    datos = None 
+    datos = None
+    b_reserva = True
+    id_reservada = None 
     userid = request.user.id
     datosUsuario = UsersMetadata.objects.filter(user_id__exact = userid).first()   
     validador = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad).count()    
@@ -102,18 +107,54 @@ def home_reserva_user(request):
         messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
     else:
         datos = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad)
+        if request.method == 'GET':           
+            if formularios.reserva_active(userid):
+                search_id = formularios.get_reservaid(userid)
+                id_reservada = search_id                              
+                b_reserva = False
+            else:
+                b_reserva = True
+                search_id = formularios.get_reservaid(userid)
+                id_reservada = search_id
+               
+                                   
+            
+        
         if request.method == 'POST':
-            cupo_id = request.POST['id']
-            save = Reserva_estado.objects.filter(clase_id__exact = cupo_id).first()
-            save.cupo_reservado += 1
-            barra = formularios.porcentaje(save.cupo,save.cupo_reservado)
-            save.barra_cupo = barra
-            save.save()          
-                
+            cupo_id = request.POST['id']            
+            add_cupo = Reserva_estado.objects.filter(id__exact = cupo_id).first()
+            add_cupo.cupo_reservado += 1
+            barra = formularios.porcentaje(add_cupo.cupo,add_cupo.cupo_reservado)
+            add_cupo.barra_cupo = barra
+            reservaActiva = Reserva_activa()
+            reservaActiva.user_id = userid
+            reservaActiva.reserva_id = add_cupo.id
+            reservaActiva.comunidad = add_cupo.comunidad_id
+            now = datetime.datetime.now().replace(tzinfo=utc)
+            reservaActiva.fecha = now
+            add_cupo.save()            
+            reservaActiva.save()          
+            messages.add_message(request, messages.SUCCESS, f"Clase Reservada")   
+            return redirect("reserva-clases")
+        
+        
 
-    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado} )
 
 
+    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'b_reserva':b_reserva, 'id_reservada':id_reservada} )
+
+def delete_reserva(request,id=None):    
+    userid = request.user.id
+    id_reserva = Reserva_activa.objects.filter(user_id__exact=userid).first()    
+    dato = get_object_or_404(Reserva_activa, reserva_id__exact=id,id__exact = id_reserva.id)
+    delbarra = Reserva_estado.objects.filter(id=id).first()
+    delbarra.cupo_reservado -= 1
+    barra = formularios.porcentaje(delbarra.cupo,delbarra.cupo_reservado)
+    delbarra.barra_cupo = barra
+    delbarra.save()
+    dato.delete()
+    messages.warning(request, "Ya no tienes Clases reservadas")
+    return redirect(to='reserva-clases')
 
 # def reserva_add_user(request, id):
 #      barra = None

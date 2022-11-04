@@ -48,16 +48,31 @@
                             </div>
                                                        
                             <div  class="card-body p-4">
+                                         
+                                {% if b_reserva == False %}
+                                      {% if id_reservada != r.id %}
+                                      
+                                      <button type="button" class="btn btn-sm btn-success btn-simple" disabled>Reservar</button>
+                                        {% else %}
+                                        <label for="clase-reservada">Clase reservada</label>
+                                        <a href="javascript:void(0);"  >                                  
+                                          <button  type="submit" class="btn btn-sm btn-danger btn-simple" onclick="delete_reserva({{ r.id }})">Eliminar</button>
+                                        </a>  
+                                                                           
+                                      {% endif %}
+
+                                {% else %}
+                                
                               <form name="form"  method="POST" >
                                 {% csrf_token %}
-
-                                <input type="hidden" name="id" id="id" value="{{ r.clase.id }}"/>
+                                <input type="hidden" name="id" id="id" value="{{ r.id }}"/>                      
                                 
                                 <a href="javascript:void(0);"  >                                  
-                                  <button  type="submit" class="btn btn-sm btn-success btn-simple" onclick="reservar();">Reservar</button>
-                                </a> 
-                              </form> 
-                                                                                
+                                  <button  type="submit" class="btn btn-sm btn-success btn-simple" onclick="reserva();">Reservar</button>
+                                </a>                                                         
+                              </form>
+
+                                  {% endif %}
                                 <h5 class="card-title">Cupos :</h5>
                                 <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>
                                 <div class="progress" style="height: 5;">
@@ -65,7 +80,7 @@
                                 </div>
                             </div>
                           </div>                       
-                          {% endfor %}                                           
+                              {% endfor %}                                           
                           </div>                                                                    
                         </div>  
                       </div>             

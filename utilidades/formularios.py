@@ -86,3 +86,15 @@ def is_member(user):
 def is_member_alumno(user):
     return user.groups.filter(name='alumnos').exists()
 
+def reserva_active(userid):
+    return Reserva_activa.objects.filter(user_id__exact = userid).exists()
+
+def get_reservaid(userid):
+    id_reserva = None
+    if not Reserva_activa.objects.filter(user_id__exact = userid).exists():
+        id_reserva = 0
+    else:
+        dato = Reserva_activa.objects.filter(user_id__exact = userid).first()
+        id_reserva = dato.reserva_id     
+
+    return id_reserva

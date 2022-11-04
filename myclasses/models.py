@@ -171,12 +171,22 @@ class Matricula(models.Model):
 
         return txt.format( self.matricula, estadoEstdiante)
 
+
+class Reserva_activa(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.PositiveIntegerField( null=True, blank=False, verbose_name="Id del usuario que reserva")
+    reserva_id = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
+    comunidad = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
+    fecha = models.DateTimeField( verbose_name="Id del usuario que reserva")
+
 #signal        
 
 @receiver(post_save, sender=Perfil)
 def estudiando_new(sender, instance, **kwargs):
      if kwargs['created']:        
          Matricula.objects.create(matricula=f"{instance.nombre.user.first_name} {instance.nombre.user.last_name}" , disInscrita=f"{instance.DisciplinaInscrita.tipo}", plan=f"{instance.plan}")
+
+
         
        
         
