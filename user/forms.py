@@ -76,6 +76,5 @@ class registroForm(UserCreationForm):
 
 ### reserva ##
 
-class Reservaform_user(forms.Form):
-    clase = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control '}), choices=formularios.get_clases_choices)    
-    estado = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={' class': 'f  ss', }))
+class Reservaform_user(forms.Form):        
+    cupo_reservado = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Reservar' }))

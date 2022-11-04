@@ -81,4 +81,13 @@ function delete_clase(id){
       return ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 9 || key == 0);
   }
 
+  function reservar()
+  {
+     var form=document.form;
+     if(form.cupo_reservado.value==0)
+     {
+         form.reserva.value=form.cupo.value;
+     }
+     form.submit();
+    }
 

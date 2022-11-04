@@ -35,7 +35,7 @@
 
                           <div id="box-reserva-user" class="card border border-white  ">
                             <div class="d-flex justify-content-between align-items-center">
-                              <h4 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h4>
+                              <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
                               <div class="px-4 pt-2">
                                 <p> Estado de la clase</p>   
                                 {% if  r.estado  == True %}
@@ -43,11 +43,21 @@
                                      
                                      {% else %}
                                 <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>                                     
-                                {% endif %}
-                              </div>
-                              
-                            </div>                           
-                            <div  class="card-body p-4">                                                    
+                                {% endif %}                              
+                              </div>          
+                            </div>
+                                                       
+                            <div  class="card-body p-4">
+                              <form name="form"  method="POST" >
+                                {% csrf_token %}
+
+                                <input type="hidden" name="id" id="id" value="{{ r.clase.id }}"/>
+                                
+                                <a href="javascript:void(0);"  >                                  
+                                  <button  type="submit" class="btn btn-sm btn-success btn-simple" onclick="reservar();">Reservar</button>
+                                </a> 
+                              </form> 
+                                                                                
                                 <h5 class="card-title">Cupos :</h5>
                                 <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>
                                 <div class="progress" style="height: 5;">

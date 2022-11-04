@@ -93,7 +93,7 @@ def register_user(request):
 @user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
 def home_reserva_user(request):
     estado = True
-    datos = None    
+    datos = None 
     userid = request.user.id
     datosUsuario = UsersMetadata.objects.filter(user_id__exact = userid).first()   
     validador = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad).count()    
@@ -103,35 +103,34 @@ def home_reserva_user(request):
     else:
         datos = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad)
         if request.method == 'POST':
-            pass  
+            cupo_id = request.POST['id']
+            save = Reserva_estado.objects.filter(clase_id__exact = cupo_id).first()
+            save.cupo_reservado += 1
+            barra = formularios.porcentaje(save.cupo,save.cupo_reservado)
+            save.barra_cupo = barra
+            save.save()          
+                
+
     return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado} )
 
 
 
-# def reserva_add_user(request):
-#     barra = None       
-#     if request.method == 'POST':                        
-#         form = Reservaform_user(request.POST or None)
-#         if form.is_valid() :            
-#                     data = form.cleaned_data       
-#                     clase = data['clase']        
-#                     estado = data['estado']
-#                     id_u = request.user.id
-#                     cupoReservado= 5
-#                     cupototal = formularios.get_clases_cuportotal(clase)                   
-#                     barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
-#                     save = Reserva_estado()
-#                     save.clase_id = clase
-#                     save.estado = estado 
-#                     save.cupo = cupototal[0]                    
-#                     save.barra_cupo = barra
-#                     save.user_creador = id_u                                     
-#                     save.save()
-#                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
-#                     return HttpResponseRedirect("/homereservas/")
+# def reserva_add_user(request, id):
+#      barra = None
+#      print(id)       
+#      if request.method == 'POST':
+#             form = Reservaform_user(request.POST or None)
+#             cupoReservado= 5
+#             cupototal = formularios.get_clases_cuportotal(clase)                   
+#             barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
+            
+#             messages.add_message(request, messages.SUCCESS, f"Reserva realizada")           
+#             return HttpResponseRedirect("reserva-clases")
+                    
         
         
-#     else:
-#         form = Reservaform_user()       
-       
-#     return render(request,'app/home/reservas/reserva.html',{"form": form, })
+#      else:
+#          form = Reservaform_user()       
+      
+#      return render(request,'user/reservas/reservas-user.html',{"form": form, })
+

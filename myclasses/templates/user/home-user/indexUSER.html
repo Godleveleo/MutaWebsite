@@ -83,6 +83,21 @@
                                 
          
         {% else %}                
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
 
                             <div class="card text-center">
                                 <div class="card-header">
@@ -91,20 +106,19 @@
                                 <!--/set flash-->
                                 </div>
                                 <div class="card-body">
-                                <h5 class="card-title">Crea tus planes en esta seccion</h5>
-                                <div class="text-center">
-                                    <img style="max-width: 45%;" src='{% static "img/plan.jpg" %}'  alt="...">
+                                 
+                                  <h1>no hay</h1>
+
+          <input type="checkbox" name="checkbox" class="bootstrap-switch" data-on-label="ON" data-off-label="OFF"/>
+
                                 </div>
-                                <br>
-                                <p>
-                                    Agrega tus planes para tu Comunidad <a href="{% url 'plan-add' %}"  class="text-info" >AQUI</a>
-                                </p>
+
                                 </div>
                                 <div class="card-footer text-muted">
                                  Crea Comunidad con nuestro Sitio web
                                 </div>
                             </div>                         
-
+                              
                       {% endif %}
 
 {% endblock content %}

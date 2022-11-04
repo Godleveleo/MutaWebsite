@@ -11,6 +11,7 @@ urlpatterns = [
     path('registro/user', views.register_user, name="registro-usuario"),
     #### reserva de clases###
     path('reserva-clase/', views.home_reserva_user, name="reserva-clases"),
+    
 
     
 
