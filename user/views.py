@@ -156,22 +156,5 @@ def delete_reserva(request,id=None):
     messages.warning(request, "Ya no tienes Clases reservadas")
     return redirect(to='reserva-clases')
 
-# def reserva_add_user(request, id):
-#      barra = None
-#      print(id)       
-#      if request.method == 'POST':
-#             form = Reservaform_user(request.POST or None)
-#             cupoReservado= 5
-#             cupototal = formularios.get_clases_cuportotal(clase)                   
-#             barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
-            
-#             messages.add_message(request, messages.SUCCESS, f"Reserva realizada")           
-#             return HttpResponseRedirect("reserva-clases")
-                    
-        
-        
-#      else:
-#          form = Reservaform_user()       
-      
-#      return render(request,'user/reservas/reservas-user.html',{"form": form, })
+
 

@@ -83,32 +83,6 @@ def register(request):
     return render(request, "app/accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 
-# def pages(request):
-#     context = {}
-#     # All resource paths end in .html.
-#     # Pick out the html file name from the url. And load that template.
-#     try:
-
-#         load_template = request.path.split('/')[-1]
-
-#         if load_template == 'admin':
-#             return HttpResponseRedirect(reverse('admin:index'))
-#         context['segment'] = load_template
-
-#         html_template = loader.get_template('app/home/' + load_template)
-#         return HttpResponse(html_template.render(context, request))
-
-#     except template.TemplateDoesNotExist:
-
-#         html_template = loader.get_template('app/home/page-404.html')
-#         return HttpResponse(html_template.render(context, request))
-
-#     except:
-#         html_template = loader.get_template('app/home/page-500.html')
-#         return HttpResponse(html_template.render(context, request))
-
-
-
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
 def home(request):
@@ -327,21 +301,17 @@ def delete_plan(request,id):
 @user_passes_test(formularios.is_member, login_url='login')
 def home_clases(request):
     estado = True
-    disable = None
     datos = None
     active = 0
     userid = request.user.id
-    if request.method == "GET":
-        reserva_activa = Reserva_estado.objects.all().count()        
-        if reserva_activa == active:
-            disable = False            
+    
     validador = Clases.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes CLASES creadas para tu comunidad..")
     else:
         datos = Clases.objects.filter(user_creador__exact = userid)    
-    return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado, 'disable':disable} )
+    return render(request,'app/home/clases/home_clases.html',{'datos':datos, 'estado':estado} )
 
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
@@ -366,7 +336,7 @@ def clases_add(request):
                     save.cupo = cupo
                     save.user_creador = id_u                  
                     save.save()
-                    messages.add_message(request, messages.SUCCESS, f"Se agrego la CLASE existosamente")           
+                    messages.add_message(request, messages.SUCCESS, f"Se agrego la clase: {save.descripcion} existosamente")           
                     return HttpResponseRedirect("/homeclases/")
     else:
         form = Clasesform_add()       
@@ -388,10 +358,16 @@ def edit_clases(request,id=None):
                 if idclas != userid:
                     html_template = loader.get_template('app/home/page-404.html')
                     return HttpResponse(html_template.render(context, request))
+         if formularios.estado_reserva(id):
+            messages.add_message(request, messages.WARNING, f" !No se puede editar¡ Existe reserva activa con la clase: {clas.descripcion}  ") 
+            return HttpResponseRedirect("/homeclases/")
 
     form = Clasesform_add(request.POST  or None, instance=clas)
     if form.is_valid() :
         form.save()
+        update = Reserva_estado.objects.filter(clase_id__exact=id).first()
+        update.cupo = clas.cupo
+        update.save()
         messages.add_message(request, messages.SUCCESS, f"Se modifico su CLASES existosamente")           
         return HttpResponseRedirect("/homeclases/")
         
@@ -402,10 +378,15 @@ def edit_clases(request,id=None):
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')   
 def delete_clases(request,id):
-    dato = get_object_or_404(Clases, id=id)
-    dato.delete()
-    messages.success(request, "Eliminado exitosamente")
-    return redirect(to='/homeclases/')
+    if formularios.reserva_clase(id):
+            messages.add_message(request, messages.WARNING, f" !No se puede Eliminar¡ Existe reserva activa con la clase ") 
+            return HttpResponseRedirect("/homeclases/")
+    else:
+
+        dato = get_object_or_404(Clases, id=id)
+        dato.delete()
+        messages.success(request, "Clase eliminada exitosamente")
+        return redirect(to='/homeclases/')
 
 
 #### reservas ###
@@ -415,14 +396,14 @@ def delete_clases(request,id):
 def home_reserva(request):
     estado = True
     datos = None    
-    userid = request.user.id
-  
+    userid = request.user.id  
     validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
     else:
-        datos = Reserva_estado.objects.filter(user_creador__exact = userid)   
+        datos = Reserva_estado.objects.filter(user_creador__exact = userid)
+          
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
 
 @login_required(login_url='login')

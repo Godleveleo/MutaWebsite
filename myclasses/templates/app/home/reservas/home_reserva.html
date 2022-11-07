@@ -37,7 +37,11 @@
                           {% for r in datos %}
 
                           <div id="box-reserva" class="card border border-white  ">
-                            <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
+                              <p class="px-4 pt-2">hola</p>
+                            </div>
+                            
                             <div class="card-body p-4">                                                    
                                 <p> Estado de la clase</p>   
                                 {% if  r.estado  == True %}

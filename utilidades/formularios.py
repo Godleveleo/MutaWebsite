@@ -88,6 +88,19 @@ def is_member_alumno(user):
 
 def reserva_active(userid):
     return Reserva_activa.objects.filter(user_id__exact = userid).exists()
+def reserva_clase(id):
+    return Reserva_estado.objects.filter(clase_id__exact = id).exists()
+
+def estado_reserva(id):
+    estado = None
+    if Reserva_estado.objects.filter(clase_id__exact = id).exists():
+        dato = Reserva_estado.objects.filter(clase_id__exact = id).first()
+        if dato.estado == 1:
+            estado = True                
+    else:
+        estado = False
+
+    return estado
 
 def get_reservaid(userid):
     id_reserva = None
@@ -98,3 +111,10 @@ def get_reservaid(userid):
         id_reserva = dato.reserva_id     
 
     return id_reserva
+
+
+def get_alumnos_con_reserva(reserva_id):
+        
+	return [
+	(value.id, value.user_id) for value in reserva_active.objects.filter(reserva_id__exact = reserva_id)
+	]

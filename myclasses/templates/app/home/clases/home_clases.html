@@ -38,12 +38,14 @@
                                 <th>Termino</th>                                      
                                 <th>Duración</th>                                      
                                 <th>Modalidad</th>                                      
-                                <th>Cupos</th>                                      
+                                <th>Cupos</th>                                     
                                 <th class="text-right">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody> 
-                          {% for r in datos %}                                                  
+                        <tbody>
+                           
+                          {% for r in datos %}
+                                                                           
                                 <tr>
                                     <td class="text-center "><i class="tim-icons icon-tag"></i></td>
                                     <td>{{ r.descripcion }}</td>                                    
@@ -51,30 +53,26 @@
                                     <td>{{ r.terminoClase }}</td>                                    
                                     <td>{{ r.duracion }}</td>                                    
                                     <td>{{ r.modalidad }}</td>                                    
-                                    <td>{{ r.cupo }}</td>                                    
+                                    <td>{{ r.cupo }}</td>
+                                                                                                        
                                     <td class="td-actions text-right">
-                                     
-
-                                       <a href="{% url 'edit-clases' r.id %}" title="Editar"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
-                                        <i class="tim-icons icon-settings-gear-63"></i>
-                                      </button>
-                                        {% if disable == 0 %}                                       
-                                       </a>
-                                        <a href="javascript:void(0);" title="Eliminar" onclick="delete_clase({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                            <i class="tim-icons icon-simple-remove"></i>
+                                             
+                                                                             
+                                        <a href="{% url 'edit-clases' r.id %}" title="Editar"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
+                                          <i class="tim-icons icon-settings-gear-63"></i>
                                         </button>
-                                        </a>
-                                        {% else %}
-                                      </a>
-                                      <a title="No se puede eliminar con reserva activa" ><button disabled type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                          <i class="tim-icons icon-simple-remove"></i>
-                                      </button>
-                                      </a>
-                                        {% endif %}
+                                                                                 
+                                         </a>
+  
+                                          <a href="javascript:void(0);" title="Eliminar" onclick="delete_clase({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                              <i class="tim-icons icon-simple-remove"></i>
+                                          </button>
+                                          </a>
                                     </td>
-                                </tr>
-                                           
+                                    
+                                </tr>         
                           </div>
+                          
                           {% endfor %}              
                       </tbody>                      
                   </table>                                                      

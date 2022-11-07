@@ -36,9 +36,9 @@
                                 </div>
                                 <hr>
                                 <div class="mb-3 ">
-                                  <label for="Clase" class="form-label">Seleccione una clase</label>
+                                  <label for="Clase" class="form-label">Clases de tu Comunidad</label>
                                   <select required name="clase" class="form-control" aria-label="Clases">
-                                    <option disabled selected>Clases</option>
+                                    <option disabled selected>Seleccione una clase</option>
                                     {% for c in clase %}
                                     <option value="{{ c.id }}"><p>{{ c.descripcion }}</p></option>
                                     {% endfor %}                 
