@@ -80,6 +80,12 @@ def get_clases_cuportotal(clase):
 	(value.cupo) for value in Clases.objects.filter(id__exact = clase)
 	]
 
+def get_usuario_nombre(userid):
+    
+	return [
+	(value.first_name) for value in User.objects.filter(id__exact = userid)
+	]
+
 def is_member(user):
     return user.groups.filter(name='manager').exists()
 

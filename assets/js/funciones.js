@@ -109,3 +109,10 @@ function delete_reserva(id){
      form.submit();
     }
 
+    function carga_ajax_get(ruta, valor1, div) {
+      $.get(ruta, { valor1: valor1 }, function(resp) {
+          $("#" + div + "").html(resp);
+      });
+      return false;
+ 
+  }

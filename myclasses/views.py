@@ -394,9 +394,11 @@ def delete_clases(request,id):
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
 def home_reserva(request):
+    
     estado = True
     datos = None    
-    userid = request.user.id  
+    userid = request.user.id
+      
     validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
@@ -441,4 +443,13 @@ def reserva_add(request):
 
 
 
+   
+
+    
+def diseno_modal(request, id,clase):
+    
+    consulta = Reserva_activa.objects.filter(reserva_id__exact = id) 
+        
+    
+    return render(request, 'app/home/modal/modal.html', {'consulta':consulta, 'clase':clase})
 

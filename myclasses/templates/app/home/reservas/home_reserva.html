@@ -1,54 +1,69 @@
 {% extends "app/layouts/base.html" %}{% load static %}
 
-{% block title %} Reserva {% endblock %} 
+{% block title %} Reserva {% endblock %}
 
 
 {% block stylesheets %}{% endblock stylesheets %}
 
-{% block content %}         
+{% block content %}
+{% load utilidades %}
 
-      
+
 <div class="content">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <h5 class="title">Seccion reserva</h5>
-          <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>          
-          </div>   
+          <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>
+          </div>
+
+            
+
           {% if estado == 1 %}
-                            
-               
+
+          
+
                   <div class="card-body " >
                      <!--set flash-->
                      {% include 'app/includes/flash.html' %}
                      <!--/set flash-->
-                                        
+
                     <div >
                       <label for="boton">Activar clase para reserva </label>
                      <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
                      <hr>
-                      <h5 class="title">Detalle de reservas </h5>                     
-                    </div>                    
+                      <h5 class="title">Detalle de reservas </h5>
+                    </div>
                       <br>
-                    <div class="row">           
-                      
-                          
+                    <div class="row">
+
+                        
+
                           {% for r in datos %}
 
                           <div id="box-reserva" class="card border border-white  ">
                             <div class="d-flex justify-content-between align-items-center">
                               <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
-                              <p class="px-4 pt-2">hola</p>
+                              
+                              <div class="px-4 pt-2">
+                                {% if r.id|existeReserva != True %}
+                                <a class="btn btn-sm btn-danger btn-simple" href="javascript:void(0);" disabled>Sin Reserva</a>
+                                      {% else %}                                
+                                <a class="btn btn-sm btn-info btn-simple" href="javascript:void(0);" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'diseno_modal' r.id r.clase.descripcion %}', 'ss', '_ventana_modal');">Alumnos</a>
+                                {% endif %}
+                              </div>
+                              
+
                             </div>
                             
-                            <div class="card-body p-4">                                                    
-                                <p> Estado de la clase</p>   
+                            <div class="card-body p-4">
+                                <p> Estado de la clase</p>
                                 {% if  r.estado  == True %}
                                 <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
-                                     
+
                                      {% else %}
-                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>                                     
+                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>
                                 {% endif %}
                                 <hr>
                                 <h5 class="card-title">Cupos :</h5>
@@ -57,17 +72,17 @@
                                   <div class="progress-bar" role="progressbar" style="width: {{ r.barra_cupo }}%; background-color:#607d8b;" ></div>
                                 </div>
                             </div>
-                          </div>                       
-                          {% endfor %}                                           
-                          </div>                                                                    
-                        </div>  
-                      </div>             
+                          </div>
+                          {% endfor %}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                                
-         
-        {% else %}                
+
+
+                       {% else %}
 
                             <div class="card text-center">
                                 <div class="card-header">
@@ -83,12 +98,12 @@
                                 <br>
                                 <label for="boton">Puedes activar tus clases para reservas </label>
                                 <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
-                                
+
                                 </div>
                                 <div class="card-footer text-muted">
                                  Crea Comunidad con nuestro Sitio web
                                 </div>
-                            </div>                         
+                            </div>
 
                       {% endif %}
 
