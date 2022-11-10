@@ -6,6 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% load utilidades %}
 
 <div class="content">
   <div class="row">
@@ -49,12 +50,51 @@
                                   <h5>Habilita la clase</h5>                                 
                                   {{form.estado}}
                                   <label for="disciplina" class="form-label">Activar</label>
-                                </div>                 
-                                <div class="form-group">
-                                  <label class="label-control">Datetime Picker</label>
-                                  <input type="text" class="form-control datepicker" value="10/05/2016"/>
-                              </div>     
-                                                            
+                                </div> 
+
+                                <label for="disciplina" class="form-label">Seleccione los dias de clase activa</label>
+                                <div class="mb-3">           
+                                  
+                                  <div class="btn-group" data-toggle="buttons">
+                                    
+                                    <label class="btn btn-default btn-sm ">
+                                      <input type="checkbox" name="fecha" value="{{hoy|invierteFecha}}" autocomplete="off" >
+                                      <span class="glyphicon glyphicon-ok">{{hoy|queDiaes}}</span>
+                                    </label>
+                              
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{undia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{undia|queDiaes}}</span>
+                                    </label>			
+                                  
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{dosdia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{dosdia|queDiaes}}</span>
+                                    </label>			
+                                  
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{tresdia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{tresdia|queDiaes}}</span>
+                                    </label>			
+                              
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{cuatrodia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{cuatrodia|queDiaes}}</span>
+                                    </label>			
+                                  
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{cincodia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{cincodia|queDiaes}}</span>
+                                    </label>			
+                                    
+                                    <label class="btn btn-default btn-sm">
+                                      <input type="checkbox" name="fecha" value="{{seisdia|invierteFecha}}" autocomplete="off">
+                                      <span class="glyphicon glyphicon-ok">{{seisdia|queDiaes}}</span>
+                                    </label>			
+                                  
+                                  </div>
+                              
+                                </div>                                                   
                               <hr>
                                 <div class="card-footer text-center">                                    
                                   <a href="javascript:void(0);">

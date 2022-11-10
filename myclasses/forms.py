@@ -136,6 +136,7 @@ class Clasesform_add(forms.ModelForm):
 class Reservaform_add(forms.Form):
     clase = forms.ChoiceField(required=True, widget=forms.Select(attrs={'class': 'form-control ' }), choices=formularios.get_clases_choices)        
     estado = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={' class': 'f  ss','checked':'true' }))
+    fecha = forms.CharField(widget=forms.CheckboxSelectMultiple(attrs={'class': 'f  ss'}))
     
  
 	

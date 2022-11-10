@@ -11,11 +11,11 @@ from myclasses.forms import *
 from django.contrib.auth.models import User
 from utilidades.formularios import logueado
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from utilidades import formularios
 from django.contrib.auth.models import Group
-
-
+from django.utils.timezone import utc
+import datetime
 
 def CerrarSesion(request):
     logout(request)
@@ -393,26 +393,36 @@ def delete_clases(request,id):
 
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
-def home_reserva(request):
-    
+def home_reserva(request):    
+    fechaHoy = date.today().strftime('%d/%m/%Y')    
     estado = True
     datos = None    
     userid = request.user.id
-      
+    
     validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
         messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
     else:
-        datos = Reserva_estado.objects.filter(user_creador__exact = userid)
-          
-    return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado} )
+        if request.method == "POST":
+            fecha = request.POST['fecha']                           
+            datos = Reserva_estado.objects.filter(user_creador__exact = userid, Fecha__contains=fecha)
+    fecha = Reserva_estado.objects.filter(user_creador__exact = userid)        
+
+    return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado, 'fechas':fecha} )
 
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
-def reserva_add(request):
-    barra = None
-    userid = request.user.id
+def reserva_add(request):   
+    hoy = date.today()
+    unDia = hoy + timedelta(days=1)
+    dosDia = hoy + timedelta(days=2)
+    tresDia = hoy + timedelta(days=3)
+    cuatroDia = hoy + timedelta(days=4)
+    cincoDia = hoy + timedelta(days=5)
+    seisDia = hoy + timedelta(days=6)
+    sieteDia = hoy + timedelta(days=7)   
+    userid = request.user.id    
     comunidad = Box.objects.filter(user_creador = userid ).first()       
     clases = Clases.objects.filter(user_creador = userid )      
     if request.method == 'POST':                        
@@ -421,16 +431,18 @@ def reserva_add(request):
                     data = form.cleaned_data       
                     clase = data['clase']                
                     estado = data['estado']
+                    fechas = eval(data['fecha'])
                     id_u = request.user.id                    
-                    cupototal = formularios.get_clases_cuportotal(clase)                   
-                    # barra = formularios.porcentaje(cupototal[0],cupoReservado)                              
-                    save = Reserva_estado()
-                    save.clase_id = clase
-                    save.comunidad_id = comunidad.id
-                    save.estado = estado 
-                    save.cupo = cupototal[0]                    
-                    save.user_creador = id_u                                     
-                    save.save()
+                    cupototal = formularios.get_clases_cuportotal(clase)                                                 
+                    for fechas in fechas:                        
+                        save = Reserva_estado()
+                        save.clase_id = clase
+                        save.comunidad_id = comunidad.id
+                        save.estado = estado 
+                        save.cupo = cupototal[0]                    
+                        save.user_creador = id_u
+                        save.Fecha = fechas                                     
+                        save.save()
                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
                     return HttpResponseRedirect("/homereservas/")
         
@@ -438,7 +450,13 @@ def reserva_add(request):
     else:
         form = Reservaform_add()       
        
-    return render(request,'app/home/reservas/reserva.html',{"form": form, "comunidad":comunidad, "clase":clases})
+    return render(request,'app/home/reservas/reserva.html',{"form": form, "comunidad":comunidad, "clase":clases, 'hoy':hoy,
+                                                            'undia':unDia,
+                                                            'dosdia':dosDia,
+                                                            'tresdia':tresDia,
+                                                            'cuatrodia':cuatroDia,
+                                                            'cincodia':cincoDia,
+                                                            'seisdia':seisDia,})
 
 
 
@@ -453,3 +471,10 @@ def diseno_modal(request, id,clase):
     
     return render(request, 'app/home/modal/modal.html', {'consulta':consulta, 'clase':clase})
 
+def filtro_fecha(request):
+    if request.method == "POST":
+        fecha = request.POST['fecha']
+        reservas = Reserva_estado.objects.filter(Fecha__contains=fecha)
+
+
+        return render(request, 'uploadfiles/listar-archivos.html', {'fecha':fecha,'reservas':reservas})

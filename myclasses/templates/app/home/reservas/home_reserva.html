@@ -33,6 +33,20 @@
                       <label for="boton">Activar clase para reserva </label>
                      <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
                      <hr>
+                     <form  action="{%  url 'home-reservas' %}" method="post">
+                      {% csrf_token %}
+                          <div style="width: 30%;;" class="input-group">
+                            <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" >                                            
+                              <option  selected disabled>Seleccione una Fecha</option>
+                              {% for f in fechas %}
+                              <option style="color: black ;" value="{{f.Fecha}}" >{{f.Fecha}}</option>
+                               {% endfor %}                                                 
+                            </select>
+                            <button class="btn btn-sm btn-success btn-simple" type="submit">Ir</button>
+                               
+                      </div>
+              
+                    </form>
                       <h5 class="title">Detalle de reservas </h5>
                     </div>
                       <br>
@@ -45,7 +59,9 @@
                           <div id="box-reserva" class="card border border-white  ">
                             <div class="d-flex justify-content-between align-items-center">
                               <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
-                              
+                              <div class="px-4 pt-2">
+                                <p class="btn btn-sm btn-info btn-simple " >{{r.Fecha}}</p>
+                              </div>
                               <div class="px-4 pt-2">
                                 {% if r.id|existeReserva != True %}
                                 <a class="btn btn-sm btn-danger btn-simple" href="javascript:void(0);" disabled>Sin Reserva</a>
@@ -58,6 +74,7 @@
                             </div>
                             
                             <div class="card-body p-4">
+                              
                                 <p> Estado de la clase</p>
                                 {% if  r.estado  == True %}
                                 <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
@@ -65,6 +82,7 @@
                                      {% else %}
                                 <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>
                                 {% endif %}
+                                
                                 <hr>
                                 <h5 class="card-title">Cupos :</h5>
                                 <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>

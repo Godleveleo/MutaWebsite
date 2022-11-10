@@ -145,7 +145,7 @@ class Reserva_estado(models.Model):
     estado = models.BooleanField(default=True, verbose_name="Estado")
     barra_cupo = models.PositiveIntegerField(default=0,  blank=False, verbose_name="Cupos Total")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
-
+    Fecha = models.CharField(max_length = 20,null=True,verbose_name="fecha que se encuentra disponible la clase")
    
     
 
@@ -177,7 +177,7 @@ class Reserva_activa(models.Model):
     user_id = models.PositiveIntegerField( null=True, blank=False, verbose_name="Id del usuario que reserva")
     reserva_id = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
     comunidad = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
-    fecha = models.DateTimeField( verbose_name="Id del usuario que reserva")
+    fecha = models.DateTimeField( verbose_name="fecha")
 
 #signal        
 

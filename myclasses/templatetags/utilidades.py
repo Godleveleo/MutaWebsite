@@ -1,6 +1,7 @@
 from django import template
 from myclasses.models import *
-
+from datetime import datetime
+from datetime import datetime ,date, timedelta
 
 register = template.Library()
 
@@ -17,10 +18,6 @@ def alumnoConReserva(user_id):
 def existeReserva(id):    
     return Reserva_activa.objects.filter(reserva_id__exact=id).exists()
     
-    
-
-    
-
     
     
 #######Métodos de bases de datos
@@ -74,3 +71,52 @@ def invierteFecha(fechaDateTime):
 def invierteFechaHora(fechaDateTime):
     fecha = fechaDateTime.strftime('%d-%m-%Y %H:%M:%S')
     return fecha
+
+ 
+
+####fecha###
+
+def nombreDia(n):
+    if n==1:
+        return f"lunes"
+    if n==2:
+        return "Martes"
+    if n==3:
+        return "Miercoles"
+    if n==4:
+        return "Jueves"
+    if n==5:
+        return "Viernes"
+    if n==6:
+        return "Sabado"
+    if n==0:
+        return "Domingo"
+
+def current_date_format(date):
+    months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    day = date.day  
+    month = months[date.month - 1]
+    year = date.year
+    messsage = "{} de {} del {}".format(day, month, year)
+    
+    return messsage
+
+# hoy = date.today()
+# uno = hoy + timedelta(days=1)
+# dos = hoy + timedelta(days=2)
+# tres = hoy + timedelta(days=3)
+# cuatro = hoy + timedelta(days=4)
+# cinco = hoy + timedelta(days=5)
+# seis = hoy + timedelta(days=6)
+# siete = hoy + timedelta(days=7)
+
+
+### que dia es ###
+
+@register.filter(name='queDiaes')
+def queDiaes(fecha):
+    numero = fecha.weekday()
+    nombre_dia =  nombreDia(numero)
+    fechaformateada = current_date_format(fecha)
+    return f"{nombre_dia} {fechaformateada}"
+
