@@ -120,3 +120,15 @@ def queDiaes(fecha):
     fechaformateada = current_date_format(fecha)
     return f"{nombre_dia} {fechaformateada}"
 
+@register.filter(name='conReserva')
+def conReserva(id):
+    
+    id_reserva = None
+    if not Reserva_activa.objects.filter(user_id__exact = id).exists():
+        id_reserva = 0
+    else:
+        dato = Reserva_activa.objects.filter(user_id__exact = id).first()
+        id_reserva = dato.reserva_id
+@register.filter(name='conReservaActiva')
+def conReservaActiva(id,fecha):
+    return Reserva_activa.objects.filter(user_id__exact = id, fecha__contains = fecha).exists()

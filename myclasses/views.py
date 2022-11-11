@@ -407,7 +407,7 @@ def home_reserva(request):
         if request.method == "POST":
             fecha = request.POST['fecha']                           
             datos = Reserva_estado.objects.filter(user_creador__exact = userid, Fecha__contains=fecha)
-    fecha = Reserva_estado.objects.filter(user_creador__exact = userid)        
+    fecha = Reserva_estado.objects.filter(user_creador__exact = userid).order_by('Fecha').values()        
 
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado, 'fechas':fecha} )
 
@@ -434,17 +434,25 @@ def reserva_add(request):
                     fechas = eval(data['fecha'])
                     id_u = request.user.id                    
                     cupototal = formularios.get_clases_cuportotal(clase)                                                 
-                    for fechas in fechas:                        
+                    for fecha in fechas:                        
                         save = Reserva_estado()
                         save.clase_id = clase
                         save.comunidad_id = comunidad.id
                         save.estado = estado 
                         save.cupo = cupototal[0]                    
                         save.user_creador = id_u
-                        save.Fecha = fechas                                     
-                        save.save()
+                        save.Fecha = fecha                        
+                        if not Reserva_estado.objects.filter(Fecha = fecha, clase_id__exact=clase).exists():
+                            save.save()                            
+                    
+                        else:
+                            messages.add_message(request, messages.WARNING, f"Ya tienes la clase activa en esa fecha")           
+                            return HttpResponseRedirect("/reservaadd/")
+
                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
                     return HttpResponseRedirect("/homereservas/")
+                                                             
+                        
         
         
     else:
@@ -463,13 +471,15 @@ def reserva_add(request):
 
    
 
-    
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')    
 def diseno_modal(request, id,clase):
     
     consulta = Reserva_activa.objects.filter(reserva_id__exact = id) 
         
     
     return render(request, 'app/home/modal/modal.html', {'consulta':consulta, 'clase':clase})
+
 
 def filtro_fecha(request):
     if request.method == "POST":

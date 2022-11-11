@@ -104,9 +104,13 @@ def home_reserva_user(request):
     validador = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad).count()    
     if validador == 0:
         estado = False
-        messages.add_message(request, messages.WARNING, f"No tienes Reservas activas para tu comunidad..")
+        messages.add_message(request, messages.WARNING, f"No hay Clases activas en tu comunidad..")
     else:
-        datos = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad)
+        if request.method == "POST":
+            fecha = request.POST['fecha']
+            datos = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad, Fecha__contains=fecha)
+        fecha = Reserva_estado.objects.filter(comunidad_id__exact = datosUsuario.comunidad).order_by('Fecha').values()
+                
         if request.method == 'GET':           
             if formularios.reserva_active(userid):
                 search_id = formularios.get_reservaid(userid)
@@ -117,31 +121,9 @@ def home_reserva_user(request):
                 search_id = formularios.get_reservaid(userid)
                 id_reservada = search_id
                
-                                   
-            
-        
-        if request.method == 'POST':
-            cupo_id = request.POST['id']            
-            add_cupo = Reserva_estado.objects.filter(id__exact = cupo_id).first()
-            add_cupo.cupo_reservado += 1
-            barra = formularios.porcentaje(add_cupo.cupo,add_cupo.cupo_reservado)
-            add_cupo.barra_cupo = barra
-            reservaActiva = Reserva_activa()
-            reservaActiva.user_id = userid
-            reservaActiva.reserva_id = add_cupo.id
-            reservaActiva.comunidad = add_cupo.comunidad_id
-            now = datetime.datetime.now().replace(tzinfo=utc)
-            reservaActiva.fecha = now
-            add_cupo.save()            
-            reservaActiva.save()          
-            messages.add_message(request, messages.SUCCESS, f"Clase Reservada")   
-            return redirect("reserva-clases")
-        
-        
+                                
 
-
-
-    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'b_reserva':b_reserva, 'id_reservada':id_reservada} )
+    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'b_reserva':b_reserva, 'id_reservada':id_reservada, 'fechas':fecha} )
 
 def delete_reserva(request,id=None):    
     userid = request.user.id
@@ -153,8 +135,25 @@ def delete_reserva(request,id=None):
     delbarra.barra_cupo = barra
     delbarra.save()
     dato.delete()
-    messages.warning(request, "Ya no tienes Clases reservadas")
+    messages.warning(request, f"Ya no tienes Clases reservadas el {id_reserva.fecha}")
     return redirect(to='reserva-clases')
 
-
-
+def add_reserva(request):
+    userid = request.user.id
+    if request.method == 'POST':
+                    cupo_id = request.POST['id']
+                    print(cupo_id)            
+                    add_cupo = Reserva_estado.objects.filter(id__exact = cupo_id).first()
+                    add_cupo.cupo_reservado += 1
+                    barra = formularios.porcentaje(add_cupo.cupo,add_cupo.cupo_reservado)
+                    add_cupo.barra_cupo = barra
+                    reservaActiva = Reserva_activa()
+                    reservaActiva.user_id = userid
+                    reservaActiva.reserva_id = add_cupo.id
+                    reservaActiva.comunidad = add_cupo.comunidad_id
+                    reservaActiva.fecha = add_cupo.Fecha
+                    add_cupo.save()            
+                    reservaActiva.save()          
+                    messages.add_message(request, messages.SUCCESS, f"Clase Reservada")   
+                    return redirect("reserva-clases")    
+        

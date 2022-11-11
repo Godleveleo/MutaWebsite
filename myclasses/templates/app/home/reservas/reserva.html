@@ -41,7 +41,7 @@
                                   <select required name="clase" class="form-control" aria-label="Clases">
                                     <option disabled selected>Seleccione una clase</option>
                                     {% for c in clase %}
-                                    <option value="{{ c.id }}"><p>{{ c.descripcion }}</p></option>
+                                    <option style="color: black ;"  value="{{ c.id }}"><p>{{ c.descripcion }}</p></option>
                                     {% endfor %}                 
                                   </select>
                                 </div>
@@ -52,7 +52,7 @@
                                   <label for="disciplina" class="form-label">Activar</label>
                                 </div> 
 
-                                <label for="disciplina" class="form-label">Seleccione los dias de clase activa</label>
+                                <label for="disciplina" class="form-label">Seleccione que día(s) la clase estara activa</label>
                                 <div class="mb-3">           
                                   
                                   <div class="btn-group" data-toggle="buttons">

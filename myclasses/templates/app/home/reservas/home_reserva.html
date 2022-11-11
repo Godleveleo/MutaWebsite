@@ -29,26 +29,30 @@
                      {% include 'app/includes/flash.html' %}
                      <!--/set flash-->
 
-                    <div >
-                      <label for="boton">Activar clase para reserva </label>
-                     <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
-                     <hr>
-                     <form  action="{%  url 'home-reservas' %}" method="post">
-                      {% csrf_token %}
-                          <div style="width: 30%;;" class="input-group">
-                            <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" >                                            
-                              <option  selected disabled>Seleccione una Fecha</option>
-                              {% for f in fechas %}
-                              <option style="color: black ;" value="{{f.Fecha}}" >{{f.Fecha}}</option>
-                               {% endfor %}                                                 
-                            </select>
-                            <button class="btn btn-sm btn-success btn-simple" type="submit">Ir</button>
-                               
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <label for="boton">Activar clase para reserva </label>
+                        <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
                       </div>
-              
-                    </form>
-                      <h5 class="title">Detalle de reservas </h5>
+                     
+                     <div class="d-flex justify-content-end align-items-center" >
+                      <form  action="{%  url 'home-reservas' %}" method="post" >
+                        {% csrf_token %}
+                             <label >Seleccione una fecha para mostrar </label>                         
+                            <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" onchange="this.form.submit()">                       
+                              <option value="">Fecha</option>                    
+                                {% for f in fechas %}
+                              <option style="color: black ;" value="{{f.Fecha}}" >{{f.Fecha}}</option>
+                                 {% endfor %}                                                 
+                            </select>                                    
+                      </form>
+                      
+                     </div>
+                     
+
                     </div>
+                    <hr>
+                    <h5 class="title">Detalle de reservas </h5>
                       <br>
                     <div class="row">
 
@@ -91,6 +95,11 @@
                                 </div>
                             </div>
                           </div>
+                          {% empty %}
+                          <center>
+                            <p>No tiene una fecha seleccionada</p>
+                          </center>
+                                
                           {% endfor %}
                           </div>
                         </div>

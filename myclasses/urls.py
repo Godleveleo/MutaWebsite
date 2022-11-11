@@ -27,7 +27,7 @@ urlpatterns = [
     path("homereservas/", views.home_reserva, name="home-reservas"),
     path("reservaadd/", views.reserva_add, name="reserva-add"),
     #####
-    path('/modal/<int:id>/<str:clase>', views.diseno_modal, name="diseno_modal")
+    path('modal/<int:id>/<str:clase>', views.diseno_modal, name="diseno_modal")
     
 
 
