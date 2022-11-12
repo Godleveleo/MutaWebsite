@@ -32,9 +32,7 @@ class Box(models.Model):
         verbose_name = "Disciplina"
         verbose_name_plural = "Disciplinas"
 
-    def __str__(self) :
-         txt = " Disciplina: {0} Horario: {1}"
-         return txt.format( self.tipo, self.horario)
+    
 
 
 #extension de USER
@@ -109,7 +107,7 @@ class Clases(models.Model):
 
     def __str__(self) :
         txt = "Clase: {0} ,  {1} "
-        return txt.format(self.Descripcion, self.modalidad)
+        return txt.format(self.descripcion, self.modalidad)
 
  ##perfiles       
 class Perfil(models.Model):
@@ -175,7 +173,7 @@ class Matricula(models.Model):
 class Reserva_activa(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.PositiveIntegerField( null=True, blank=False, verbose_name="Id del usuario que reserva")
-    reserva_id = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
+    reserva = models.ForeignKey(Reserva_estado, on_delete=models.CASCADE, null=False, blank=False, verbose_name="Id de reserva que reserva")
     comunidad = models.PositiveIntegerField( null=False, blank=False, verbose_name="Id del usuario que reserva")
     fecha = models.CharField(max_length=20, verbose_name="fecha")
 

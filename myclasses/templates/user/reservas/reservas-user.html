@@ -14,7 +14,7 @@
       <div class="card">
         <div class="card-header">
           <h5 class="title">Seccion reserva</h5>
-          <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>          
+          <p>Aca puedes agendar tu clase preferida con el horario que te acomode</p>          
           </div>   
           {% if estado == 1 %}
                             
@@ -31,40 +31,38 @@
                                <label >Seleccione una fecha para mostrar </label>                         
                               <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" onchange="this.form.submit()">                       
                                 <option value="">Fecha</option>                    
-                                  {% for f in fechas %}
+                                  {% for f in datosComunidad %}
                                 <option style="color: black ;" value="{{f.Fecha}}" >{{f.Fecha}}</option>
                                    {% endfor %}                                                 
                               </select>                                    
                         </form>
                        </div>                      
-                     <hr>
-                      <h5 class="title">Detalle de reservas </h5>                     
+                     <hr>                     
                     </div>                    
-                      <br>
+                    
                     <div class="row">                         
-                          
+                      
                           {% for r in datos %}
 
                           <div id="box-reserva-user" class="card border border-white  ">
                             <div class="d-flex justify-content-between align-items-center">
                               <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
                               <div class=" pt-2">
-                                <p class="btn btn-sm btn-info btn-simple " >{{r.Fecha}}</p>
-                                <p >{{r.id}}</p>
+                                <p class="btn btn-sm btn-info btn-simple " >{{r.Fecha}}</p>                                
                               </div>
-                              <p>{{user.id|conReservaActiva:r.Fecha}}</p>
+                              
                               <div class="px-4 pt-2">
                                 <p> Estado de la clase</p>   
                                 {% if  r.estado  == True %}
                                 <span style="background-color:rgb(35, 166, 23);color: white; " class="badge rounded-pill ">ACTIVA</span>
                                      
                                      {% else %}
-                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>                                     
+                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">Cancelada</span>                                     
                                 {% endif %}                              
                               </div>          
                             </div>
                                                        
-                            <div  class="card-body p-4">
+                            <div  class="card-body p-3">
                                          
                                 {% if user.id|conReservaActiva:r.Fecha == True %}
                                       {% if user.id|conReserva != r.id %}                                     
@@ -78,7 +76,7 @@
 
                                 {% else %}
                                 
-                              <form name="form"  action="{%  url 'add-reserva' %}" method="POST" >
+                              <form class="pb-3" name="form"  action="{%  url 'add-reserva' %}" method="POST" >
                                 {% csrf_token %}
                                 <input type="hidden" name="id" id="id" value="{{ r.id }}"/>                      
                                 
@@ -96,11 +94,52 @@
                             </div>
                           </div>
                           {% empty %}
-                          <center>
-                            <p>No tiene una fecha seleccionada</p>
-                          </center>                      
-                              {% endfor %}                                           
-                          </div>                                                                    
+                          <h5 class="title px-4">Detalle de tus reservas </h5>                                               
+                            <!-- reservas activas del alumno -->
+                          {% for ractiva in reservasActivas %}                          
+                          <div class="container">
+                          <div style="max-width: 65%;" class="card border border-white  ">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h5 class="card-header">Clase: {{ ractiva.reserva.clase.descripcion | upper}}</h5>
+                              <div class=" p-2">
+                                <p class="btn btn-sm btn-info btn-simple " >{{ractiva.fecha}}</p>
+                              </div>                              
+                              <div class="px-4 p-3">
+                                <p>Estado clase</p>   
+                                {% if  ractiva.reserva.estado  == True %}
+                                <span style="background-color:rgb(35, 166, 23);color: white; " class="badge rounded-pill ">ACTIVA</span>
+                                     
+                                     {% else %}
+                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">Cancelada</span>                                     
+                                {% endif %}                              
+                              </div>
+                                
+                                <div  class="card-body p-2">                                         
+                                
+                                      {% if user.id|conReserva != ractiva.reserva_id %}                                     
+                                                                              
+                                        <label for="clase-reservada">Clase reservada</label>
+                                        <a href="javascript:void(0);"  >                                  
+                                          <button  type="submit" class="btn btn-sm btn-danger btn-simple" onclick="delete_reserva({{ ractiva.reserva_id }})">Eliminar</button>
+                                        </a>  
+                                                                           
+                                      {% endif %}
+                              </div>             
+                            </div>                                
+                          </div>
+                        </div>
+                      </div>
+                          {% empty %}
+                            
+                            <div class="card">
+                              <div class="card-body">
+                                <h4 class="alert alert-info">{{ user.first_name }} no tienes reservas a clases..  ¡ Vamos Motivate !</h4>
+                              </div>                             
+                                
+                             </div>
+                           <!-- reservas activas del alumno -->
+                             {%endfor%}                                              
+                              {% endfor %}                                                                                                      
                         </div>  
                       </div>             
                     </div>

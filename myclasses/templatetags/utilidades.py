@@ -101,16 +101,6 @@ def current_date_format(date):
     
     return messsage
 
-# hoy = date.today()
-# uno = hoy + timedelta(days=1)
-# dos = hoy + timedelta(days=2)
-# tres = hoy + timedelta(days=3)
-# cuatro = hoy + timedelta(days=4)
-# cinco = hoy + timedelta(days=5)
-# seis = hoy + timedelta(days=6)
-# siete = hoy + timedelta(days=7)
-
-
 ### que dia es ###
 
 @register.filter(name='queDiaes')
@@ -122,13 +112,14 @@ def queDiaes(fecha):
 
 @register.filter(name='conReserva')
 def conReserva(id):
-    
     id_reserva = None
     if not Reserva_activa.objects.filter(user_id__exact = id).exists():
         id_reserva = 0
     else:
         dato = Reserva_activa.objects.filter(user_id__exact = id).first()
         id_reserva = dato.reserva_id
+    return id_reserva
+    
 @register.filter(name='conReservaActiva')
 def conReservaActiva(id,fecha):
     return Reserva_activa.objects.filter(user_id__exact = id, fecha__contains = fecha).exists()
