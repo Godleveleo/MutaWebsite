@@ -93,15 +93,17 @@
                                                               </button></a>
                                                                     
                                                                     {% if r.pk|existenAlumnos %}
-
+                                                                    <a href="javascript:void(0);" title="Eliminar" ><button type="button" disabled rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                                                      <i class="tim-icons icon-simple-remove"></i>
+                                                                  </button>
+                                                                  </a>
                                                                       {% else %}
                                                                     <a href="javascript:void(0);" title="Eliminar" onclick="delete_dato({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
                                                                       <i class="tim-icons icon-simple-remove"></i>
                                                                   </button>
                                                                   </a>
                                                                     {% endif %}
-                                                                      
-                                                                 
+                                                                                                                                      
                                                               </td>
                                                           </tr>
                                                       {% endfor %}                 
