@@ -65,7 +65,7 @@ def register(request):
             username = form.cleaned_data.get("username")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
-            UsersMetadata.objects.create(user_id = user.id)
+            UsersMetadata.objects.create(user_id = user.id)            
             my_group = Group.objects.get(name='manager') 
             my_group.user_set.add(user.id)
             msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
@@ -85,7 +85,7 @@ def register(request):
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
 def home(request):
-    return render(request, 'app/home/index.html')
+    return render(request, 'app/home/user.html')
 
 ##### seccion gimnasio (agregar/listar/editar/eliminar/validaciones)######
 
@@ -107,7 +107,6 @@ def home_gym(request):
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
 def box_add(request):
-    context= {}
     datos = None
     logo = None
     msg = None    
@@ -132,6 +131,7 @@ def box_add(request):
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
+                    Administradores.objects.create(comunidad_id = save.id, nombre_id=userid)                    
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -171,7 +171,9 @@ def box_add(request):
 @user_passes_test(formularios.is_member, login_url='login')   
 def delete_gym(request,id):
     dato = get_object_or_404(Box, id=id)
+    datoPerfil = get_object_or_404(Administradores, comunidad_id = id)
     dato.delete()
+    datoPerfil.delete()
     messages.success(request, "Eliminado exitosamente")
     return redirect(to='/gym/')
 
@@ -247,12 +249,14 @@ def planes_add(request):
                     cantidad_clases = data['cantidad_clases']        
                     id_u = request.user.id                                
                     save = Planes()
+                    comunidad = Administradores.objects.filter(nombre_id = id_u).first()
                     save.titulo = titulo
                     save.disciplina = disciplina
                     save.horario = horario
                     save.precio = precio
                     save.cantidad_clases = cantidad_clases
-                    save.user_creador = id_u                  
+                    save.user_creador = id_u
+                    save.comunidad_id = comunidad.comunidad_id                  
                     save.save()
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su PLAN existosamente")           
                     return HttpResponseRedirect("/homeplan/")
@@ -364,10 +368,11 @@ def edit_clases(request,id=None):
     form = Clasesform_add(request.POST  or None, instance=clas)
     if form.is_valid() :
         form.save()
-        update = Reserva_estado.objects.filter(clase_id__exact=id).first()
-        update.cupo = clas.cupo
-        update.save()
-        messages.add_message(request, messages.SUCCESS, f"Se modifico su CLASES existosamente")           
+        if formularios.existeclaseActiva(id):
+                update = Reserva_estado.objects.filter(clase_id__exact=id).first()
+                update.cupo = clas.cupo
+                update.save()
+                messages.add_message(request, messages.SUCCESS, f"Se modifico su CLASES existosamente")           
         return HttpResponseRedirect("/homeclases/")
         
                     
@@ -392,8 +397,7 @@ def delete_clases(request,id):
 
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
-def home_reserva(request):    
-    fechaHoy = date.today().strftime('%d/%m/%Y')    
+def home_reserva(request): 
     estado = True
     datos = None    
     userid = request.user.id
@@ -406,8 +410,8 @@ def home_reserva(request):
         if request.method == "POST":
             fecha = request.POST['fecha']                           
             datos = Reserva_estado.objects.filter(user_creador__exact = userid, Fecha__contains=fecha)
-    fecha = Reserva_estado.objects.filter(user_creador__exact = userid).order_by('Fecha').values()        
-
+    
+    fecha = formularios.listaFechas(userid)
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado, 'fechas':fecha} )
 
 @login_required(login_url='login')
@@ -428,8 +432,7 @@ def reserva_add(request):
         form = Reservaform_add(request.POST or None)        
         if form.is_valid() :            
                     data = form.cleaned_data       
-                    clase = data['clase']                
-                    estado = data['estado']
+                    clase = data['clase']              
                     fechas = eval(data['fecha'])
                     id_u = request.user.id                    
                     cupototal = formularios.get_clases_cuportotal(clase)                                                 
@@ -437,7 +440,7 @@ def reserva_add(request):
                         save = Reserva_estado()
                         save.clase_id = clase
                         save.comunidad_id = comunidad.id
-                        save.estado = estado 
+                        save.estado = True 
                         save.cupo = cupototal[0]                    
                         save.user_creador = id_u
                         save.Fecha = fecha                        
@@ -450,22 +453,32 @@ def reserva_add(request):
 
                     messages.add_message(request, messages.SUCCESS, f"Se activo la reserva de la clase")           
                     return HttpResponseRedirect("/homereservas/")
-                                                             
-                        
-        
+                                              
         
     else:
         form = Reservaform_add()       
        
-    return render(request,'app/home/reservas/reserva.html',{"form": form, "comunidad":comunidad, "clase":clases, 'hoy':hoy,
-                                                            'undia':unDia,
-                                                            'dosdia':dosDia,
-                                                            'tresdia':tresDia,
-                                                            'cuatrodia':cuatroDia,
-                                                            'cincodia':cincoDia,
-                                                            'seisdia':seisDia,})
+    return render(request,'app/home/reservas/reserva.html',
+                {
+                "form": form,
+                "comunidad":comunidad,
+                "clase":clases, 'hoy':hoy,
+                'undia':unDia,
+                'dosdia':dosDia,
+                'tresdia':tresDia,
+                'cuatrodia':cuatroDia,
+                'cincodia':cincoDia,
+                'seisdia':seisDia}
+                )
 
 
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')   
+def delete_clase_activa(request,id):
+        dato = get_object_or_404(Reserva_estado, id=id)
+        dato.delete()
+        messages.success(request, "Reserva eliminada exitosamente")
+        return redirect(to='/homereservas/')
 
 
    
@@ -480,10 +493,22 @@ def diseno_modal(request, id,clase):
     return render(request, 'app/home/modal/modal.html', {'consulta':consulta, 'clase':clase})
 
 
-def filtro_fecha(request):
-    if request.method == "POST":
-        fecha = request.POST['fecha']
-        reservas = Reserva_estado.objects.filter(Fecha__contains=fecha)
+## alumnos ##
 
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')
+def home_alumnos(request):
+    user = request.user.id
+    alumnos = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user))
+   
+    return render(request,'app/home/alumnos/alumnos.html',{'alumnos':alumnos} )
 
-        return render(request, 'uploadfiles/listar-archivos.html', {'fecha':fecha,'reservas':reservas})
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')    
+def edit_perfil_modal(request):
+    user = request.user.id
+    alumnos = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user))
+     
+        
+    
+    return render(request, 'app/home/alumnos/edit-perfil-modal.html', {'alumnos':alumnos, })

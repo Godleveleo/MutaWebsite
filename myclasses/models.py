@@ -77,6 +77,7 @@ class Planes(models.Model):
     precio = models.PositiveIntegerField( null=False, blank=False, verbose_name="Precio del  plan")
     cantidad_clases =  models.PositiveSmallIntegerField(default=1, verbose_name="Clases por Semana")
     user_creador = models.CharField(max_length=40, null=True, verbose_name="creado")
+    comunidad = models.ForeignKey(Box,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Comunidad")
     
     class Meta:
         verbose_name = "Planes"
@@ -89,7 +90,7 @@ class Planes(models.Model):
 
     def __str__(self) :
         txt = "Plan: {0} , Precio:$ {1} / {2} clases por semana"
-        return txt.format(self.Titulo, self.precio, self.cantidadClases )
+        return txt.format(self.Titulo, self.precio, self.cantidadClases)
 
 #clases
 class Clases(models.Model):
@@ -114,6 +115,7 @@ class Perfil(models.Model):
     nombre =models.ForeignKey(UsersMetadata,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Nombre")   
     plan = models.ForeignKey(Planes,max_length=20, null=True, blank=False, on_delete = models.DO_NOTHING, verbose_name="Plan Inscrito")     
     vigencia = models.BooleanField(default=True, verbose_name="Vigente")
+    comunidad = models.ForeignKey(Box,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Comunidad")
     imagenPerfil = models.ImageField(upload_to="perfil", default= "perfil/sinfoto.png" , verbose_name="Imagen de Perfil")
 
     def __str__(self) :
@@ -128,6 +130,12 @@ class Perfil(models.Model):
     class Meta:
         verbose_name = "Perfiles"
         verbose_name_plural = "Perfiles"
+
+#### admin 
+
+class Administradores(models.Model):
+    comunidad = models.ForeignKey(Box,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Comunidad")
+    nombre =models.ForeignKey(UsersMetadata,max_length=100, null=True, blank=False, on_delete=models.DO_NOTHING, verbose_name="Nombre")
 
 
 
@@ -181,7 +189,7 @@ class Reserva_activa(models.Model):
 @receiver(post_save, sender=Perfil)
 def estudiando_new(sender, instance, **kwargs):
      if kwargs['created']:        
-         Matricula.objects.create(matricula=f"{instance.nombre.user.first_name} {instance.nombre.user.last_name}" , disInscrita=f"{instance.DisciplinaInscrita.tipo}", plan=f"{instance.plan}")
+         Matricula.objects.create(matricula=f"{instance.nombre.user.first_name} {instance.nombre.user.last_name}" ,  plan=f"{instance.plan}")
 
 
         

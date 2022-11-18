@@ -19,6 +19,12 @@
                         <p>Mi Gimnasio</p>
                     </a>
                 </li>
+                <li class="{% if 'gym' in segment %} active {% endif %} ">
+                    <a href="{% url 'Lista-alumnos' %}">
+                        <i class="tim-icons icon-badge"></i>
+                        <p>Mis Alumnos</p>
+                    </a>
+                </li>
                 <li class="{% if 'Planes' in segment %} active {% endif %}">
                     <a href="{% url 'home-plan' %}">
                         <i class="tim-icons icon-align-left-2"></i>

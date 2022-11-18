@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from user.forms import *
-from myclasses.models import UsersMetadata, Reserva_estado, Reserva_activa
+from myclasses.models import UsersMetadata, Reserva_estado, Reserva_activa, Perfil
 from django import template
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -73,6 +73,7 @@ def register_user(request):
             comunidad = form.cleaned_data.get("comunidad")
             user = authenticate(username=username, password=raw_password)
             UsersMetadata.objects.create(user_id = user.id, comunidad_id = comunidad)
+            Perfil.objects.create(nombre_id = user.id, comunidad_id = comunidad)
             my_group = Group.objects.get(name='alumnos') 
             my_group.user_set.add(user.id)
             msg = 'Usuario creado de manera Existosa ¡BIENVENID@!'
@@ -107,18 +108,18 @@ def home_reserva_user(request):
     else:
         if request.method == "POST":
             fecha = request.POST['fecha']
-            datos = Reserva_estado.objects.filter(comunidad_id__exact = comunidad, Fecha__contains=fecha)
-        clases_activasPorComunidad = Reserva_estado.objects.filter(comunidad_id__exact = comunidad).order_by('Fecha').values()
-        reserva_usuario = Reserva_activa.objects.filter(user_id__exact = userid).filter(comunidad__exact=comunidad)
+            datos = Reserva_estado.objects.filter(comunidad_id__exact = comunidad, Fecha__contains=fecha)    
+    reserva_usuario = Reserva_activa.objects.filter(user_id__exact = userid).filter(comunidad__exact=comunidad)
+    clases_activasPorComunidad = formularios.FiltroFechasUser(comunidad)
                
                                 
 
     return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'datosComunidad':clases_activasPorComunidad, 'reservasActivas':reserva_usuario} )
 
-def delete_reserva(request,id=None):    
-    userid = request.user.id
+def delete_reserva(request,id,rid):    
+    userid = request.user.id 
     id_reserva = Reserva_activa.objects.filter(user_id__exact=userid).first()    
-    dato = get_object_or_404(Reserva_activa, reserva_id__exact=id,id__exact = id_reserva.id)
+    dato = get_object_or_404(Reserva_activa, reserva_id__exact=id,id__exact=rid)
     delbarra = Reserva_estado.objects.filter(id=id).first()
     delbarra.cupo_reservado -= 1
     barra = formularios.porcentaje(delbarra.cupo,delbarra.cupo_reservado)

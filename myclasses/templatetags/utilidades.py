@@ -77,19 +77,19 @@ def invierteFechaHora(fechaDateTime):
 ####fecha###
 
 def nombreDia(n):
-    if n==1:
-        return f"lunes"
-    if n==2:
-        return "Martes"
-    if n==3:
-        return "Miercoles"
-    if n==4:
-        return "Jueves"
-    if n==5:
-        return "Viernes"
-    if n==6:
-        return "Sabado"
     if n==0:
+        return f"lunes"
+    if n==1:
+        return "Martes"
+    if n==2:
+        return "Miercoles"
+    if n==3:
+        return "Jueves"
+    if n==4:
+        return "Viernes"
+    if n==5:
+        return "Sabado"
+    if n==6:
         return "Domingo"
 
 def current_date_format(date):
@@ -112,14 +112,18 @@ def queDiaes(fecha):
 
 @register.filter(name='conReserva')
 def conReserva(id):
-    id_reserva = None
-    if not Reserva_activa.objects.filter(user_id__exact = id).exists():
-        id_reserva = 0
-    else:
-        dato = Reserva_activa.objects.filter(user_id__exact = id).first()
-        id_reserva = dato.reserva_id
-    return id_reserva
+    
+    return Reserva_activa.objects.filter(reserva_id__exact = id).exists()
+        
+    
+    
     
 @register.filter(name='conReservaActiva')
 def conReservaActiva(id,fecha):
     return Reserva_activa.objects.filter(user_id__exact = id, fecha__contains = fecha).exists()
+
+ 
+@register.filter(name='get_planes_choices')
+def get_planes_choices(comunidad):
+    planes = Planes.objects.filter(comunidad_id = comunidad)
+    return planes

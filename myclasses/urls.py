@@ -26,8 +26,12 @@ urlpatterns = [
     ###reserva###
     path("homereservas/", views.home_reserva, name="home-reservas"),
     path("reservaadd/", views.reserva_add, name="reserva-add"),
+    path('delete-clase-activa/<id>/', views.delete_clase_activa, name='delete-reserva'),
     #####
-    path('modal/<int:id>/<str:clase>', views.diseno_modal, name="diseno_modal")
+    path('modal/<int:id>/<str:clase>', views.diseno_modal, name="diseno_modal"),
+    ###alumnos##
+    path("home-alumnos/", views.home_alumnos, name="Lista-alumnos"),
+    path('editar-plan/', views.edit_perfil_modal, name="modal-perfil-edit"),
     
 
 

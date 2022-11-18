@@ -11,7 +11,7 @@ urlpatterns = [
     path('registro/user', views.register_user, name="registro-usuario"),
     #### reserva de clases###
     path('reserva-clase/', views.home_reserva_user, name="reserva-clases"),
-    path('deletereserva/<id>/', views.delete_reserva, name='delete-reserva'),
+    path('deletereserva/<int:id>/<int:rid>', views.delete_reserva, name='delete-reserva'),
     path('addclass', views.add_reserva, name='add-reserva'),
     
 

@@ -1,0 +1,53 @@
+{% extends "app/layouts/base.html" %}
+
+{% block title %} Perfil Alumnos {% endblock %} 
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% load utilidades %}
+  <div class="content">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Alumnos</h5>
+             </div>       
+              <div class="card-body">
+                {% for alumno in alumnos %}
+                 <div style="max-width: 80%;" class="card border border-white  ">
+                  <div class="d-flex justify-content-around align-items-center">
+                    <div class=" p-2">
+                      <a class="text-white" href="{% url 'home-clases' %}">
+                        {{alumno.nombre.nombreCompleto}}
+                      </a>
+                    </div>
+                   
+                     <div class=" p-2">
+                      <a class="btn btn-sm btn-info btn-simple" href="javascript:void(0);" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'modal-perfil-edit'  %}', 'ss', '_ventana_modal');">Plan</a>
+                        
+                    </div>                              
+                    <div class="px-4 p-3">
+                      {% if alumno.vigencia %}
+                           <p>Pago Vigente</p>
+                            {% else %}
+                            <p>Pago Caducado</p>
+                      {% endif %}    
+                    </div>
+                  <div class="p-2">                                         
+                  <p>reserva activa</p>                   
+                </div>
+
+              </div>                                
+            </div>
+              {% endfor %}
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+{% endblock content %}
+
+
+{% block javascripts %}{% endblock javascripts %}

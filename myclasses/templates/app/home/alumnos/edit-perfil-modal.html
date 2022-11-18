@@ -1,0 +1,37 @@
+{% extends "app/layouts/ajax.html" %}
+
+{% block content %}
+{% load utilidades %}
+<div class="modal-header">
+  <h5 class="modal-title" id="ventana_modal">Añadir o modificar plan de alumno</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    {% for alumno in alumnos %}
+  <div class="card" style="width: 100%;">
+    <div class="card-header">
+        {{alumno.nombre.nombreCompleto}}
+    </div>
+    <form action="">
+    <div class="mb-3 ">
+        <label for="Clase" class="form-label">Clases de tu Comunidad</label>
+        <select required name="clase" class="form-control" aria-label="Clases">
+          <option disabled selected>Seleccione una clase</option>
+          {% for c in alumno.comunidad.id|get_planes_choices %}
+          <option style="color: black ;"  value="{{ c.pk }}"><p>{{c.titulo}}</p></option>
+          {% endfor %}
+          {% endfor %}                 
+        </select>
+      </div>
+    </form>
+  </div>
+    
+
+    
+        
+</div>
+
+
+{% endblock %}

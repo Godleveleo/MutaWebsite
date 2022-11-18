@@ -53,6 +53,24 @@ function delete_clase(id){
       }
     })
   }
+function delete_clase_activa(id){
+    Swal.fire({
+      "title": "¿Estas seguro?",
+    //   "text": "{{message}}",
+      "icon": "question",
+      "showCancelButton":true,
+      "cancelButtonText":"No, Cancelar",
+      "confirmButtonText":"Si, eliminar",
+      "reverseButtons":true,
+      "confirmButtonColor":"#bb2d3b"            
+
+    })
+    .then(function(result){
+      if(result.isConfirmed){
+        window.location.href = "/delete-clase-activa/"+id+"/"
+      }
+    })
+  }
 function delete_reserva(id){
     Swal.fire({
       "title": "¿Estas seguro?",
@@ -67,7 +85,7 @@ function delete_reserva(id){
     })
     .then(function(result){
       if(result.isConfirmed){
-        window.location.href = "/alumno/deletereserva/"+id+"/"
+        window.location.href = id
       }
     })
   }

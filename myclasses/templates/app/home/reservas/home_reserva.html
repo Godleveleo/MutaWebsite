@@ -17,12 +17,8 @@
           <h5 class="title">Seccion reserva</h5>
           <p>Aqui puedes activar tus clases para que los usuarios puedan realizar reservas</p>
           </div>
-
-            
-
-          {% if estado == 1 %}
-
           
+          {% if estado == 1 %}
 
                   <div class="card-body " >
                      <!--set flash-->
@@ -42,7 +38,7 @@
                             <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" onchange="this.form.submit()">                       
                               <option value="">Fecha</option>                    
                                 {% for f in fechas %}
-                              <option style="color: black ;" value="{{f.Fecha}}" >{{f.Fecha}}</option>
+                              <option style="color: black ;" value="{{f}}" >{{f}}</option>
                                  {% endfor %}                                                 
                             </select>                                    
                       </form>
@@ -64,7 +60,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                               <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
                               <div class="px-4 pt-2">
-                                <p class="btn btn-sm btn-info btn-simple " >{{r.Fecha}}</p>
+                                <p class="btn btn-sm btn-warning btn-simple " >{{r.Fecha}}</p>
                               </div>
                               <div class="px-4 pt-2">
                                 {% if r.id|existeReserva != True %}
@@ -78,15 +74,30 @@
                             </div>
                             
                             <div class="card-body p-4">
-                              
-                                <p> Estado de la clase</p>
-                                {% if  r.estado  == True %}
-                                <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
+                                <div class="d-flex justify-content-between">
+                                 <div>
+                                  <p> Estado de la clase</p>
+                                  {% if  r.estado  == True %}
+                                  <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
+  
+                                       {% else %}
+                                  <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>
+                                  {% endif %}
+                                 </div>
 
-                                     {% else %}
-                                <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>
-                                {% endif %}
+                                 <div> 
+                                  <p > <label for="eliminar">Eliminar</label></p>                             
                                 
+                                  <a  href="javascript:void(0);" title="Eliminar" onclick="delete_clase_activa({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm px-4">
+                                    <i class="tim-icons icon-simple-remove"></i>
+                                  </button>
+                                  </a>
+                                </div>
+
+                                </div>
+                                
+                                
+                              
                                 <hr>
                                 <h5 class="card-title">Cupos :</h5>
                                 <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>

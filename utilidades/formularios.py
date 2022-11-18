@@ -124,3 +124,28 @@ def get_alumnos_con_reserva(reserva_id):
 	return [
 	(value.id, value.user_id) for value in reserva_active.objects.filter(reserva_id__exact = reserva_id)
 	]
+
+def listaFechas(userid):
+    fecha = Reserva_estado.objects.filter(user_creador__exact = userid)
+    resultado = []
+    for item in fecha:
+        if item.Fecha not in resultado:
+            resultado.append(item.Fecha)
+    print(resultado)  
+    return resultado
+
+def FiltroFechasUser(comunidad):
+    fecha = Reserva_estado.objects.filter(comunidad_id__exact = comunidad)
+    resultado = []
+    for item in fecha:
+        if item.Fecha not in resultado:
+            resultado.append(item.Fecha)
+      
+    return resultado
+
+def existeclaseActiva(id):
+    return Reserva_estado.objects.filter(clase_id__exact=id).exists()
+
+def get_comunidad(userid):
+    comunidad = Administradores.objects.filter(nombre_id = userid).first()
+    return comunidad.comunidad 
