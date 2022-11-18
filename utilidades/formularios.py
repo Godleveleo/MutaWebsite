@@ -146,6 +146,11 @@ def FiltroFechasUser(comunidad):
 def existeclaseActiva(id):
     return Reserva_estado.objects.filter(clase_id__exact=id).exists()
 
+def existePerfil(user):
+    
+    return Administradores.objects.filter(nombre_id=user).count()
+
 def get_comunidad(userid):
     comunidad = Administradores.objects.filter(nombre_id = userid).first()
     return comunidad.comunidad 
+

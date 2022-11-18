@@ -127,3 +127,7 @@ def conReservaActiva(id,fecha):
 def get_planes_choices(comunidad):
     planes = Planes.objects.filter(comunidad_id = comunidad)
     return planes
+
+@register.filter(name='existenAlumnos')
+def existenAlumnos(comunidad):    
+    return Perfil.objects.filter(comunidad_id = comunidad).exists()

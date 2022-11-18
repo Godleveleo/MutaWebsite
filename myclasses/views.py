@@ -155,6 +155,7 @@ def box_add(request):
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
+                    Administradores.objects.create(comunidad_id = save.id, nombre_id=userid)
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -172,8 +173,8 @@ def box_add(request):
 def delete_gym(request,id):
     dato = get_object_or_404(Box, id=id)
     datoPerfil = get_object_or_404(Administradores, comunidad_id = id)
-    dato.delete()
     datoPerfil.delete()
+    dato.delete()
     messages.success(request, "Eliminado exitosamente")
     return redirect(to='/gym/')
 
@@ -499,7 +500,9 @@ def diseno_modal(request, id,clase):
 @user_passes_test(formularios.is_member, login_url='login')
 def home_alumnos(request):
     user = request.user.id
-    alumnos = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user))
+    alumnos = None
+    if formularios.existePerfil(user) > 0:
+        alumnos = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user))
    
     return render(request,'app/home/alumnos/alumnos.html',{'alumnos':alumnos} )
 
