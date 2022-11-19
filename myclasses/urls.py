@@ -31,7 +31,7 @@ urlpatterns = [
     path('modal/<int:id>/<str:clase>', views.diseno_modal, name="diseno_modal"),
     ###alumnos##
     path("home-alumnos/", views.home_alumnos, name="Lista-alumnos"),
-    path('editar-plan/', views.edit_perfil_modal, name="modal-perfil-edit"),
+    path('editar-plan/<int:id>/<int:alumno>', views.edit_perfil_modal, name="modal-perfil-edit"),
     
 
 

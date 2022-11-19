@@ -18,14 +18,17 @@
                  <div style="max-width: 80%;" class="card border border-white  ">
                   <div class="d-flex justify-content-around align-items-center">
                     <div class=" p-2">
-                      <a class="text-white" href="{% url 'home-clases' %}">
-                        {{alumno.nombre.nombreCompleto}}
+                      <a class="text-white" href="javascript:void(0);">
+                        {{alumno.nombre.nombreCompleto}} 
                       </a>
                     </div>
                    
                      <div class=" p-2">
-                      <a class="btn btn-sm btn-info btn-simple" href="javascript:void(0);" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'modal-perfil-edit'  %}', 'ss', '_ventana_modal');">Plan</a>
-                        
+                      <a class="btn btn-sm btn-info btn-simple" href="javascript:void(0);"  title="Precione aqui para modificar" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'modal-perfil-edit' alumno.pk alumno.nombre_id  %}', 'ss', '_ventana_modal');">
+                        {% if alumno.plan == None %}
+                              Sin plan añadido
+                        {% endif %}
+                      </a>
                     </div>                              
                     <div class="px-4 p-3">
                       {% if alumno.vigencia %}

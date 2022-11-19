@@ -12,26 +12,23 @@
     {% for alumno in alumnos %}
   <div class="card" style="width: 100%;">
     <div class="card-header">
-        {{alumno.nombre.nombreCompleto}}
+        {{alumno.nombre.nombreCompleto}} 
     </div>
-    <form action="">
-    <div class="mb-3 ">
-        <label for="Clase" class="form-label">Clases de tu Comunidad</label>
-        <select required name="clase" class="form-control" aria-label="Clases">
-          <option disabled selected>Seleccione una clase</option>
+    <form  method="POST" >
+
+      {% csrf_token %}
+    <div class="mb-3 px-2">
+        <label for="plan" class="form-label">Añada un plan al Alumno</label>
+        <select required name="plan" class="form-control" aria-label="plan">
+          <option disabled selected>Seleccione un plan</option>
           {% for c in alumno.comunidad.id|get_planes_choices %}
           <option style="color: black ;"  value="{{ c.pk }}"><p>{{c.titulo}}</p></option>
           {% endfor %}
           {% endfor %}                 
         </select>
       </div>
+      <button class="btn btn-sm btn-danger btn-simple" type="submit">Guardar</button>
     </form>
   </div>
-    
-
-    
-        
 </div>
-
-
 {% endblock %}
