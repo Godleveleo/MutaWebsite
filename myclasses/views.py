@@ -509,16 +509,22 @@ def home_alumnos(request):
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')    
 def edit_perfil_modal(request, id, alumno):
-    user = request.user.id
+    user = request.user.id    
     alumnos = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user), nombre_id = alumno)       
-    perfil = Perfil.objects.get(pk=id)
+    perfil = get_object_or_404(Perfil, pk=id)
     form = PerfilAlumnoform(request.POST  or None, instance=perfil)
-    if form.is_valid() :
-        plan = form.cleaned_data['plan']
-        print(plan)
+                         
+    return render(request, 'app/home/alumnos/edit-perfil-modal.html', {'alumnos':alumnos, 'form':form, 'id':id })
+
+def edit_plan_alumno_modal(request, id):
+    perfil = get_object_or_404(Perfil, pk=id)
+    form = PerfilAlumnoform(request.POST  or None, instance=perfil)
+    if form.is_valid():
+        plan = form.cleaned_data['plan']        
+        pago = form.cleaned_data['vigencia']        
         perfil.plan_id = plan
-        perfil.save()
-    else:
-        print("no")
-                        
-    return render(request, 'app/home/alumnos/edit-perfil-modal.html', {'alumnos':alumnos, })
+        perfil.vigencia = pago
+        perfil.save()        
+    
+    return redirect(to='/home-alumnos/')
+

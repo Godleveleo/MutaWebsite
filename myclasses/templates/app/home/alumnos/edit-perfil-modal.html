@@ -3,7 +3,7 @@
 {% block content %}
 {% load utilidades %}
 <div class="modal-header">
-  <h5 class="modal-title" id="ventana_modal">Añadir o modificar plan de alumno</h5>
+  <h5 class="modal-title" id="ventana_modal">Aqui puedes modificar el perfil de tu alumno</h5>
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -14,20 +14,33 @@
     <div class="card-header">
         {{alumno.nombre.nombreCompleto}} 
     </div>
-    <form  method="POST" >
+    <hr>
+    <form  name="form"  method="POST" action="{% url 'perfil-edit' id %}" >
 
       {% csrf_token %}
+
     <div class="mb-3 px-2">
         <label for="plan" class="form-label">Añada un plan al Alumno</label>
-        <select required name="plan" class="form-control" aria-label="plan">
-          <option disabled selected>Seleccione un plan</option>
+        <select  name="plan" class="form-control" aria-label="plan">
+          <option  selected value="{{ form.plan.value }}"  >Sin cambios</option>
           {% for c in alumno.comunidad.id|get_planes_choices %}
           <option style="color: black ;"  value="{{ c.pk }}"><p>{{c.titulo}}</p></option>
           {% endfor %}
           {% endfor %}                 
-        </select>
+        </select>      
       </div>
-      <button class="btn btn-sm btn-danger btn-simple" type="submit">Guardar</button>
+      <div class="mb-3 px-2">
+        <label for="plan" class="form-label">Seleccione una opción</label>
+        <select  name="vigencia" class="form-control" aria-label="plan">
+          <option  selected value="{{ form.vigencia.value }}" disabled>Sin cambios</option>          
+          <option style="color: black ;"  value="1"><p>Pago vigente <p></option>
+          <option style="color: black ;"  value="0"><p>Pago caducado<p></option>
+        </select>      
+      </div>
+      <div class="px-2">
+        <button class="btn btn-sm btn-danger btn-simple" type="submit">Actualizar</button>
+      </div>
+      
     </form>
   </div>
 </div>

@@ -144,7 +144,14 @@ class PerfilAlumnoform(forms.ModelForm):
 
     class Meta:
         model = Perfil
-        fields = ('plan',)        
+        fields = ('plan','vigencia')
+        widgets = {
+            'plan' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'plan', 'autocomplete':'off'}),            
+            'vigencia' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'pago', 'autocomplete':'off'}),            
+                        
+                   
+        }
+
    	
 
     

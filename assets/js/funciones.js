@@ -90,6 +90,7 @@ function delete_reserva(id){
     })
   }
 
+
   function crear_gym()
   {
      var form=document.form;
@@ -99,6 +100,7 @@ function delete_reserva(id){
      }
      form.submit();
     }
+    
   function editar_gym()
   {
      var form=document.form;
@@ -108,6 +110,7 @@ function delete_reserva(id){
      }
      form.submit();
     }
+ 
   
     function soloNumeros(evt) {
       key = (document.all) ? evt.keyCode : evt.which;
@@ -134,3 +137,6 @@ function delete_reserva(id){
       return false;
  
   }
+
+  
+ 
