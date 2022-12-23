@@ -1,0 +1,57 @@
+{% extends "app/layouts/base-fullscreen-principal.html" %}
+
+{% block title %} Home {% endblock %} 
+
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{%load static%}
+    <style>
+        body{
+            background:  rgba(80, 97, 103, 0.575) url('{% static "img/pesa-rusa.jpg" %}') no-repeat fixed center;
+            backdrop-filter: brightness(50%);
+        }
+    </style>
+    <div class="content"  >
+        <div class="container" >
+            <div class="row pt-5">
+                <div class="d-flex justify-content-center">
+                    <img src='{% static "img/norepr.png" %}' class="img-fluid opacity-75" alt="logoNR">
+                </div>
+                <div class="d-flex justify-content-center py-2">
+                  <p>Somos una plataforma con la que puedes administrar tu comunidad deportiva y agendar de horas</p>
+                </div>
+                <div class="d-flex justify-content-between col-md-12 mt-4  pt-5 opacity-75 ">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                          <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Acceso Administradores</h4>
+                              <p class="card-text">Solo para administradores de Comunidades deportivas,
+                                si aun no tienes tu cuenta puedes registrarte <a class="text-info" href="{% url 'register' %}" >Aqui</a>
+                              </p>
+                              <a href="{% url 'login' %}" class="btn btn-primary">Acceso</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 " >
+                          <div class="card" >
+                            <div class="card-body">
+                              <h4 class="card-title">Acceso Alumnos</h4>
+                              <p class="card-text">Si ya te encuetras registrado en comunidad entra a nuestro sitio
+                                , si no registrate <a class="text-info" href="{% url 'registro-usuario' %}">Aqui</a>
+                              </p>
+                              <a  href="{% url 'login-usuario' %}"  class="btn btn-primary">Acceso</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

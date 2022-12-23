@@ -4,6 +4,12 @@ from utilidades.formularios import *
 
 
 
+class KeywordsAdmin(admin.ModelAdmin):
+    list_display = ('instagram_redsocial','tiktok_redsocial','facebook_redsocial', 'correo_contacto', 'correo_sugerencias_reclamos')
+    icon_name = 'fitness_center'   
+            
+
+admin.site.register(Keywords, KeywordsAdmin)
 
 class BoxAdmin(admin.ModelAdmin):
     list_display = ('box','ubicacion','descripcion')

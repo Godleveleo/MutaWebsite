@@ -22,7 +22,7 @@
     <div class="mb-3 px-2">
         <label for="plan" class="form-label">Añada un plan al Alumno</label>
         <select  name="plan" class="form-control" aria-label="plan">
-          <option  selected value="{{ form.plan.value }}"  >Sin cambios</option>
+          <option  selected value="{{ form.plan.value }}" > PLAN ACTUAL DEL ALUMNO : {{form.plan.value|informacionPerfil}}</option>
           {% for c in alumno.comunidad.id|get_planes_choices %}
           <option style="color: black ;"  value="{{ c.pk }}"><p>{{c.titulo}}</p></option>
           {% endfor %}
@@ -32,9 +32,15 @@
       <div class="mb-3 px-2">
         <label for="plan" class="form-label">Seleccione una opción</label>
         <select  name="vigencia" class="form-control" aria-label="plan">
-          <option  selected value="{{ form.vigencia.value }}" disabled>Sin cambios</option>          
+          <option  selected value="{{ form.vigencia.value }}" disabled>
+            {% if form.vigencia.value == 1  %}
+                Estado actual del pago : VIGENTE 
+                {% else %}
+                Estado actual del pago : EXPIRADO 
+            {% endif %}
+          </option>          
           <option style="color: black ;"  value="1"><p>Pago vigente <p></option>
-          <option style="color: black ;"  value="0"><p>Pago caducado<p></option>
+          <option style="color: black ;"  value="0"><p>Pago expirado<p></option>
         </select>      
       </div>
       <div class="px-2">

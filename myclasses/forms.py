@@ -80,10 +80,14 @@ class Boxform_add(forms.ModelForm):
 
     class Meta:
         model = Box
-        fields = ('box', 'ubicacion', 'descripcion', 'logo')
+        fields = ('box', 'ubicacion', 'sitio_web', 'instagram_redsocial', 'tiktok_redsocial' , 'facebook_redsocial', 'descripcion', 'logo')
         widgets = {
             'box' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gimnasio', 'autocomplete':'off'}),
             'ubicacion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ubicacion',  'autocomplete':'off'}),
+            'sitio_web': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sitio web',  'autocomplete':'off'}),
+            'instagram_redsocial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Instagram',  'autocomplete':'off'}),
+            'tiktok_redsocial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tiktok',  'autocomplete':'off'}),
+            'facebook_redsocial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Facebook',  'autocomplete':'off'}),
             'descripcion': forms.Textarea(attrs={'rows': 3, 'cols': 100, 'class': 'form-control', 'placeholder': 'Descripción', 'autocomplete':'off'}),
             
         }

@@ -6,11 +6,17 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-
+{%load static%}
+    <style>
+        body{
+            background:  rgba(80, 97, 103, 0.575) url('{% static "img/registroadminbg.jpg" %}') no-repeat fixed center;
+            backdrop-filter: brightness(50%);
+        }
+    </style>
     <div class="content">
         <div class="container">
             <div class="row pt-5">
-                <div class="col-md-6 mt-5 offset-md-3 pt-5 mt-5">
+                <div class="col-md-6 mt-5 offset-md-3 pt-2 mt-5">
                     <div class="card">
                         <div class="card-header text-center py-4">
                             <h4 class="title">

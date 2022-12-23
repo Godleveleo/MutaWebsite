@@ -131,3 +131,12 @@ def get_planes_choices(comunidad):
 @register.filter(name='existenAlumnos')
 def existenAlumnos(comunidad):    
     return Perfil.objects.filter(comunidad_id = comunidad).exists()
+
+@register.filter(name='informacionPerfil')
+def informacionPerfil(id):
+    datos = Planes.objects.filter(id__exact = id).first()
+    return datos.titulo
+
+@register.filter(name='existePlanAsignado')
+def existePlanAsignado(plan):    
+    return Perfil.objects.filter(plan_id = plan).exists()

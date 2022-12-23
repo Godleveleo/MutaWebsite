@@ -36,11 +36,13 @@
                       {% if alumno.vigencia %}
                            <p>Pago Vigente</p>
                             {% else %}
-                            <p>Pago Caducado</p>
+                            <p>Pago Expirado</p>
                       {% endif %}    
                     </div>
                   <div class="p-2">                                         
-                  <p>reserva activa</p>                   
+                    <a class="btn btn-sm btn-danger btn-simple text-white" href="javascript:void(0);"  title="Ver reservas del alumno" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'modal-reserva-alumno' alumno.pk alumno.nombre_id  %}', 'ss', '_ventana_modal');">
+                      Ver reservas activas
+                    </a>                   
                 </div>
 
               </div>                                

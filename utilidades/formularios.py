@@ -131,7 +131,7 @@ def listaFechas(userid):
     for item in fecha:
         if item.Fecha not in resultado:
             resultado.append(item.Fecha)
-    print(resultado)  
+      
     return resultado
 
 def FiltroFechasUser(comunidad):

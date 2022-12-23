@@ -28,7 +28,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
                         <label for="boton">Activar clase para reserva </label>
-                        <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
+                        <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple text-white" >IR</a>
                       </div>
                      
                      <div class="d-flex justify-content-end align-items-center" >
@@ -60,7 +60,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                               <h5 class="card-header">Clase: {{ r.clase.descripcion | upper }}</h5>
                               <div class="px-4 pt-2">
-                                <p class="btn btn-sm btn-warning btn-simple " >{{r.Fecha}}</p>
+                                <p class="btn btn-sm btn-warning btn-simple text-white " >{{r.Fecha}} |  {{ r.clase.inicioClase }} hrs.</p>
                               </div>
                               <div class="px-4 pt-2">
                                 {% if r.id|existeReserva != True %}
@@ -131,11 +131,11 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Gestiona las reservar a tus clases</h5>
                                 <div class="text-center">
-                                    <img style="max-width: 45%;" src='{% static "img/clases.jpeg" %}'  alt="...">
+                                    <img style="max-width: 45%;" src='{% static "img/logo3.2.png" %}'  alt="...">
                                 </div>
                                 <br>
                                 <label for="boton">Puedes activar tus clases para reservas </label>
-                                <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple" >IR</a>
+                                <a  href="{% url 'reserva-add' %}"  class="btn btn-sm btn-success btn-simple text-white" >IR</a>
 
                                 </div>
                                 <div class="card-footer text-muted">

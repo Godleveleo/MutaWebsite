@@ -39,7 +39,7 @@
                                 <div class="card-footer d-flex justify-content-center">
                                   <div class="button-container">
                                     <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                      <i class="fab fa-facebook"></i>
+                                      <img src='{% static "img/red-social/facebook.png" %}'  ></img>
                                     </button>
                                     <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
                                       <i class="fab fa-twitter"></i>
@@ -55,7 +55,7 @@
                         <div class="card-header">
                           <p class="card-text">Opciones</p>
                           <hr>
-                            <p><a href="{% url 'gym-add' %}"  class="btn btn-sm btn-success btn-simple">Modificar</a></p>
+                            <p><a href="{% url 'gym-add' %}"  class="btn btn-sm btn-success btn-simple text-white">Modificar</a></p>
                         </div>
                         
                      </div>
@@ -78,7 +78,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Bienvenido a NOREPCLASS WEBSITE</h5>
                       <div class="text-center">
-                        <img style="max-width: 45%;" src='{% static "img/comunidad.png" %}'  alt="...">
+                        <img style="max-width: 45%;"  src='{% static "img/logo3.2.png" %}'   alt="...">
                       </div>
                       <a href="{% url 'gym-add' %}"  class="btn btn-success" >Crear mi Gimnasio</a>
                     </div>

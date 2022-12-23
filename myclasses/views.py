@@ -37,12 +37,12 @@ def login_view(request):
                     usersMetadata = UsersMetadata.objects.filter(user_id=request.user.id).get()
                     request.session['users_metadata_id'] =  usersMetadata.id
                     if user.groups.filter(name='manager').exists():                                                      
-                                            return redirect("/")
+                                            return redirect("home-gym")
                     else:
                          msg = 'Credenciales invalidas'
 
                 else:
-                    return redirect("/")
+                    return redirect("home-gym")
 
 
             else:
@@ -82,10 +82,9 @@ def register(request):
     return render(request, "app/accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 
-@login_required(login_url='login')
-@user_passes_test(formularios.is_member, login_url='login')
+
 def home(request):
-    return render(request, 'app/home/user.html')
+    return render(request, 'pagina-principal/index.html')
 
 ##### seccion gimnasio (agregar/listar/editar/eliminar/validaciones)######
 
@@ -122,16 +121,24 @@ def box_add(request):
                     data = form.cleaned_data       
                     box = data['box']
                     ubicacion = data['ubicacion']
-                    descripcion = data['descripcion']        
+                    descripcion = data['descripcion']
+                    sitio_web = data['sitio_web']
+                    instagram_redsocial = data['instagram_redsocial']
+                    tiktok_redsocial = data['tiktok_redsocial']
+                    facebook_redsocial = data['facebook_redsocial']
                     id_u = request.user.id            
                     save = Box()
                     save.box = box
                     save.ubicacion = ubicacion
+                    save.sitio_web = sitio_web
+                    save.instagram_redsocial = instagram_redsocial
+                    save.tiktok_redsocial = tiktok_redsocial
+                    save.facebook_redsocial = facebook_redsocial
                     save.logo = logo
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
-                    Administradores.objects.create(comunidad_id = save.id, nombre_id=userid)                    
+                    Administradores.objects.create(comunidad_id = save.id, nombre=id_u)                    
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -146,16 +153,24 @@ def box_add(request):
                     data = form.cleaned_data       
                     box = data['box']
                     ubicacion = data['ubicacion']
-                    descripcion = data['descripcion']        
+                    descripcion = data['descripcion']
+                    sitio_web = data['sitio_web']
+                    instagram_redsocial = data['instagram_redsocial']
+                    tiktok_redsocial = data['tiktok_redsocial']
+                    facebook_redsocial = data['facebook_redsocial']        
                     id_u = request.user.id            
                     save = Box()
                     save.box = box
                     save.ubicacion = ubicacion
+                    save.sitio_web = sitio_web
+                    save.instagram_redsocial = instagram_redsocial
+                    save.tiktok_redsocial = tiktok_redsocial
+                    save.facebook_redsocial = facebook_redsocial
                     save.logo = logo
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
-                    Administradores.objects.create(comunidad_id = save.id, nombre_id=userid)
+                    Administradores.objects.create(comunidad_id = save.id, nombre=id_u) 
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -528,3 +543,11 @@ def edit_plan_alumno_modal(request, id):
     
     return redirect(to='/home-alumnos/')
 
+@login_required(login_url='login')
+@user_passes_test(formularios.is_member, login_url='login')    
+def reserva_alumno_modal(request, id, alumno):
+    user = request.user.id    
+    reserva = Reserva_activa.objects.filter(user_id__exact = alumno)
+    dato = Perfil.objects.filter(comunidad_id = formularios.get_comunidad(user), nombre_id = alumno).first()
+                             
+    return render(request, 'app/home/alumnos/reserva-activa-alumno-modal.html', {'reserva':reserva, 'dato':dato})

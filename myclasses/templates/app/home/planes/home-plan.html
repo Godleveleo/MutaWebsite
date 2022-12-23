@@ -6,7 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}         
-
+{% load utilidades %}
       
 <div class="content">
   <div class="row">
@@ -51,21 +51,28 @@
                                     <td>{{ r.precio }}</td>                                    
                                     <td>{{ r.cantidad_clases }}</td>                                    
                                     <td class="td-actions text-right">
-                                      <a href="{% url 'home-gym' %}">
-                                        <button  type="button" rel="tooltip" class="btn btn-info btn-simple btn-icon btn-sm">
-                                          <i class="tim-icons icon-single-02"></i>
-                                      </button>
-                                      </a>
+                                    
 
                                        <a href="{% url 'edit-plan' r.id %}" title="EDITAR"> <button type="button" rel="tooltip" class="btn btn-success btn-simple btn-icon btn-sm">
                                         <i class="tim-icons icon-settings-gear-63"></i>
                                       </button>
 
                                        </a>
+                                       
+                                        {% if r.pk|existePlanAsignado %}
+                                        <a href="javascript:void(0);" title="No puedes eliminar un plan asignado" ><button disabled type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
+                                          <i class="tim-icons icon-simple-remove"></i>
+                                      </button>
+                                      </a>
+                                        {% else %}
                                         <a href="javascript:void(0);" title="Eliminar" onclick="delete_plan({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm">
-                                            <i class="tim-icons icon-simple-remove"></i>
-                                        </button>
-                                        </a>
+                                          <i class="tim-icons icon-simple-remove"></i>
+                                      </button>
+                                      </a>
+                                        {% endif %}
+                                       
+
+                                       
                                     </td>
                                 </tr>
                                            
@@ -75,7 +82,7 @@
                   </table>                                                      
                 </div>
                 <hr>
-                <a  href="{% url 'plan-add' %}"  class="btn btn-sm btn-success btn-simple" >Añadir nuevo Plan </a> 
+                <a  href="{% url 'plan-add' %}"  class="btn btn-sm btn-success btn-simple text-white" >Añadir nuevo Plan </a> 
               </div>
             </div>
           </div>
@@ -93,7 +100,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">Crea tus planes en esta seccion</h5>
                                 <div class="text-center">
-                                    <img style="max-width: 45%;" src='{% static "img/plan.jpg" %}'  alt="...">
+                                    <img style="max-width: 45%;"  src='{% static "img/logo3.2.png" %}'   alt="...">
                                 </div>
                                 <br>
                                 <a href="{% url 'plan-add' %}"  class="btn btn-success" >Añadir Plan </a>

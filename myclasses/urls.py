@@ -33,6 +33,7 @@ urlpatterns = [
     path("home-alumnos/", views.home_alumnos, name="Lista-alumnos"),
     path('editar-plan/<int:id>/<int:alumno>', views.edit_perfil_modal, name="modal-perfil-edit"),
     path('editar-perfil/<int:id>', views.edit_plan_alumno_modal, name="perfil-edit"),
+    path('reserva-alumno/<int:id>/<int:alumno>', views.reserva_alumno_modal, name="modal-reserva-alumno"),
     
 
     
