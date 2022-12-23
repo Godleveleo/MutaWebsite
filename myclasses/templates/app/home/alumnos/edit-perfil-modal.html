@@ -22,7 +22,14 @@
     <div class="mb-3 px-2">
         <label for="plan" class="form-label">Añada un plan al Alumno</label>
         <select  name="plan" class="form-control" aria-label="plan">
-          <option  selected value="{{ form.plan.value }}" > PLAN ACTUAL DEL ALUMNO : {{form.plan.value|informacionPerfil}}</option>
+          <option  selected value="{{ form.plan.value }}" > 
+            PLAN ACTUAL DEL ALUMNO : 
+            {% if form.plan.value != Null %}
+            {{form.plan.value|informacionPerfil}}
+            {% else %}
+            Sin plan
+            {% endif %} 
+          </option>
           {% for c in alumno.comunidad.id|get_planes_choices %}
           <option style="color: black ;"  value="{{ c.pk }}"><p>{{c.titulo}}</p></option>
           {% endfor %}

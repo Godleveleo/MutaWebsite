@@ -148,9 +148,9 @@ def existeclaseActiva(id):
 
 def existePerfil(user):
     
-    return Administradores.objects.filter(nombre_id=user).count()
+    return Administradores.objects.filter(admin_user_id=user).count()
 
 def get_comunidad(userid):
-    comunidad = Administradores.objects.filter(nombre_id = userid).first()
+    comunidad = Administradores.objects.filter(admin_user_id = userid).first()
     return comunidad.comunidad 
 

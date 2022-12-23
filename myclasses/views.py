@@ -138,7 +138,7 @@ def box_add(request):
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
-                    Administradores.objects.create(comunidad_id = save.id, nombre=id_u)                    
+                    Administradores.objects.create(comunidad_id = save.id, admin_user_id=id_u)                    
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -170,7 +170,7 @@ def box_add(request):
                     save.descripcion = descripcion
                     save.user_creador = id_u                  
                     save.save()
-                    Administradores.objects.create(comunidad_id = save.id, nombre=id_u) 
+                    Administradores.objects.create(comunidad_id = save.id, admin_user_id=id_u) 
                     messages.add_message(request, messages.SUCCESS, f"Se agrego su Gimnasio existosamente")           
                     return HttpResponseRedirect("/gym/")
             else:
@@ -265,7 +265,7 @@ def planes_add(request):
                     cantidad_clases = data['cantidad_clases']        
                     id_u = request.user.id                                
                     save = Planes()
-                    comunidad = Administradores.objects.filter(nombre_id = id_u).first()
+                    comunidad = Administradores.objects.filter(admin_user_id = id_u).first()
                     save.titulo = titulo
                     save.disciplina = disciplina
                     save.horario = horario

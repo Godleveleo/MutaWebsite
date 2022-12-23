@@ -32,18 +32,18 @@ def existeAtributoEnProducto(producto_id, atributo_id):
 
 @register.filter(name='getMetadata')
 def getMetadata(n):
-    datos=Metadata.objects.get()
-    lista=[datos.keyword, datos.description, datos.correo, datos.telefono, datos.titulo]
+    datos=Keywords.objects.get()
+    lista=[datos.tiktok_redsocial, datos.correo_contacto, datos.correo_sugerencias_reclamos, datos.instagram_redsocial, datos.facebook_redsocial]
     if n==1:
-        return datos.keyword
+        return datos.tiktok_redsocial
     if n==2:
-        return datos.description
+        return datos.instagram_redsocial
     if n==3:
-        return datos.correo
+        return datos.facebook_redsocial
     if n==4:
-        return datos.telefono
+        return datos.correo_contacto
     if n==5:
-        return datos.titulo
+        return datos.correo_sugerencias_reclamos
 
 
 
@@ -140,3 +140,8 @@ def informacionPerfil(id):
 @register.filter(name='existePlanAsignado')
 def existePlanAsignado(plan):    
     return Perfil.objects.filter(plan_id = plan).exists()
+
+@register.filter(name='estadoReservaClase')
+def estadoReservaClase(id):    
+    dato = Reserva_estado.objects.get(id = id)
+    return dato.estado

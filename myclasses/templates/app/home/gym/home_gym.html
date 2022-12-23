@@ -36,17 +36,32 @@
                                   <br><br>
                                   <p class="card-text"><small >Estamos ubicados en {{ r.ubicacion }}</small></p>
                                 </div>
+                                
                                 <div class="card-footer d-flex justify-content-center">
                                   <div class="button-container">
-                                    <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                      <img src='{% static "img/red-social/facebook.png" %}'  ></img>
+                                    <a href="https://www.facebook.com/{{r.facebook_redsocial}}/" target="_blank">
+                                      <button href="javascript:void(0)" class="btn btn-icon btn-round ">
+                                        <img src='{% static "img/red-social/facebook.png" %}'  ></img>
+                                      </button>
+                                    </a>
+                                    <a href="https://www.tiktok.com/@{{ r.tiktok_redsocial}}" target="_blank">
+                                      <button href="javascript:void(0)" class="btn btn-icon btn-round">
+                                        <img src='{% static "img/red-social/tiktok.png" %}'  ></img>
+                                      </button>
+                                    </a>
+
+                                    <a href="https://www.instagram.com/{{r.instagram_redsocial}}/" target="_blank">  
+                                    <button href="javascript:void(0)" class="btn btn-icon btn-round ">
+                                      <img src='{% static "img/red-social/instagram.png" %}'  ></img>
                                     </button>
-                                    <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                      <i class="fab fa-twitter"></i>
-                                    </button>
-                                    <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                      <i class="fab fa-google-plus"></i>
-                                    </button>
+                                    </a>
+                                    
+                                    <a href="https://www.{{r.sitio_web}}/" target="_blank">
+                                      <button href="javascript:void(0)" class="btn btn-icon btn-round ">
+                                        <img src='{% static "img/red-social/navegador.png" %}'  ></img>
+                                      </button>
+                                    </a>
+                                    
                                   </div>
                                 </div>
                               </div>                    
@@ -66,7 +81,7 @@
         
        
         {% endfor %} 
-            {% else %}
+         {% else %}
                 
 
                 <div class="card text-center">

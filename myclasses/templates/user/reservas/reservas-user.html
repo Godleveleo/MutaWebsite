@@ -16,9 +16,7 @@
           <h5 class="title">Seccion reserva</h5>
           <p>Aca puedes agendar tu clase preferida con el horario que te acomode</p>          
           </div>   
-          {% if estado == 1 %}
-                            
-               
+          {% if estado == 1 %}               
                   <div class="card-body " >
                      <!--set flash-->
                      {% include 'app/includes/flash.html' %}
@@ -81,10 +79,15 @@
                               <form class="pb-3" name="form"  action="{%  url 'add-reserva' %}" method="POST" >
                                 {% csrf_token %}
                                 <input type="hidden" name="id" id="id" value="{{ r.id }}"/>                      
-                                
+                                {% if r.id|estadoReservaClase == True %}
                                 <a href="javascript:void(0);"  >                                  
                                   <button  type="submit" class="btn btn-sm btn-success btn-simple" >Reservar</button>
-                                </a>                                                         
+                                </a>
+                                {% else %}
+                                <a href="javascript:void(0);" title="motivos"  >                                  
+                                  <button  type="submit" class="btn btn-sm btn-success btn-simple" disabled >No puedes Reservar</button>
+                                </a>
+                                {% endif %}                                                         
                               </form>
 
                                   {% endif %}

@@ -118,7 +118,7 @@ WSGI_APPLICATION = 'mutawebsite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'norepclassBD',
+        'NAME': 'basedato',
         'USER': 'root',
         'PASSWORD': 'asnaeb123',
         'HOST': 'localhost',

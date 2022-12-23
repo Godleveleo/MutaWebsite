@@ -81,17 +81,24 @@
                                   <span style="background-color:rgb(35, 166, 23);color: white;" class="badge rounded-pill ">ACTIVA</span>
   
                                        {% else %}
-                                  <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">DESACTIVADA</span>
+                                  <span style="background-color:rgb(212, 11, 11); color: white;" class="badge rounded-pill ">CANCELADA</span>
                                   {% endif %}
                                  </div>
 
                                  <div> 
                                   <p > <label for="eliminar">Eliminar</label></p>                             
-                                
+                                  {% if r.id|existeReserva == True %}
+
+                                  <a  href="javascript:void(0);" title="Alumnos con reserva en esta clase" ><button type="button" disabled rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm px-4">
+                                    <i class="tim-icons icon-simple-remove"></i>
+                                  </button>
+                                  </a>
+                                  {% else %}
                                   <a  href="javascript:void(0);" title="Eliminar" onclick="delete_clase_activa({{ r.id }})"><button type="button"  rel="tooltip" class="btn btn-danger btn-simple btn-icon btn-sm px-4">
                                     <i class="tim-icons icon-simple-remove"></i>
                                   </button>
                                   </a>
+                                  {% endif %}
                                 </div>
 
                                 </div>
