@@ -18,7 +18,7 @@
           {% if estado == 1 %}
                             
                
-                  <div class="card-body ">
+                  <div id="box-clase" class="card-body ">
                      <!--set flash-->
                      {% include 'app/includes/flash.html' %}
                      <!--/set flash-->
@@ -31,8 +31,7 @@
                       
                       <table class="table" style="width: 90%;">
                         <thead>
-                            <tr>
-                                <th class="text-center">#</th>
+                            <tr>                                
                                 <th>Descripción</th>                                      
                                 <th>Inicio</th>                                      
                                 <th>Termino</th>                                      
@@ -46,8 +45,7 @@
                            
                           {% for r in datos %}
                                                                            
-                                <tr>
-                                    <td class="text-center "><i class="tim-icons icon-tag"></i></td>
+                                <tr>                                    
                                     <td>{{ r.descripcion }}</td>                                    
                                     <td>{{ r.inicioClase  }}</td>                                    
                                     <td>{{ r.terminoClase }}</td>                                    

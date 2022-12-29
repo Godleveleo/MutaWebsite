@@ -16,8 +16,9 @@
               <div class="card-body">
                 {% for alumno in alumnos %}
                  <div  class="card border border-white  ">
-                  <div class="d-flex justify-content-around align-items-center">
+                  <div id="box-alumno" class="d-flex justify-content-around align-items-center">
                     <div class=" p-2">
+                      <img src="{{ alumno.imagenPerfil.url }}" alt="foto-perfil" width="40" height="40" >
                       <a class="btn btn-sm btn-info btn-simple text-white" href="javascript:void(0);"  title="Precione aqui para modificar" data-toggle="modal" data-target="#ventana_modal" onclick="carga_ajax_get('{% url 'modal-perfil-edit' alumno.pk alumno.nombre_id  %}', 'ss', '_ventana_modal');">
                         {{alumno.nombre.nombreCompleto}} 
                       </a>

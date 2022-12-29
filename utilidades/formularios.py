@@ -134,14 +134,38 @@ def listaFechas(userid):
       
     return resultado
 
+def cambia_estado(): #actualiza reservas pasadas
+    fechas = []
+    hoy = date.today()
+    unDia = hoy + timedelta(days= -1)
+    dosDia = hoy + timedelta(days= -2)
+    un_dia  = unDia.strftime('%d/%m/%Y')
+    dos_dia = dosDia.strftime('%d/%m/%Y')
+    dato = Reserva_estado.objects.all()
+    for a in dato:
+        if a.Fecha == un_dia or a.Fecha == dos_dia:
+                Reserva_estado.objects.filter(Fecha = a.Fecha).update( estado = 0)
+
+             
+                 
+
 def FiltroFechasUser(comunidad):
     fecha = Reserva_estado.objects.filter(comunidad_id__exact = comunidad)
+    hoy = date.today()
+    unDia = hoy + timedelta(days= 1)
+    dosDia = hoy + timedelta(days= 2)
+    un_dia  = unDia.strftime('%d/%m/%Y')
+    dos_dia = dosDia.strftime('%d/%m/%Y')
+    fecha_actual = hoy.strftime('%d/%m/%Y')
     resultado = []
+    fechas_disponibles = []
     for item in fecha:
         if item.Fecha not in resultado:
             resultado.append(item.Fecha)
-      
-    return resultado
+            if item.Fecha == un_dia or item.Fecha == dos_dia or item.Fecha == fecha_actual:
+                fechas_disponibles.append(item.Fecha)
+
+    return fechas_disponibles
 
 def existeclaseActiva(id):
     return Reserva_estado.objects.filter(clase_id__exact=id).exists()
@@ -154,3 +178,25 @@ def get_comunidad(userid):
     comunidad = Administradores.objects.filter(admin_user_id = userid).first()
     return comunidad.comunidad 
 
+# def VerificaHora(inicioClase):
+#     hora_actual = datetime.datetime.now()
+#     hora_formateada = hora_actual.strftime('%H:%M')
+#     if inicioClase != hora_formateada:
+#         print("te pasaste mi rey")
+
+def verificaHora(inicioClase):
+    hora_actual = datetime.now()
+    hora_formateada = hora_actual.strftime('%H:%M')    
+    if inicioClase != hora_formateada:
+        fomato = '%H:%M'
+        d1 = datetime.strptime(inicioClase, fomato )
+        d2 = datetime.strptime(hora_formateada, fomato )
+        dis = d2 - d1
+        dism = dis.seconds/60
+        if round(dism) >= 15:
+            estado = False
+                        
+        else:
+            estado = True
+   
+    return estado

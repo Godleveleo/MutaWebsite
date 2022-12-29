@@ -2,7 +2,7 @@ from django import template
 from myclasses.models import *
 from datetime import datetime
 from datetime import datetime ,date, timedelta
-
+from utilidades import formularios
 register = template.Library()
 
 
@@ -112,7 +112,6 @@ def queDiaes(fecha):
 
 @register.filter(name='conReserva')
 def conReserva(id):
-    
     return Reserva_activa.objects.filter(reserva_id__exact = id).exists()
         
     
@@ -141,7 +140,42 @@ def informacionPerfil(id):
 def existePlanAsignado(plan):    
     return Perfil.objects.filter(plan_id = plan).exists()
 
-@register.filter(name='estadoReservaClase')
+
+@register.filter(name='estadoReservaClase')#alumno
 def estadoReservaClase(id):    
     dato = Reserva_estado.objects.get(id = id)
-    return dato.estado
+    formularios
+    hoy = date.today()
+    fecha_actual = hoy.strftime('%d/%m/%Y')
+    hora_clase = formularios.verificaHora(dato.clase.inicioClase)
+    if fecha_actual == dato.Fecha:
+        if  hora_clase == True and dato.estado == True :
+            reservar = True
+        else:
+            reservar = False
+    else:
+        reservar = True
+  
+    return reservar
+
+@register.filter(name='metaDato')#alumno
+def metaDato(id):    
+    dato = Perfil.objects.filter(nombre_id = id).first()
+    return dato.imagenPerfil
+
+
+# @register.filter(name='verificaHora')#alumno
+# def verificaHora(inicioClase):
+#     hora_actual = datetime.now()
+#     hora_formateada = hora_actual.strftime('%H:%M')
+#     if inicioClase != hora_formateada:
+#         fomato = '%H:%M'
+#         d1 = datetime.strptime(inicioClase, fomato )
+#         d2 = datetime.strptime(hora_formateada, fomato )
+#         dis = d2 - d1
+#         dism = dis.seconds/60
+#         if dism < 15:
+#             estado = False
+#         else:
+#             estado = True
+

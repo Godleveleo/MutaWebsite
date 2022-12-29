@@ -18,11 +18,6 @@ from django.utils.timezone import utc
 
 
 
-@login_required(login_url='login-usuario')
-@user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
-def home_user(request):
-    return render(request, 'user/home-user/indexUSER.html')
-
 def CerrarSesion_user(request):
     logout(request)
     return redirect("login-usuario")
@@ -109,12 +104,13 @@ def home_reserva_user(request):
         if request.method == "POST":
             fecha = request.POST['fecha']
             datos = Reserva_estado.objects.filter(comunidad_id__exact = comunidad, Fecha__contains=fecha)    
-    reserva_usuario = Reserva_activa.objects.filter(user_id__exact = userid).filter(comunidad__exact=comunidad)
+    reserva_usuario = Reserva_activa.objects.filter(user_id__exact = userid).filter(comunidad__exact=comunidad).first()
+    reserva_usuario_principal = Reserva_activa.objects.filter(user_id__exact = userid).filter(comunidad__exact=comunidad)
     clases_activasPorComunidad = formularios.FiltroFechasUser(comunidad)
-               
+    perfil_alumno = Perfil.objects.filter(nombre_id = userid).first()           
                                 
 
-    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'datosComunidad':clases_activasPorComunidad, 'reservasActivas':reserva_usuario} )
+    return render(request,'user/reservas/reservas-user.html',{'datos':datos, 'estado':estado, 'datosComunidad':clases_activasPorComunidad, 'reservasActivas':reserva_usuario, 'listarResevas':reserva_usuario_principal, 'perfil':perfil_alumno} )
 
 def delete_reserva(request,id,rid):    
     userid = request.user.id 
@@ -146,4 +142,12 @@ def add_reserva(request):
                     reservaActiva.save()          
                     messages.add_message(request, messages.SUCCESS, f"Clase de {add_cupo.clase.descripcion} Reservada")   
                     return redirect("reserva-clases")    
-        
+
+## inicio Usuario (ALumno)        
+@login_required(login_url='login-usuario')
+@user_passes_test(formularios.is_member_alumno, login_url='login-usuario')
+def home_user(request):
+    userid = request.user.id
+    perfil_alumno = Perfil.objects.filter(nombre_id = userid).first()
+    
+    return render(request, 'user/home-user/indexUSER.html', {'perfil':perfil_alumno})

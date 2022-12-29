@@ -417,7 +417,7 @@ def home_reserva(request):
     estado = True
     datos = None    
     userid = request.user.id
-    
+    update = formularios.cambia_estado()    
     validador = Reserva_estado.objects.filter(user_creador__exact = userid).count()    
     if validador == 0:
         estado = False
@@ -426,13 +426,14 @@ def home_reserva(request):
         if request.method == "POST":
             fecha = request.POST['fecha']                           
             datos = Reserva_estado.objects.filter(user_creador__exact = userid, Fecha__contains=fecha)
-    
+            
+            
     fecha = formularios.listaFechas(userid)
     return render(request,'app/home/reservas/home_reserva.html',{'datos':datos, 'estado':estado, 'fechas':fecha} )
 
 @login_required(login_url='login')
 @user_passes_test(formularios.is_member, login_url='login')
-def reserva_add(request):   
+def reserva_add(request):    
     hoy = date.today()
     unDia = hoy + timedelta(days=1)
     dosDia = hoy + timedelta(days=2)

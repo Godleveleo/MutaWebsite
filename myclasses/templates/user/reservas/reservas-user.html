@@ -17,11 +17,12 @@
           <p>Aca puedes agendar tu clase preferida con el horario que te acomode</p>          
           </div>   
           {% if estado == 1 %}               
-                  <div class="card-body " >
+                  <div id="box-reserva-body-principal" class="card-body " >
                      <!--set flash-->
                      {% include 'app/includes/flash.html' %}
                      <!--/set flash-->
-                                        
+                    
+                     <!-- fechas-->
                     <div >
                       <div class="d-flex  align-items-center" >
                         <form  action="{%  url 'reserva-clases' %}" method="post" >
@@ -30,16 +31,19 @@
                               <select name="fecha" class="form-control" id="inputGroupSelect04" aria-label="Example select with button addon" onchange="this.form.submit()">                       
                                 <option value="">Fecha</option>                    
                                   {% for f in datosComunidad %}
-                                <option style="color: black ;" value="{{f}}" >{{f}}</option>
+                                <option class="text-dark" value="{{f}}" >{{f}}</option>
                                    {% endfor %}                                                 
                               </select>                                    
                         </form>
                        </div>                      
                      <hr>                     
                     </div>                    
-                    
+                     <!-- fechas-->
+
                     <div class="row">                         
-                      
+
+                      <!-- lista reserva por fecha -->
+
                           {% for r in datos %}
 
                           <div id="box-reserva-user" class="card border border-white  ">
@@ -62,18 +66,11 @@
                                                        
                             <div  class="card-body p-3">
                                          
-                                {% if user.id|conReservaActiva:r.Fecha == True and r.id|conReserva  %}
-                                                                           
-                                                                              
+                                {% if user.id|conReservaActiva:r.Fecha == True and r.id|conReserva  %}                                                             
                                         <label for="clase-reservada">Clase reservada</label>
-                                        <a href="javascript:void(0);"  >  
-                                          {% for res in reservasActivas %}                 
-                                          <button  type="submit" class="btn btn-sm btn-danger btn-simple" onclick="delete_reserva('{% url 'delete-reserva' r.id res.id %}')">Eliminar</button>
-                                          {% endfor %} 
+                                        <a href="javascript:void(0);"  >                                          
+                                          <button  type="submit" class="btn btn-sm btn-danger btn-simple" onclick="delete_reserva('{% url 'delete-reserva' r.id reservasActivas.id %}')">Eliminar</button>               
                                         </a>  
-                                                                           
-                                      
-
                                 {% else %}
                                 
                               <form class="pb-3" name="form"  action="{%  url 'add-reserva' %}" method="POST" >
@@ -86,6 +83,7 @@
                                 {% else %}
                                 <a href="javascript:void(0);" title="motivos"  >                                  
                                   <button  type="submit" class="btn btn-sm btn-success btn-simple" disabled >No puedes Reservar</button>
+                                  
                                 </a>
                                 {% endif %}                                                         
                               </form>
@@ -98,13 +96,14 @@
                                 </div>
                             </div>
                           </div> 
+                          <!-- lista reserva por fecha -->
                           {% empty %}
-                                        <div class="card-body">
+                                        <div id="box-reserva-body" class="card-body">
                                           <!-- reservas activas del alumno -->
-                                            {% for ractiva in reservasActivas %}                          
+                                            {% for ractiva in listarResevas %}                          
 
-                                            <div style="max-width: 65%;" class="card border border-white  ">
-                                              <div class="d-flex justify-content-between align-items-center">
+                                            <div id="box-reserva-activa"  class="card border border-white  ">
+                                              <div  class="d-flex justify-content-between align-items-center">
                                                 <h5 class="card-header">Clase: {{ ractiva.reserva.clase.descripcion | upper}}</h5>
                                                 <div class=" p-2">
                                                   <p class="btn btn-sm btn-info btn-simple text-white" >{{ractiva.fecha}} | {{ ractiva.reserva.clase.inicioClase }}</p>
@@ -119,7 +118,7 @@
                                                   {% endif %}                              
                                                 </div>
                                                   
-                                                  <div  class="card-body p-2">                                         
+                                                  <div  class="p-2">                                         
                                                   
                                                     {% if user.id|conReserva != ractiva.reserva_id %}                                                                              
                                                           <label for="clase-reservada">Clase reservada</label>
@@ -130,9 +129,6 @@
                                                 </div>             
                                               </div>                                
                                             </div>
-
-
-
                                               {% empty %}                            
                                               <div class="card">
                                               <div class="card-body">
