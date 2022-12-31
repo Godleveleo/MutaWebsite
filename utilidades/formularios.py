@@ -8,7 +8,7 @@ from functools import wraps
 from django.contrib.auth import authenticate, login, logout
 from django.http import Http404, HttpResponseRedirect
 from django.contrib import messages
-
+from datetime import datetime ,date, timedelta
 
 def logueado():
     def _activo_required(func):
@@ -186,17 +186,12 @@ def get_comunidad(userid):
 
 def verificaHora(inicioClase):
     hora_actual = datetime.now()
-    hora_formateada = hora_actual.strftime('%H:%M')    
-    if inicioClase != hora_formateada:
-        fomato = '%H:%M'
-        d1 = datetime.strptime(inicioClase, fomato )
-        d2 = datetime.strptime(hora_formateada, fomato )
-        dis = d2 - d1
-        dism = dis.seconds/60
-        if round(dism) >= 15:
-            estado = False
-                        
-        else:
-            estado = True
-   
+    hora_formateada = hora_actual.strftime('%H:%M')
+    formato = '%H:%M'
+    Hora_inicio_clase = datetime.strptime(inicioClase, formato )
+    resta = Hora_inicio_clase - timedelta(minutes=15)
+    if hora_formateada >= resta.strftime('%H:%M') :
+        estado = False
+    else:
+        estado = True
     return estado

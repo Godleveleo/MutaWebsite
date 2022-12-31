@@ -75,6 +75,7 @@
                                 
                               <form class="pb-3" name="form"  action="{%  url 'add-reserva' %}" method="POST" >
                                 {% csrf_token %}
+                                
                                 <input type="hidden" name="id" id="id" value="{{ r.id }}"/>                      
                                 {% if r.id|estadoReservaClase == True %}
                                 <a href="javascript:void(0);"  >                                  
@@ -83,11 +84,9 @@
                                 {% else %}
                                 <a href="javascript:void(0);" title="motivos"  >                                  
                                   <button  type="submit" class="btn btn-sm btn-success btn-simple" disabled >No puedes Reservar</button>
-                                  
                                 </a>
                                 {% endif %}                                                         
                               </form>
-
                                   {% endif %}
                                 <h5 class="card-title">Cupos :</h5>
                                 <p class="card-text">{{ r.cupo_reservado }} / {{ r.cupo }}</p>
@@ -119,8 +118,8 @@
                                                 </div>
                                                   
                                                   <div  class="p-2">                                         
-                                                  
-                                                    {% if user.id|conReserva != ractiva.reserva_id %}                                                                              
+                                             
+                                                      {% if user.id|conReserva != ractiva.reserva_id %}                                                                              
                                                           <label for="clase-reservada">Clase reservada</label>
                                                           <a href="javascript:void(0);"  >                                  
                                                             <button  type="submit" class="btn btn-sm btn-danger btn-simple" onclick="delete_reserva('{% url 'delete-reserva' ractiva.reserva_id  ractiva.pk %}')">Eliminar</button>

@@ -128,20 +128,25 @@ def delete_reserva(request,id,rid):
 def add_reserva(request):
     userid = request.user.id
     if request.method == 'POST':
-                    cupo_id = request.POST['id']            
-                    add_cupo = Reserva_estado.objects.filter(id__exact = cupo_id).first()
-                    add_cupo.cupo_reservado += 1
-                    barra = formularios.porcentaje(add_cupo.cupo,add_cupo.cupo_reservado)
-                    add_cupo.barra_cupo = barra
-                    reservaActiva = Reserva_activa()
-                    reservaActiva.user_id = userid
-                    reservaActiva.reserva_id = add_cupo.id
-                    reservaActiva.comunidad = add_cupo.comunidad_id
-                    reservaActiva.fecha = add_cupo.Fecha
-                    add_cupo.save()            
-                    reservaActiva.save()          
-                    messages.add_message(request, messages.SUCCESS, f"Clase de {add_cupo.clase.descripcion} Reservada")   
-                    return redirect("reserva-clases")    
+        cupo_id = request.POST['id']            
+        add_cupo = Reserva_estado.objects.filter(id__exact = cupo_id).first()
+        if add_cupo.cupo == add_cupo.cupo_reservado:
+            messages.add_message(request, messages.WARNING, f"Sin cupos disponibles")
+            return redirect("reserva-clases")
+        else:
+            add_cupo.cupo_reservado += 1
+            barra = formularios.porcentaje(add_cupo.cupo,add_cupo.cupo_reservado)
+            add_cupo.barra_cupo = barra
+            reservaActiva = Reserva_activa()
+            reservaActiva.user_id = userid
+            reservaActiva.reserva_id = add_cupo.id
+            reservaActiva.comunidad = add_cupo.comunidad_id
+            reservaActiva.fecha = add_cupo.Fecha
+            add_cupo.save()            
+            reservaActiva.save()          
+            messages.add_message(request, messages.SUCCESS, f"Clase de {add_cupo.clase.descripcion} Reservada")   
+            return redirect("reserva-clases") 
+                       
 
 ## inicio Usuario (ALumno)        
 @login_required(login_url='login-usuario')

@@ -113,9 +113,6 @@ def queDiaes(fecha):
 @register.filter(name='conReserva')
 def conReserva(id):
     return Reserva_activa.objects.filter(reserva_id__exact = id).exists()
-        
-    
-    
     
 @register.filter(name='conReservaActiva')
 def conReservaActiva(id,fecha):
@@ -149,7 +146,7 @@ def estadoReservaClase(id):
     fecha_actual = hoy.strftime('%d/%m/%Y')
     hora_clase = formularios.verificaHora(dato.clase.inicioClase)
     if fecha_actual == dato.Fecha:
-        if  hora_clase == True and dato.estado == True :
+        if  hora_clase == True :
             reservar = True
         else:
             reservar = False
